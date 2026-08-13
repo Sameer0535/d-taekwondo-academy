@@ -15,16 +15,16 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
 
   const navLinks = [
     { id: 'home', label: 'Home', icon: '🏠' },
-    { id: 'about', label: 'About Us', icon: '📖' },
-    { id: 'programs', label: 'Programs & Training', icon: '🥋' },
-    { id: 'coaches', label: 'Coaches & Instructors', icon: '👨‍🏫' },
+    { id: 'about', label: 'About', icon: '📖' },
+    { id: 'programs', label: 'Programs', icon: '🥋' },
+    { id: 'coaches', label: 'Coaches', icon: '👨‍🏫' },
     { id: 'achievements', label: 'Achievements', icon: '🏆' },
-    { id: 'gallery', label: 'Photo Gallery', icon: '🖼️' },
-    { id: 'videos', label: 'Video Showcase', icon: '🎬' },
-    { id: 'events', label: 'Upcoming Events', icon: '📅' },
-    { id: 'fees', label: 'Fee Structure', icon: '💰' },
-    { id: 'payment', label: 'Pay Online (UPI)', icon: '💳' },
-    { id: 'contact', label: 'Contact Us', icon: '📞' },
+    { id: 'gallery', label: 'Gallery', icon: '🖼️' },
+    { id: 'videos', label: 'Videos', icon: '🎬' },
+    { id: 'events', label: 'Events', icon: '📅' },
+    { id: 'fees', label: 'Fees', icon: '💰' },
+    { id: 'payment', label: 'Pay Now', icon: '💳' },
+    { id: 'contact', label: 'Contact', icon: '📞' },
   ];
 
   const handleNavClick = (pageId) => {
@@ -239,6 +239,7 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
           padding: 8px 14px;
           border-radius: 8px;
           cursor: pointer;
+          white-space: nowrap;
           transition: all 0.2s;
         }
         .nav-link:hover {
