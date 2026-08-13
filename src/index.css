@@ -294,3 +294,76 @@ textarea.form-control {
   resize: vertical;
   min-height: 100px;
 }
+
+/* Mobile Responsiveness Engine for Mobile Phones & Tablets */
+@media (max-width: 768px) {
+  body, html {
+    overflow-x: hidden;
+  }
+
+  /* Inputs prevent iOS auto-zoom */
+  input[type="text"], input[type="number"], input[type="email"], input[type="tel"], select, textarea {
+    font-size: 16px !important;
+  }
+
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Modals on Phones */
+  .modal-overlay {
+    padding: 12px 8px !important;
+  }
+  .modal-content {
+    padding: 20px 16px !important;
+    max-height: 94vh !important;
+    border-radius: 14px !important;
+    width: 96% !important;
+  }
+
+  /* Forms & Grids on Phones */
+  .grid, [style*="display: grid"], [style*="display:grid"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tables horizontal scroll */
+  .admin-table-wrap, table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Admin Sidebar & Body Mobile Adjustments */
+  .admin-dashboard-container {
+    flex-direction: column !important;
+  }
+  .admin-sidebar {
+    width: 100% !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+  }
+  .admin-nav {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    padding: 10px !important;
+  }
+  .admin-nav-btn {
+    white-space: nowrap !important;
+    font-size: 0.82rem !important;
+    padding: 8px 12px !important;
+  }
+  .admin-topbar {
+    padding: 14px 16px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+  .admin-body {
+    padding: 16px 12px !important;
+  }
+  .admin-stats-cards {
+    grid-template-columns: 1fr !important;
+  }
+}

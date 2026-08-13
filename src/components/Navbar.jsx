@@ -294,7 +294,22 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
             display: none;
           }
           .official-brand-logo {
-            height: 76px;
+            height: 72px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .top-bar-container {
+            flex-direction: column;
+            gap: 6px;
+            text-align: center;
+          }
+          .top-info {
+            font-size: 0.76rem;
+            justify-content: center;
+          }
+          .official-brand-logo {
+            height: 56px;
           }
         }
       `}</style>
