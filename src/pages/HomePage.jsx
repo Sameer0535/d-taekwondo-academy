@@ -1,0 +1,810 @@
+import React from 'react';
+import { Award, Users, Trophy, Medal, ChevronRight, Calendar, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+
+export default function HomePage({ 
+  settings, 
+  stats, 
+  about, 
+  programs = [], 
+  achievements = [], 
+  events = [], 
+  gallery = [], 
+  setActivePage, 
+  onOpenJoinModal, 
+  onOpenLightbox,
+  onJoinNow 
+}) {
+  const handleNavClick = (pageId) => {
+    setActivePage(pageId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Filter upcoming events
+  const today = new Date().toISOString().split('T')[0];
+  const upcomingEvents = events.filter(e => e.date >= today).slice(0, 3);
+
+  // Recent achievements preview
+  const topAchievements = achievements.slice(0, 4);
+
+  // Gallery preview
+  const galleryPreview = gallery.slice(0, 6);
+
+  return (
+    <div className="home-page">
+      {/* HERO SECTION */}
+      <section className="hero-section" style={{ backgroundImage: `url(${settings?.heroBgImage || 'https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1920&q=80'})` }}>
+        <div className="hero-overlay"></div>
+        <div className="container hero-container">
+          <div className="hero-content">
+            {/* Center-Aligned High-Res Logo Badge */}
+            <div className="hero-logo-box">
+              <img 
+                src={settings?.logoUrl || "/logo.png"} 
+                alt="D Taekwondo Academy Logo" 
+                className="hero-brand-logo" 
+              />
+            </div>
+            
+            <div className="hero-subtext-badge">{settings?.academyName || "D TAEKWONDO ACADEMY"}</div>
+            <h1 className="hero-headline">{settings?.heroTitle || "DISCIPLINE.\nDEDICATION.\nEXCELLENCE."}</h1>
+            <p className="hero-description">
+              "{settings?.heroDescription || "Train with discipline, build confidence and develop the skills to achieve your goals through Taekwondo."}"
+            </p>
+
+            <div className="hero-cta-buttons">
+              <button onClick={() => onJoinNow ? onJoinNow() : onOpenJoinModal()} className="btn btn-primary-red btn-hero">
+                JOIN NOW <ArrowRight size={18} />
+              </button>
+              <button onClick={() => onOpenJoinModal()} className="btn btn-outline-white btn-hero">
+                BOOK A TRIAL CLASS
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DYNAMIC STATISTICS */}
+      <section className="stats-section">
+        <div className="container">
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-icon-wrap blue"><Users size={32} /></div>
+              <div className="stat-value">{stats?.yearsExperience || "10+"}</div>
+              <div className="stat-label">Years of Experience</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon-wrap red"><Award size={32} /></div>
+              <div className="stat-value">{stats?.studentsTrained || "500+"}</div>
+              <div className="stat-label">Students Trained</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon-wrap gold"><Trophy size={32} /></div>
+              <div className="stat-value">{stats?.championships || "50+"}</div>
+              <div className="stat-label">Championships</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-icon-wrap dark"><Medal size={32} /></div>
+              <div className="stat-value">{stats?.medalsWon || "100+"}</div>
+              <div className="stat-label">Medals Won</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT PREVIEW */}
+      <section className="section-padding bg-white">
+        <div className="container">
+          <div className="about-preview-grid">
+            <div className="about-image-wrap">
+              <img 
+                src={about?.mainImage || about?.facilities?.[0]?.image || "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80"} 
+                alt="D Taekwondo Academy Arena" 
+                className="about-main-img" 
+              />
+              <div className="about-badge-overlay">
+                <ShieldCheck size={28} />
+                <span>Kukkiwon World TKD Certified</span>
+              </div>
+            </div>
+
+            <div className="about-content-wrap">
+              <span className="badge badge-red mb-2">ABOUT OUR ACADEMY</span>
+              <h2>ABOUT D TAEKWONDO ACADEMY</h2>
+              <p className="about-lead">
+                {about?.story || "Founded with a commitment to martial excellence, D Taekwondo Academy provides elite combat, fitness, and character building."}
+              </p>
+
+              <div className="philosophy-box">
+                <h4>OUR TRAINING PHILOSOPHY</h4>
+                <p>{about?.philosophy || "We believe martial arts is more than physical combat—it is a path of self-discovery, respect, perseverance, and indomitable spirit."}</p>
+              </div>
+
+              <div className="highlights-list mb-6">
+                {about?.whyChooseUs?.slice(0, 4).map((item, idx) => (
+                  <div key={idx} className="highlight-item">
+                    <CheckCircle2 size={18} className="text-red" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <button onClick={() => handleNavClick('about')} className="btn btn-secondary-blue">
+                LEARN MORE <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROGRAMS PREVIEW */}
+      <section className="section-padding bg-light">
+        <div className="container">
+          <div className="section-title">
+            <span className="badge badge-blue">MARTIAL ARTS CURRICULUM</span>
+            <h2>OUR PROGRAMS</h2>
+            <p>From early youth discipline to elite championship sparring, we offer tailored martial arts programs for all age groups.</p>
+          </div>
+
+          <div className="programs-grid">
+            {programs.slice(0, 6).map((prog) => (
+              <div key={prog.id} className="card program-card">
+                <div className="card-img-wrap">
+                  <img src={prog.image} alt={prog.name} />
+                  <span className="badge badge-gold card-badge">{prog.ageGroup}</span>
+                </div>
+                <div className="card-body">
+                  <h3>{prog.name}</h3>
+                  <p>{prog.description}</p>
+                  <div className="program-meta">
+                    <span>🗓 {prog.days}</span>
+                    <span>⏱ {prog.time}</span>
+                  </div>
+                  <div className="card-footer-action">
+                    <span className="fee-tag">{prog.fee}</span>
+                    <button onClick={() => handleNavClick('programs')} className="btn btn-outline-dark btn-sm">
+                      LEARN MORE
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ACHIEVEMENTS PREVIEW */}
+      <section className="section-padding bg-white">
+        <div className="container">
+          <div className="section-title">
+            <span className="badge badge-gold">HALL OF FAME</span>
+            <h2>OUR ACHIEVEMENTS</h2>
+            <p>Celebrating the glory, gold medals, and victory of D Taekwondo Academy champions across state & national arenas.</p>
+          </div>
+
+          <div className="achievements-grid">
+            {topAchievements.map((ach) => (
+              <div key={ach.id} className="card achievement-card">
+                <div className="ach-img-wrap">
+                  <img src={ach.image} alt={ach.athleteName} />
+                  <div className="medal-tag">
+                    {ach.medal === 'Gold' && '🥇 GOLD MEDAL'}
+                    {ach.medal === 'Silver' && '🥈 SILVER MEDAL'}
+                    {ach.medal === 'Bronze' && '🥉 BRONZE MEDAL'}
+                    {ach.medal === 'Award' && '🏆 BEST ACADEMY AWARD'}
+                  </div>
+                </div>
+                <div className="ach-body">
+                  <span className="ach-year">{ach.year} • {ach.tournamentLevel}</span>
+                  <h3>{ach.athleteName}</h3>
+                  <h4 className="ach-tournament">{ach.tournamentName}</h4>
+                  <div className="ach-category-badge">{ach.category} | {ach.weightCategory}</div>
+                  <p className="ach-desc">{ach.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10" style={{ textAlign: 'center', marginTop: '40px' }}>
+            <button onClick={() => handleNavClick('achievements')} className="btn btn-primary-red">
+              VIEW ALL ACHIEVEMENTS <Trophy size={18} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* UPCOMING EVENTS */}
+      <section className="section-padding bg-light">
+        <div className="container">
+          <div className="section-title">
+            <span className="badge badge-blue">CALENDAR & TOURNAMENTS</span>
+            <h2>UPCOMING EVENTS</h2>
+            <p>Join us at upcoming belt examinations, championships, and high-intensity training workshops.</p>
+          </div>
+
+          <div className="events-grid">
+            {upcomingEvents.length > 0 ? (
+              upcomingEvents.map((evt) => (
+                <div key={evt.id} className="card event-card">
+                  <div className="event-img-wrap">
+                    <img src={evt.posterUrl} alt={evt.name} />
+                    <div className="event-date-badge">
+                      <Calendar size={14} /> {evt.date}
+                    </div>
+                  </div>
+                  <div className="event-body">
+                    <h3>{evt.name}</h3>
+                    <p className="event-location">📍 {evt.location}</p>
+                    <p className="event-desc">{evt.description}</p>
+                    <button onClick={() => onOpenJoinModal(evt.name, true, evt.fee)} className="btn btn-secondary-blue btn-sm mt-3">
+                      REGISTER INTEREST
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">Check our events page for past and upcoming schedule.</p>
+            )}
+          </div>
+
+          <div className="text-center mt-8" style={{ textAlign: 'center', marginTop: '30px' }}>
+            <button onClick={() => handleNavClick('events')} className="btn btn-outline-dark">
+              VIEW ALL EVENTS
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* GALLERY PREVIEW */}
+      <section className="section-padding bg-white">
+        <div className="container">
+          <div className="section-title">
+            <span className="badge badge-red">MOMENTS OF GLORY</span>
+            <h2>PHOTO GALLERY</h2>
+            <p>A glimpse into our high-energy training, championship wins, and vibrant academy life.</p>
+          </div>
+
+          <div className="gallery-preview-grid">
+            {galleryPreview.map((item, index) => (
+              <div 
+                key={item.id} 
+                className="gallery-preview-item" 
+                onClick={() => onOpenLightbox(item, galleryPreview, index)}
+              >
+                <img src={item.imageUrl} alt={item.title} />
+                <div className="gallery-preview-overlay">
+                  <span className="badge badge-gold">{item.category}</span>
+                  <h4>{item.title}</h4>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10" style={{ textAlign: 'center', marginTop: '40px' }}>
+            <button onClick={() => handleNavClick('gallery')} className="btn btn-secondary-blue">
+              VIEW FULL GALLERY
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL CALL TO ACTION */}
+      <section className="cta-banner">
+        <div className="container cta-container">
+          <div className="cta-content text-center">
+            <span className="badge badge-gold mb-3">TAKE THE FIRST STEP</span>
+            <h2>START YOUR TAEKWONDO JOURNEY TODAY</h2>
+            <p className="cta-subtitle">Start your martial arts journey today. Classes available for all age groups.</p>
+            <div className="cta-buttons">
+              <button onClick={() => onJoinNow ? onJoinNow() : onOpenJoinModal()} className="btn btn-primary-red btn-lg">
+                JOIN NOW
+              </button>
+              <button onClick={() => handleNavClick('contact')} className="btn btn-outline-white">
+                CONTACT US
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <style>{`
+        /* Hero Section */
+        .hero-section {
+          position: relative;
+          min-height: 85vh;
+          width: 100%;
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #ffffff;
+          padding: 80px 20px;
+          overflow: hidden;
+        }
+        .hero-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.92) 100%);
+          backdrop-filter: blur(2px);
+        }
+        .hero-container {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+        }
+        .hero-content {
+          max-width: 900px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        .hero-logo-box {
+          background: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px 40px;
+          border-radius: 24px;
+          margin: 0 auto 24px auto;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+          transition: transform 0.3s ease;
+        }
+        .hero-logo-box:hover {
+          transform: scale(1.03);
+        }
+        .hero-brand-logo {
+          height: 165px;
+          width: auto;
+          object-fit: contain;
+          display: block;
+        }
+        .hero-subtext-badge {
+          font-family: var(--font-heading);
+          font-size: 1.35rem;
+          letter-spacing: 3px;
+          color: var(--accent-gold);
+          font-weight: 800;
+          text-transform: uppercase;
+          margin-bottom: 16px;
+          text-align: center;
+        }
+        .hero-headline {
+          font-size: 3.8rem;
+          color: #ffffff;
+          text-transform: uppercase;
+          line-height: 1.1;
+          letter-spacing: -1px;
+          margin-bottom: 24px;
+          white-space: pre-line;
+          text-align: center;
+          text-shadow: 0 4px 25px rgba(0,0,0,0.6);
+        }
+        .hero-description {
+          font-size: 1.25rem;
+          color: #e5e7eb;
+          max-width: 720px;
+          margin: 0 auto 36px;
+          line-height: 1.6;
+          text-align: center;
+        }
+        .hero-cta-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 18px;
+          flex-wrap: wrap;
+        }
+        .btn-hero {
+          padding: 18px 40px;
+          font-size: 1.1rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+          background: #111827;
+          color: #ffffff;
+          padding: 44px 0;
+          border-bottom: 4px solid var(--primary-red);
+        }
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+        }
+        .stat-card {
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: var(--radius-lg);
+          padding: 24px;
+          text-align: center;
+          transition: transform 0.3s;
+        }
+        .stat-card:hover {
+          transform: translateY(-4px);
+        }
+        .stat-icon-wrap {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 12px;
+        }
+        .stat-icon-wrap.blue { background: rgba(15, 108, 189, 0.2); color: var(--secondary-blue); }
+        .stat-icon-wrap.red { background: rgba(229, 35, 40, 0.2); color: var(--primary-red); }
+        .stat-icon-wrap.gold { background: rgba(245, 158, 11, 0.2); color: var(--accent-gold); }
+        .stat-icon-wrap.dark { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+
+        .stat-value {
+          font-family: var(--font-heading);
+          font-size: 2.5rem;
+          font-weight: 900;
+          color: #ffffff;
+          line-height: 1;
+          margin-bottom: 6px;
+        }
+        .stat-label {
+          color: #9ca3af;
+          font-size: 0.95rem;
+          font-weight: 600;
+        }
+
+        /* About Preview */
+        .about-preview-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.1fr;
+          gap: 50px;
+          align-items: center;
+        }
+        .about-image-wrap {
+          position: relative;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          box-shadow: var(--shadow-lg);
+        }
+        .about-main-img {
+          width: 100%;
+          height: 440px;
+          object-fit: cover;
+        }
+        .about-badge-overlay {
+          position: absolute;
+          bottom: 20px;
+          left: 20px;
+          background: rgba(17, 24, 39, 0.9);
+          backdrop-filter: blur(8px);
+          color: #ffffff;
+          padding: 12px 20px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-weight: 700;
+          font-size: 0.9rem;
+          border-left: 4px solid var(--primary-red);
+        }
+        .about-content-wrap h2 {
+          font-size: 2.2rem;
+          margin: 10px 0 16px;
+        }
+        .about-lead {
+          font-size: 1.1rem;
+          color: #4b5563;
+          line-height: 1.6;
+          margin-bottom: 20px;
+        }
+        .philosophy-box {
+          background: #f8fafc;
+          border-left: 4px solid var(--secondary-blue);
+          padding: 16px 20px;
+          border-radius: 0 12px 12px 0;
+          margin-bottom: 24px;
+        }
+        .philosophy-box h4 {
+          font-size: 0.95rem;
+          color: var(--secondary-blue);
+          margin-bottom: 4px;
+        }
+        .philosophy-box p {
+          font-size: 0.95rem;
+          color: #374151;
+          font-style: italic;
+        }
+        .highlights-list {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          margin-bottom: 28px;
+        }
+        .highlight-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.92rem;
+          font-weight: 600;
+          color: #1f2937;
+        }
+        .text-red { color: var(--primary-red); }
+
+        /* Programs Grid */
+        .bg-light { background: var(--bg-main); }
+        .bg-white { background: #ffffff; }
+        .programs-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 28px;
+        }
+        .program-card {
+          display: flex;
+          flex-direction: column;
+        }
+        .card-img-wrap {
+          position: relative;
+          height: 200px;
+          overflow: hidden;
+        }
+        .card-img-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+        .program-card:hover .card-img-wrap img {
+          transform: scale(1.08);
+        }
+        .card-badge {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+        }
+        .card-body {
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        }
+        .card-body h3 {
+          font-size: 1.3rem;
+          margin-bottom: 8px;
+        }
+        .card-body p {
+          color: #6b7280;
+          font-size: 0.92rem;
+          line-height: 1.5;
+          margin-bottom: 16px;
+          flex: 1;
+        }
+        .program-meta {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.85rem;
+          color: #4b5563;
+          font-weight: 600;
+          padding: 10px 0;
+          border-top: 1px solid var(--border-color);
+          margin-bottom: 16px;
+        }
+        .card-footer-action {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .fee-tag {
+          font-family: var(--font-heading);
+          font-weight: 800;
+          font-size: 1.1rem;
+          color: var(--primary-red);
+        }
+
+        /* Achievements Grid */
+        .achievements-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 24px;
+        }
+        .achievement-card {
+          border-top: 4px solid var(--accent-gold);
+        }
+        .ach-img-wrap {
+          position: relative;
+          height: 180px;
+        }
+        .ach-img-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .medal-tag {
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          background: rgba(17, 24, 39, 0.9);
+          color: var(--accent-gold);
+          font-family: var(--font-heading);
+          font-size: 0.78rem;
+          font-weight: 800;
+          padding: 4px 10px;
+          border-radius: 20px;
+        }
+        .ach-body {
+          padding: 20px;
+        }
+        .ach-year {
+          font-size: 0.8rem;
+          color: #6b7280;
+          font-weight: 700;
+          text-transform: uppercase;
+        }
+        .ach-body h3 {
+          font-size: 1.2rem;
+          color: var(--primary-red);
+          margin: 4px 0;
+        }
+        .ach-tournament {
+          font-size: 0.95rem;
+          color: #1f2937;
+          margin-bottom: 8px;
+        }
+        .ach-category-badge {
+          display: inline-block;
+          background: #f3f4f6;
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: #4b5563;
+          margin-bottom: 8px;
+        }
+        .ach-desc {
+          font-size: 0.88rem;
+          color: #6b7280;
+          line-height: 1.4;
+        }
+
+        /* Events Grid */
+        .events-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 28px;
+        }
+        .event-card {
+          display: flex;
+          flex-direction: column;
+        }
+        .event-img-wrap {
+          position: relative;
+          height: 200px;
+        }
+        .event-img-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .event-date-badge {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          background: var(--primary-red);
+          color: #ffffff;
+          font-size: 0.8rem;
+          font-weight: 700;
+          padding: 6px 12px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .event-body {
+          padding: 20px;
+        }
+        .event-body h3 {
+          font-size: 1.2rem;
+          margin-bottom: 6px;
+        }
+        .event-location {
+          font-size: 0.88rem;
+          color: var(--secondary-blue);
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+        .event-desc {
+          font-size: 0.9rem;
+          color: #6b7280;
+          line-height: 1.5;
+        }
+
+        /* Gallery Preview Grid */
+        .gallery-preview-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        .gallery-preview-item {
+          position: relative;
+          height: 250px;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          cursor: pointer;
+          box-shadow: var(--shadow-sm);
+        }
+        .gallery-preview-item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+        .gallery-preview-item:hover img {
+          transform: scale(1.1);
+        }
+        .gallery-preview-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, transparent 40%, rgba(17, 24, 39, 0.9) 100%);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 20px;
+          color: #ffffff;
+          opacity: 0.9;
+          transition: opacity 0.3s;
+        }
+        .gallery-preview-overlay h4 {
+          color: #ffffff;
+          font-size: 1.1rem;
+          margin-top: 6px;
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+          background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+          color: #ffffff;
+          padding: 80px 0;
+          position: relative;
+          border-top: 4px solid var(--accent-gold);
+        }
+        .cta-content h2 {
+          color: #ffffff;
+          font-size: 2.8rem;
+          margin: 12px 0 16px;
+        }
+        .cta-content p {
+          font-size: 1.2rem;
+          color: #d1d5db;
+          max-width: 650px;
+          margin: 0 auto 32px;
+          font-style: italic;
+        }
+        .cta-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+        }
+
+        @media (max-width: 1024px) {
+          .stats-grid { grid-template-columns: repeat(2, 1fr); }
+          .about-preview-grid { grid-template-columns: 1fr; }
+          .programs-grid { grid-template-columns: repeat(2, 1fr); }
+          .achievements-grid { grid-template-columns: repeat(2, 1fr); }
+          .events-grid { grid-template-columns: repeat(2, 1fr); }
+          .gallery-preview-grid { grid-template-columns: repeat(2, 1fr); }
+          .hero-headline { font-size: 3rem; }
+          .hero-brand-logo { height: 130px; }
+        }
+        @media (max-width: 640px) {
+          .stats-grid { grid-template-columns: 1fr; }
+          .programs-grid { grid-template-columns: 1fr; }
+          .achievements-grid { grid-template-columns: 1fr; }
+          .events-grid { grid-template-columns: 1fr; }
+          .gallery-preview-grid { grid-template-columns: 1fr; }
+          .hero-headline { font-size: 2.2rem; }
+          .hero-brand-logo { height: 110px; }
+          .cta-content h2 { font-size: 2rem; }
+        }
+      `}</style>
+    </div>
+  );
+}

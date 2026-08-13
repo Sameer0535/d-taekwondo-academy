@@ -1,0 +1,656 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const DATA_DIR = path.join(__dirname, 'data');
+const DB_FILE = path.join(DATA_DIR, 'db.json');
+
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+const defaultData = {
+  "settings": {
+    "academyName": "D TAEKWONDO ACADEMY",
+    "logoUrl": "/logo.png",
+    "heroTitle": "DISCIPLINE. DEDICATION. EXCELLENCE.",
+    "heroDescription": "Train with discipline, build confidence and develop the skills to achieve your goals through Taekwondo.",
+    "heroBgImage": "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1920&q=80",
+    "phone": "+91 98765 43210",
+    "whatsapp": "+91 98765 43210",
+    "email": "info@dtaekwondoacademy.com",
+    "address": "123 Martial Arts Boulevard, Sports Complex Road, Bengaluru, Karnataka 560001",
+    "googleMapsUrl": "https://maps.google.com/?q=Bengaluru",
+    "instagram": "https://instagram.com/dtaekwondoacademy",
+    "facebook": "https://facebook.com/dtaekwondoacademy",
+    "youtube": "https://youtube.com/c/dtaekwondoacademy",
+    "footerDescription": "Empowering athletes and martial artists with physical strength, mental discipline, and championship-level Taekwondo training."
+  },
+  "stats": {
+    "yearsExperience": "10+",
+    "studentsTrained": "500+",
+    "championships": "50+",
+    "medalsWon": "100+"
+  },
+  "about": {
+    "mainImage": "/uploads/1786420348761-538858573.jpeg",
+    "story": "Founded in 2016, D Taekwondo Academy has established itself as a premier martial arts training center dedicated to excellence, discipline, and holistic athletic growth. Our academy has nurtured hundreds of state, national, and international competitors while fostering lifelong health and character in every student.",
+    "mission": "To provide world-class World Taekwondo (WT) training in a disciplined, safe, and motivating environment, transforming passionate learners into confident leaders and champions.",
+    "vision": "To become the nation's leading Taekwondo institution, inspiring athletic excellence and producing Olympic-level competitors.",
+    "philosophy": "We believe martial arts is more than physical combat—it is a path of self-discovery, respect, perseverance, and indomitable spirit.",
+    "whyChooseUs": [
+      "Certified Kukkiwon & WTF Master Coaches",
+      "State-of-the-Art Training Facility & High-Density Mats",
+      "Specialized Competition & Sparring Track",
+      "Comprehensive Fitness & Flexibility Conditioning",
+      "Structured Belt Progression System",
+      "Personalized Attention & Youth Character Building"
+    ],
+    "facilities": [
+      {
+        "name": "Spacious International-Standard Mat Arena",
+        "image": "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "name": "Electronic Scoring & Sparring Gear",
+        "image": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "name": "Strength & Agility Conditioning Zone",
+        "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        "name": "Parent Lounge & Viewing Area",
+        "image": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  },
+  "programs": [
+    {
+      "id": "p1",
+      "name": "Kids Taekwondo",
+      "description": "Designed for young children to build discipline, physical coordination, confidence, focus, and fundamental martial arts movement in a fun, safe environment.",
+      "image": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+      "ageGroup": "Ages 5 - 11",
+      "days": "Mon, Wed, Fri",
+      "time": "4:30 PM - 5:30 PM",
+      "duration": "60 mins per session",
+      "fee": "₹1,000 / month"
+    },
+    {
+      "id": "p2",
+      "name": "Beginners",
+      "description": "Ideal foundation course for newcomers covering basic kicks, blocks, stances, Poomsae (patterns), and core martial discipline.",
+      "image": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
+      "ageGroup": "Ages 12+",
+      "days": "Tue, Thu, Sat",
+      "time": "5:30 PM - 6:30 PM",
+      "duration": "60 mins per session",
+      "fee": "₹1,200 / month"
+    },
+    {
+      "id": "p3",
+      "name": "Advanced Training",
+      "description": "Intense regimen for color belt students aiming for Black Belt proficiency, mastering complex kicking combinations, advanced forms, and tactical sparring.",
+      "image": "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
+      "ageGroup": "Yellow Belt & Above",
+      "days": "Mon to Fri",
+      "time": "6:30 PM - 7:45 PM",
+      "duration": "75 mins per session",
+      "fee": "₹1,500 / month"
+    },
+    {
+      "id": "p4",
+      "name": "Competition Training",
+      "description": "High-performance sparring (Kyorugi) and technical Poomsae camp for tournament athletes with electronic scoring system practice.",
+      "image": "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
+      "ageGroup": "Selected Athletes",
+      "days": "Daily & Weekends",
+      "time": "6:00 AM - 8:00 AM",
+      "duration": "120 mins per session",
+      "fee": "₹2,000 / month"
+    },
+    {
+      "id": "p5",
+      "name": "Adults Training",
+      "description": "Taekwondo fitness, stress relief, strength conditioning, and martial skill mastery for working professionals and adults.",
+      "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+      "ageGroup": "Ages 18+",
+      "days": "Mon, Wed, Fri",
+      "time": "7:45 PM - 8:45 PM",
+      "duration": "60 mins per session",
+      "fee": "₹1,500 / month"
+    },
+    {
+      "id": "p6",
+      "name": "Self Defense",
+      "description": "Practical real-world self-defense techniques, situational awareness, escape tactics, and joint locks for safety and confidence.",
+      "image": "https://images.unsplash.com/photo-1564415300397-6a4a15998a69?auto=format&fit=crop&w=800&q=80",
+      "ageGroup": "All Ages",
+      "days": "Sat & Sun",
+      "time": "8:00 AM - 9:30 AM",
+      "duration": "90 mins per session",
+      "fee": "₹1,200 / month"
+    }
+  ],
+  "coaches": [
+    {
+      "id": "c1",
+      "name": "Master John Doe",
+      "position": "Head Coach & Founder",
+      "beltDan": "5th Dan Black Belt (Kukkiwon)",
+      "experience": "15+ Years Experience",
+      "certifications": [
+        "National Certified Referee",
+        "International WT Coach",
+        "State Gold Medalist"
+      ],
+      "bio": "Master John Doe has trained over 500 martial artists and produced numerous national champions. He specializes in high-performance Kyorugi competition tactics.",
+      "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+      "displayOrder": 1
+    },
+    {
+      "id": "c2",
+      "name": "Master Jane Smith",
+      "position": "Head Poomsae Coach",
+      "beltDan": "4th Dan Black Belt (Kukkiwon)",
+      "experience": "12+ Years Experience",
+      "certifications": [
+        "Poomsae Specialist Certified",
+        "Youth Athletic Trainer"
+      ],
+      "bio": "Expert in technical accuracy, flexibility, and Poomsae form mastery. Master Jane leads our championship Poomsae squad.",
+      "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
+      "displayOrder": 2
+    },
+    {
+      "id": "c3",
+      "name": "Coach Rahul Sharma",
+      "position": "Sparring & Fitness Coach",
+      "beltDan": "3rd Dan Black Belt",
+      "experience": "8+ Years Experience",
+      "certifications": [
+        "National Sparring Champion",
+        "Functional Movement Trainer"
+      ],
+      "bio": "Specializes in explosive speed, footwork drills, electronic scoring counter-attack tactics, and cardiovascular conditioning.",
+      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
+      "displayOrder": 3
+    }
+  ],
+  "achievements": [
+    {
+      "id": "a1",
+      "athleteName": "Arjun Kumar",
+      "tournamentName": "Karnataka State Taekwondo Championship",
+      "tournamentLevel": "State Championship",
+      "year": "2026",
+      "category": "Junior Kyorugi",
+      "weightCategory": "Under 59 KG",
+      "medal": "Gold",
+      "description": "Secured 1st Place with 4 dominant match wins in the State Championship finals.",
+      "image": "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "a2",
+      "athleteName": "Priya Sharma",
+      "tournamentName": "National Taekwondo Open Cup",
+      "tournamentLevel": "National Championship",
+      "year": "2025",
+      "category": "Senior Female Kyorugi",
+      "weightCategory": "Under 49 KG",
+      "medal": "Gold",
+      "description": "Awarded Gold Medal and Best Female Athlete of the Tournament.",
+      "image": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "a3",
+      "athleteName": "Rohan Varma",
+      "tournamentName": "All India Inter-School Taekwondo Meet",
+      "tournamentLevel": "National Championship",
+      "year": "2025",
+      "category": "Cadet Male",
+      "weightCategory": "Under 45 KG",
+      "medal": "Silver",
+      "description": "Fought fearlessly through 5 rounds to secure National Silver.",
+      "image": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "a4",
+      "athleteName": "D Taekwondo Academy Team",
+      "tournamentName": "District Martial Arts Trophy",
+      "tournamentLevel": "District Championship",
+      "year": "2025",
+      "category": "Overall Team Trophy",
+      "weightCategory": "N/A",
+      "medal": "Award",
+      "description": "Crowned Best Overall Academy with 14 Gold, 8 Silver, and 5 Bronze medals.",
+      "image": "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "a5",
+      "athleteName": "Ananya Patel",
+      "tournamentName": "South India Taekwondo Championship",
+      "tournamentLevel": "Zonal Championship",
+      "year": "2024",
+      "category": "Sub-Junior Female",
+      "weightCategory": "Under 33 KG",
+      "medal": "Bronze",
+      "description": "Outstanding performance securing 3rd rank on the podium.",
+      "image": "https://images.unsplash.com/photo-1564415300397-6a4a15998a69?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    }
+  ],
+  "gallery": [
+    {
+      "id": "g1",
+      "title": "State Championship Finals 2026",
+      "description": "Our fighters delivering high-roundhouse kicks in the finals.",
+      "category": "TOURNAMENTS",
+      "imageUrl": "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "g2",
+      "title": "Morning Agility & Conditioning",
+      "description": "Students building endurance and explosive speed.",
+      "category": "TRAINING",
+      "imageUrl": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "g3",
+      "title": "Annual Belt Grading Examination",
+      "description": "Students demonstrating perfection in Poomsae forms.",
+      "category": "BELT EXAMINATIONS",
+      "imageUrl": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "g4",
+      "title": "National Trophy Victory",
+      "description": "Celebrating team achievements with coaches and parents.",
+      "category": "CHAMPIONSHIPS",
+      "imageUrl": "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "g5",
+      "title": "Summer Training Intensive Workshop",
+      "description": "Masterclass session on electronic scoring defense.",
+      "category": "EVENTS",
+      "imageUrl": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "g6",
+      "title": "Youth Sparring Practice",
+      "description": "Young martial artists executing targeted pad drills.",
+      "category": "ACADEMY LIFE",
+      "imageUrl": "https://images.unsplash.com/photo-1564415300397-6a4a15998a69?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    }
+  ],
+  "videos": [
+    {
+      "id": "v1",
+      "title": "Highlights: Karnataka State Taekwondo Championship 2026",
+      "description": "Watch D Taekwondo Academy athletes dominate the state arena.",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "Tournaments",
+      "isPublished": true
+    },
+    {
+      "id": "v2",
+      "title": "Mastering the 360 Tornado Kick - Step by Step",
+      "description": "Tutorial by Master John Doe on executing rapid spinning roundhouse kicks.",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "Training",
+      "isPublished": true
+    },
+    {
+      "id": "v3",
+      "title": "Annual Belt Grading & Demonstration Ceremony",
+      "description": "Inspiring board breaking and high-flying kick demonstrations.",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "category": "Events",
+      "isPublished": true
+    }
+  ],
+  "events": [
+    {
+      "id": "e1",
+      "name": "State Level Open Taekwondo Championship 2026",
+      "date": "2026-09-15",
+      "time": "08:00 AM - 06:00 PM",
+      "location": "Kanteerava Indoor Stadium, Bengaluru",
+      "description": "Official state tournament for Junior and Senior categories. Electronic PSS scoring system will be used.",
+      "posterUrl": "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true,
+      "fee": "2500"
+    },
+    {
+      "id": "e2",
+      "name": "Autumn Belt Examination & Promotion",
+      "date": "2026-10-10",
+      "time": "09:00 AM - 01:00 PM",
+      "location": "D Taekwondo Academy Main Hall",
+      "description": "Official Kukkiwon curriculum promotion exam for White to Red belt students.",
+      "posterUrl": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "e3",
+      "name": "National Sparring Camp & Masterclass",
+      "date": "2026-11-20",
+      "time": "07:00 AM - 05:00 PM",
+      "location": "D Taekwondo Academy Conditioning Arena",
+      "description": "Intensive 3-day conditioning and tactical combat seminar by international Grandmasters.",
+      "posterUrl": "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    },
+    {
+      "id": "e4",
+      "name": "District Youth Championship 2025",
+      "date": "2025-12-05",
+      "time": "09:00 AM - 05:00 PM",
+      "location": "District Sports Complex",
+      "description": "Past event: Our academy secured overall first rank with 14 Gold Medals.",
+      "posterUrl": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+      "isPublished": true
+    }
+  ],
+  "fees": [
+    {
+      "id": "f1",
+      "programName": "Kids Taekwondo",
+      "monthly": "₹1,000",
+      "quarterly": "₹2,700",
+      "yearly": "₹10,000",
+      "regFee": "₹500 (One-time)",
+      "notes": "Excluding uniform"
+    },
+    {
+      "id": "f2",
+      "programName": "Beginners Course",
+      "monthly": "₹1,200",
+      "quarterly": "₹3,200",
+      "yearly": "₹12,000",
+      "regFee": "₹500 (One-time)",
+      "notes": "Excluding uniform"
+    },
+    {
+      "id": "f3",
+      "programName": "Advanced Training",
+      "monthly": "₹1,500",
+      "quarterly": "₹4,000",
+      "yearly": "₹15,000",
+      "regFee": "₹500 (One-time)",
+      "notes": "Excluding uniform"
+    }
+  ],
+  "enquiries": [
+    {
+      "id": "enq_1786556108114",
+      "status": "New",
+      "date": "2026-08-12",
+      "studentName": "rjvkjrv",
+      "age": "10",
+      "parentName": "",
+      "phone": "0987654321",
+      "email": "",
+      "program": "State Level Open Taekwondo Championship 2026",
+      "message": "",
+      "utrNumber": ""
+    },
+    {
+      "id": "enq_1786556062035",
+      "status": "New",
+      "date": "2026-08-12",
+      "studentName": "jbekud",
+      "age": "10",
+      "parentName": "jbee",
+      "phone": "0987654321",
+      "email": "",
+      "program": "State Level Open Taekwondo Championship 2026",
+      "message": "",
+      "utrNumber": ""
+    },
+    {
+      "id": "enq1",
+      "studentName": "Aarav Sharma",
+      "age": "10",
+      "parentName": "Vikram Sharma",
+      "phone": "+91 98123 45678",
+      "email": "vikram@example.com",
+      "program": "Kids Taekwondo",
+      "message": "Looking for beginner trial classes for my son.",
+      "status": "Approved",
+      "date": "2026-08-08"
+    }
+  ],
+  "adminAuth": {
+    "username": "adminnn",
+    "passwordHash": "aadminn"
+  },
+  "students": [
+    {
+      "id": "STU1001",
+      "studentName": "Aarav Sharma",
+      "parentName": "Vikram Sharma",
+      "phone": "9812345678",
+      "password": "password123",
+      "program": "Kids Taekwondo",
+      "belt": "Yellow Belt",
+      "monthlyFee": "₹1,000",
+      "dueDay": 5,
+      "joiningDate": "2026-01-10",
+      "status": "Active"
+    },
+    {
+      "id": "STU1002",
+      "studentName": "Test Student",
+      "parentName": "Test Parent",
+      "phone": "9970509127",
+      "password": "password123",
+      "program": "Kids Taekwondo",
+      "belt": "White Belt",
+      "monthlyFee": "₹1,000",
+      "dueDay": 5,
+      "joiningDate": "2026-08-10",
+      "status": "Active"
+    },
+    {
+      "id": "STU1003",
+      "studentName": "rohn",
+      "parentName": "jdbc",
+      "phone": "0987654321",
+      "password": "samm",
+      "program": "Kids Taekwondo",
+      "belt": "White Belt",
+      "monthlyFee": "₹1,000",
+      "dueDay": 5,
+      "joiningDate": "2026-08-11",
+      "status": "Active"
+    },
+    {
+      "id": "STU1004",
+      "studentName": "dfvr",
+      "parentName": "rvc",
+      "phone": "09876543265",
+      "password": "samm",
+      "program": "Kids Taekwondo",
+      "belt": "White Belt",
+      "monthlyFee": "₹1,000",
+      "dueDay": 5,
+      "joiningDate": "2026-08-11",
+      "status": "Active"
+    },
+    {
+      "id": "STU1005",
+      "studentName": "hvut",
+      "parentName": "yf75s",
+      "phone": "0987654322",
+      "password": "samm",
+      "program": "Kids Taekwondo",
+      "belt": "White Belt",
+      "monthlyFee": "₹1,000",
+      "dueDay": 5,
+      "joiningDate": "2026-08-11",
+      "status": "Active"
+    },
+    {
+      "id": "STU1006",
+      "studentName": "Aarav Mehta",
+      "parentName": "Sanjay Mehta",
+      "phone": "9876543210",
+      "password": "password123",
+      "program": "Kids Taekwondo",
+      "belt": "White Belt",
+      "monthlyFee": "₹1,000",
+      "dueDay": 5,
+      "joiningDate": "2026-08-11",
+      "status": "Active"
+    },
+    {
+      "id": "STU1007",
+      "studentName": "jvyh",
+      "parentName": ",jbu",
+      "phone": "5648432576",
+      "password": "samm",
+      "program": "Kids Taekwondo",
+      "dob": "2022-03-13",
+      "age": "6",
+      "photoUrl": "/uploads/1786443621040-402247416.png",
+      "birthCertUrl": "",
+      "aadharUrl": "",
+      "belt": "White Belt",
+      "monthlyFee": "₹1,000",
+      "dueDay": 5,
+      "joiningDate": "2026-08-11",
+      "status": "Active"
+    }
+  ],
+  "studentPayments": [
+    {
+      "id": "pay_1786443630513",
+      "studentId": "STU1007",
+      "studentName": "jvyh",
+      "month": "August 2026",
+      "amount": "₹1,000",
+      "utrNumber": "098765432112",
+      "paymentDate": "2026-08-11",
+      "status": "Paid"
+    },
+    {
+      "id": "pay_1786422703438",
+      "studentId": "STU1003",
+      "studentName": "rohn",
+      "month": "August 2026",
+      "amount": "₹1,000",
+      "utrNumber": "DIRECT_CASH",
+      "paymentDate": "2026-08-11",
+      "status": "Paid"
+    },
+    {
+      "id": "pay_1786422528042",
+      "studentId": "STU1002",
+      "studentName": "Test Student",
+      "month": "August 2026",
+      "amount": "₹1,000",
+      "utrNumber": "DIRECT_CASH",
+      "paymentDate": "2026-08-11",
+      "status": "Paid"
+    },
+    {
+      "id": "pay_1786422071003",
+      "studentId": "STU1006",
+      "studentName": "Aarav Mehta",
+      "month": "August 2026",
+      "amount": "₹1,000",
+      "utrNumber": "123456789098",
+      "paymentDate": "2026-08-11",
+      "status": "Paid"
+    },
+    {
+      "id": "pay_1786421589710",
+      "studentId": "STU1005",
+      "studentName": "hvut",
+      "month": "August 2026",
+      "amount": "₹1,000",
+      "utrNumber": "123456789065",
+      "paymentDate": "2026-08-11",
+      "status": "Paid"
+    },
+    {
+      "id": "pay_1786421215870",
+      "studentId": "STU1004",
+      "studentName": "dfvr",
+      "month": "August 2026",
+      "amount": "₹1,000",
+      "utrNumber": "123456789087",
+      "paymentDate": "2026-08-11",
+      "status": "Paid"
+    },
+    {
+      "id": "pay_1001",
+      "studentId": "STU1001",
+      "studentName": "Aarav Sharma",
+      "month": "August 2026",
+      "amount": "₹1,000",
+      "utrNumber": "987654321012",
+      "paymentDate": "2026-08-05",
+      "status": "Paid"
+    }
+  ],
+  "payment": {
+    "isEnabled": true,
+    "accountName": "D TAEKWONDO ACADEMY",
+    "upiId": "dtaekwondo@upi",
+    "qrCodeImage": "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=dtaekwondo@upi&pn=D%20TAEKWONDO%20ACADEMY",
+    "paymentNote": "Please mention student name and program while making payment.",
+    "bankDetails": {
+      "accountHolder": "D TAEKWONDO ACADEMY",
+      "accountNumber": "123456789012",
+      "ifscCode": "BANK0001234",
+      "bankName": "HDFC Bank"
+    },
+    "additionalQrCodes": []
+  }
+};
+
+function readDb() {
+  if (!fs.existsSync(DB_FILE)) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2));
+    return defaultData;
+  }
+  try {
+    const raw = fs.readFileSync(DB_FILE, 'utf8');
+    const parsed = JSON.parse(raw);
+    return { ...defaultData, ...parsed };
+  } catch (err) {
+    console.error("Error reading database file, resetting to default:", err);
+    return defaultData;
+  }
+}
+
+function writeDb(data) {
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+}
+
+export const db = {
+  get: () => readDb(),
+  update: (updaterFn) => {
+    const current = readDb();
+    const updated = updaterFn(current);
+    writeDb(updated);
+    return updated;
+  }
+};
