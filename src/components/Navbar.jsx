@@ -14,17 +14,17 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
   }, []);
 
   const navLinks = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'programs', label: 'Programs' },
-    { id: 'coaches', label: 'Coaches' },
-    { id: 'achievements', label: 'Achievements' },
-    { id: 'gallery', label: 'Gallery' },
-    { id: 'videos', label: 'Videos' },
-    { id: 'events', label: 'Events' },
-    { id: 'fees', label: 'Fees' },
-    { id: 'payment', label: 'Pay Now' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'home', label: 'Home', icon: '🏠' },
+    { id: 'about', label: 'About Us', icon: '📖' },
+    { id: 'programs', label: 'Programs & Training', icon: '🥋' },
+    { id: 'coaches', label: 'Coaches & Instructors', icon: '👨‍🏫' },
+    { id: 'achievements', label: 'Achievements', icon: '🏆' },
+    { id: 'gallery', label: 'Photo Gallery', icon: '🖼️' },
+    { id: 'videos', label: 'Video Showcase', icon: '🎬' },
+    { id: 'events', label: 'Upcoming Events', icon: '📅' },
+    { id: 'fees', label: 'Fee Structure', icon: '💰' },
+    { id: 'payment', label: 'Pay Online (UPI)', icon: '💳' },
+    { id: 'contact', label: 'Contact Us', icon: '📞' },
   ];
 
   const handleNavClick = (pageId) => {
@@ -74,7 +74,7 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
       {/* Main Navbar */}
       <div className="main-nav-wrapper">
         <div className="container main-nav-container">
-          {/* Logo Left - Prominent & Perfectly Aligned */}
+          {/* Logo Left */}
           <div className="nav-logo" onClick={() => handleNavClick('home')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
             <img 
               src={settings?.logoUrl || "/logo.png"} 
@@ -102,13 +102,22 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
               JOIN NOW
             </button>
             
-            {/* Mobile Hamburger Toggle */}
+            {/* Mobile Hamburger / MENU Button */}
             <button 
               className="mobile-hamburger" 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
+              style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}
             >
-              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              {mobileMenuOpen ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#dc2626', color: '#ffffff', padding: '6px 14px', borderRadius: '20px', fontWeight: 'bold', fontSize: '0.85rem' }}>
+                  <X size={18} /> CLOSE
+                </div>
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, #e52328 0%, #b91c1c 100%)', color: '#ffffff', padding: '6px 16px', borderRadius: '20px', fontWeight: 'bold', fontSize: '0.88rem', boxShadow: '0 2px 8px rgba(229,35,40,0.35)' }}>
+                  <Menu size={18} /> MENU
+                </div>
+              )}
             </button>
           </div>
         </div>
@@ -118,21 +127,28 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
       {mobileMenuOpen && (
         <div className="mobile-drawer">
           <div className="mobile-drawer-inner container">
+            <div style={{ padding: '8px 16px 12px 16px', fontWeight: '800', color: '#64748b', fontSize: '0.78rem', letterSpacing: '0.5px', borderBottom: '2px solid #e2e8f0' }}>
+              ALL WEBSITE SECTIONS
+            </div>
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
                 className={`mobile-nav-link ${activePage === link.id ? 'active' : ''}`}
+                style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
               >
-                {link.label}
+                <span style={{ fontSize: '1.2rem' }}>{link.icon}</span> {link.label}
               </button>
             ))}
-            <div className="mobile-drawer-cta">
+            <div className="mobile-drawer-cta" style={{ marginTop: '16px', paddingTop: '16px', borderTop: '2px solid #e2e8f0' }}>
               <button onClick={() => { setMobileMenuOpen(false); onJoinNow ? onJoinNow() : onOpenJoinModal(); }} className="btn btn-primary-red w-full">
                 JOIN NOW
               </button>
-              <button onClick={() => handleNavClick('admin')} className="btn btn-outline-dark w-full mt-2">
-                <Shield size={16} /> Admin Login
+              <button onClick={() => handleNavClick('student')} className="btn w-full mt-2" style={{ background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', padding: '10px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <GraduationCap size={16} /> Student Portal
+              </button>
+              <button onClick={() => handleNavClick('admin')} className="btn btn-outline-dark w-full mt-2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                <Shield size={16} /> Admin Portal
               </button>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Lock, User, ShieldCheck } from 'lucide-react';
 
-export default function AdminLogin({ onLoginSuccess, settings }) {
+export default function AdminLogin({ onLoginSuccess, settings, onBackToHome }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -35,6 +35,14 @@ export default function AdminLogin({ onLoginSuccess, settings }) {
   return (
     <div className="admin-login-page">
       <div className="login-card card">
+        {onBackToHome && (
+          <button 
+            onClick={onBackToHome} 
+            style={{ background: '#1e293b', color: '#cbd5e1', border: '1px solid #334155', padding: '10px 16px', borderRadius: '10px', marginBottom: '20px', cursor: 'pointer', fontSize: '0.88rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', width: '100%', justifyContent: 'center' }}
+          >
+            ← Return to Main Website (All Sections)
+          </button>
+        )}
         <div className="login-header text-center">
           <img 
             src={settings?.logoUrl || "/logo.png"} 

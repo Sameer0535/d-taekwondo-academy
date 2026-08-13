@@ -155,7 +155,7 @@ export default function App() {
         adminToken ? (
           <AdminDashboard onLogout={handleLogout} onRefreshPublicData={fetchPublicData} />
         ) : (
-          <AdminLogin onLoginSuccess={handleLoginSuccess} settings={settings} />
+          <AdminLogin onLoginSuccess={handleLoginSuccess} settings={settings} onBackToHome={() => setActivePage('home')} />
         )
       ) : (
         <>
