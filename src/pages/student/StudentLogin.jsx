@@ -98,23 +98,23 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     if (regData.password !== regData.confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    if (!regData.photoUrl) {
-      setError("Please upload passport size photo of the child.");
+      setError("Passwords do not match. Please enter matching passwords.");
       return;
     }
 
     setLoading(true);
     setError('');
 
+    const payload = {
+      ...regData,
+      photoUrl: regData.photoUrl || '/logo.png'
+    };
+
     try {
       const res = await fetch('/api/student/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(regData)
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Registration failed.");
