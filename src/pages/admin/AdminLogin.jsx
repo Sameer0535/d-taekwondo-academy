@@ -45,9 +45,12 @@ export default function AdminLogin({ onLoginSuccess, settings }) {
           <p className="badge badge-red mt-2" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             <ShieldCheck size={14} /> ADMIN CONTROL PANEL
           </p>
+          <div style={{ marginTop: '10px', fontSize: '0.82rem', background: '#1e293b', padding: '8px 12px', borderRadius: '8px', color: '#94a3b8' }}>
+            Default Admin Login: <strong style={{ color: '#ffffff' }}>admin</strong> | Password: <strong style={{ color: '#ffffff' }}>admin123</strong>
+          </div>
         </div>
 
-        {error && <div className="login-error-alert">{error}</div>}
+        {error && <div className="login-error-alert" style={{ background: '#fee2e2', border: '1px solid #fecaca', color: '#dc2626', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.88rem', fontWeight: 'bold' }}>⚠️ {error}</div>}
 
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
