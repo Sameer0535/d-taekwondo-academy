@@ -821,14 +821,6 @@ if (fs.existsSync(DIST_DIR)) {
   });
 }
 
-// Built-in Keep-Alive Pinger (Pings server every 5 minutes)
-const RENDER_URL = process.env.RENDER_EXTERNAL_URL || 'https://d-taekwondo-academy-1oyk.onrender.com';
-setInterval(() => {
-  fetch(`${RENDER_URL}/api/settings`)
-    .then(() => console.log(`[Keep-Alive Ping] Pinged ${RENDER_URL} successfully.`))
-    .catch((err) => console.log('[Keep-Alive Ping Log]:', err.message));
-}, 5 * 60 * 1000);
-
 app.listen(PORT, () => {
   console.log(`D Taekwondo Academy Server running on http://localhost:${PORT}`);
 });

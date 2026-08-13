@@ -132,6 +132,8 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
 
   const handleRegUtrSubmit = async (e) => {
     e.preventDefault();
+    if (!createdStudent) return;
+
     if (!utrNumber || utrNumber.trim().length < 6) {
       setError("Please enter a valid 12-digit UTR transaction number.");
       return;
@@ -140,12 +142,13 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
     setSubmittingUtr(true);
     setError('');
 
-    // Find registration fee
-    const selectedProgramFee = fees.find(f => f.programName === createdStudent.program) || fees[0] || {};
+    // Find registration fee safely
+    const safeFees = Array.isArray(fees) ? fees : [];
+    const selectedProgramFee = safeFees.find(f => f.programName === createdStudent.program) || safeFees[0] || {};
     const regFee = selectedProgramFee.regFee || '₹500';
 
     try {
-      await fetch('/api/student/pay-fee', {
+      const res = await fetch('/api/student/pay-fee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -156,13 +159,15 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
           utrNumber: utrNumber.trim()
         })
       });
+      if (!res.ok) throw new Error("Failed to submit payment UTR.");
 
       setRegistrationComplete(true);
       setTimeout(() => {
         onLoginSuccess(createdStudent, createdToken);
       }, 2000);
     } catch (err) {
-      setError(err.message);
+      console.error("UTR Submit Error:", err);
+      setError(err.message || "Failed to submit UTR.");
     } finally {
       setSubmittingUtr(false);
     }
@@ -580,9 +585,9 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                 </div>
 
                 {/* UTR Form */}
-                {utrError && <div style={{ padding: '10px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', color: '#dc2626', marginBottom: '14px', fontSize: '0.85rem' }}>{utrError}</div>}
+                {error && <div style={{ padding: '10px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', color: '#dc2626', marginBottom: '14px', fontSize: '0.85rem' }}>{error}</div>}
 
-                <form onSubmit={handleUtrSubmit}>
+                <form onSubmit={handleRegUtrSubmit}>
                   <div className="form-group mb-4" style={{ marginBottom: '16px' }}>
                     <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '6px', fontSize: '0.88rem' }}>
                       Enter 12-Digit UPI Transaction UTR Number *
