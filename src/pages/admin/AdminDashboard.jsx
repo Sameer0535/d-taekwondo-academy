@@ -1185,7 +1185,8 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                                       )}
                                       {reg.status !== 'Rejected' && (
                                         <button
-                                          onClick={async () => {
+                                          onClick={async (e) => {
+                                            e.stopPropagation();
                                             await fetch(`/api/enquiries/${reg.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'Rejected' }) });
                                             showNotification(`Registration Rejected for ${reg.studentName}`);
                                             fetchAllAdminData();
@@ -1196,6 +1197,21 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                                           Reject
                                         </button>
                                       )}
+                                      <button
+                                        onClick={async (e) => {
+                                          e.stopPropagation();
+                                          if (window.confirm(`Are you sure you want to delete registration for "${reg.studentName}"?`)) {
+                                            await fetch(`/api/enquiries/${reg.id}`, { method: 'DELETE' });
+                                            showNotification(`Deleted registration for ${reg.studentName}`);
+                                            fetchAllAdminData();
+                                          }
+                                        }}
+                                        className="btn btn-sm"
+                                        style={{ background: '#7f1d1d', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+                                        title="Delete Registration"
+                                      >
+                                        <Trash2 size={13} /> Delete
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
@@ -2375,6 +2391,20 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   ✕ REJECT
                 </button>
               )}
+              <button
+                onClick={async () => {
+                  if (window.confirm(`Delete registration for "${selectedRegistration.studentName || selectedRegistration.name}"?`)) {
+                    await fetch(`/api/enquiries/${selectedRegistration.id}`, { method: 'DELETE' });
+                    showNotification(`Deleted registration for ${selectedRegistration.studentName || selectedRegistration.name}`);
+                    setSelectedRegistration(null);
+                    fetchAllAdminData();
+                  }
+                }}
+                className="btn btn-sm"
+                style={{ background: '#7f1d1d', color: '#fff', padding: '8px 16px', borderRadius: '8px', border: 'none', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+              >
+                <Trash2 size={15} /> DELETE
+              </button>
               <button
                 onClick={() => setSelectedRegistration(null)}
                 className="btn btn-outline-dark btn-sm"
