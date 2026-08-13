@@ -534,7 +534,7 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                 type="submit" 
                 disabled={loading} 
                 className="btn btn-primary-red w-full" 
-                style={{ width: '100%', height: '50px', borderRadius: '12px', fontSize: '1rem', fontWeight: 'bold', boxShadow: '0 4px 14px rgba(229,35,40,0.3)' }}
+                style={{ width: '100%', minHeight: '52px', height: 'auto', padding: '12px 18px', borderRadius: '12px', fontSize: '0.96rem', fontWeight: 'bold', boxShadow: '0 4px 14px rgba(229,35,40,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', lineHeight: '1.3' }}
               >
                 {loading ? "REGISTERING STUDENT..." : "REGISTER STUDENT & PROCEED TO FEE PAYMENT →"}
               </button>
@@ -548,14 +548,14 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
         const displayRegFee = selectedProgramFee.regFee || '₹500 (One-time)';
 
         return (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100, padding: '20px' }}>
-          <div className="card p-6" style={{ background: '#ffffff', borderRadius: '20px', maxWidth: '520px', width: '100%', border: '1px solid #e2e8f0', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.3)', padding: '28px' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.75)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100, padding: '16px 12px' }}>
+          <div className="card p-6" style={{ background: '#ffffff', borderRadius: '20px', maxWidth: '520px', width: '100%', border: '1px solid #e2e8f0', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.3)', padding: '24px 20px', maxHeight: '94vh', overflowY: 'auto' }}>
             
             {!registrationComplete ? (
               <>
-                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
                   <span className="badge badge-gold mb-2" style={{ fontSize: '0.8rem' }}>REGISTRATION SUCCESSFUL 🎉</span>
-                  <h3 style={{ fontSize: '1.5rem', margin: '4px 0', fontWeight: 'bold' }}>Step 2: Pay Admission / Registration Fee</h3>
+                  <h3 style={{ fontSize: '1.35rem', margin: '4px 0', fontWeight: 'bold' }}>Step 2: Pay Admission / Registration Fee</h3>
                   <p style={{ fontSize: '0.88rem', color: '#64748b', margin: 0 }}>
                     Student ID Generated: <strong style={{ color: '#e52328', fontFamily: 'monospace', fontSize: '1rem' }}>{createdStudent.id}</strong>
                   </p>
@@ -568,22 +568,35 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                     alt="UPI QR Code" 
                     style={{ width: '140px', height: '140px', margin: '0 auto 10px', display: 'block', borderRadius: '8px', border: '1px solid #cbd5e1' }}
                   />
-                  <div style={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#0f172a' }}>Registration Fee: {displayRegFee}</div>
-                  <div style={{ fontSize: '0.85rem', color: '#64748b' }}>Scan with PhonePe, Google Pay, Paytm or BHIM UPI</div>
-                  <div style={{ fontSize: '0.85rem', color: '#1e293b', marginTop: '4px' }}>UPI ID: <code>dtaekwondo@upi</code></div>
+                  <h4 style={{ margin: '4px 0', fontSize: '1.1rem', color: '#0f172a', fontWeight: 'bold' }}>
+                    Registration Fee: {displayRegFee}
+                  </h4>
+                  <p style={{ margin: '4px 0 0', fontSize: '0.82rem', color: '#64748b' }}>
+                    Scan with PhonePe, Google Pay, Paytm or BHIM UPI
+                  </p>
+                  <p style={{ margin: '4px 0 0', fontSize: '0.82rem', color: '#64748b' }}>
+                    UPI ID: <code>dtaekwondo@upi</code>
+                  </p>
                 </div>
 
-                <form onSubmit={handleRegUtrSubmit}>
-                  <div className="form-group mb-4">
-                    <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '6px', fontSize: '0.9rem' }}>Enter 12-Digit UPI Transaction UTR Number *</label>
+                {/* UTR Form */}
+                {utrError && <div style={{ padding: '10px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '8px', color: '#dc2626', marginBottom: '14px', fontSize: '0.85rem' }}>{utrError}</div>}
+
+                <form onSubmit={handleUtrSubmit}>
+                  <div className="form-group mb-4" style={{ marginBottom: '16px' }}>
+                    <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '6px', fontSize: '0.88rem' }}>
+                      Enter 12-Digit UPI Transaction UTR Number *
+                    </label>
                     <input 
                       type="text" 
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       required 
                       value={utrNumber} 
                       onChange={(e) => setUtrNumber(e.target.value)} 
                       placeholder="e.g. 328190283401" 
                       className="form-control" 
-                      style={{ height: '46px', borderRadius: '10px', fontSize: '0.95rem' }}
+                      style={{ height: '46px', borderRadius: '10px', fontSize: '16px', fontFamily: 'monospace', letterSpacing: '1px' }}
                     />
                   </div>
 
@@ -591,7 +604,7 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                     type="submit" 
                     disabled={submittingUtr} 
                     className="btn btn-primary-red w-full" 
-                    style={{ width: '100%', height: '48px', borderRadius: '12px', fontSize: '1rem', fontWeight: 'bold' }}
+                    style={{ width: '100%', minHeight: '50px', height: 'auto', padding: '12px 16px', borderRadius: '12px', fontSize: '0.95rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', lineHeight: '1.3', textAlign: 'center' }}
                   >
                     <Send size={16} /> {submittingUtr ? "SUBMITTING UTR..." : "SUBMIT UTR & GENERATE ID CARD →"}
                   </button>

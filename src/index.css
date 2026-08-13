@@ -295,7 +295,17 @@ textarea.form-control {
   min-height: 100px;
 }
 
+.admin-mobile-nav-select {
+  display: none;
+}
+
 /* Mobile Responsiveness Engine for Mobile Phones & Tablets */
+@media (max-width: 1024px) {
+  .admin-mobile-nav-select {
+    display: block !important;
+  }
+}
+
 @media (max-width: 768px) {
   body, html {
     overflow-x: hidden;

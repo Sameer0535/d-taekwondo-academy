@@ -422,6 +422,34 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
           {message && <div className="admin-toast">{message}</div>}
         </header>
 
+        {/* Mobile Nav Select Bar (Visible on phones & small screens) */}
+        <div className="admin-mobile-nav-select" style={{ padding: '12px 16px', background: '#0f172a', borderBottom: '1px solid #334155' }}>
+          <label style={{ color: '#94a3b8', fontSize: '0.78rem', fontWeight: 'bold', display: 'block', marginBottom: '4px' }}>
+            SELECT ADMIN MODULE:
+          </label>
+          <select 
+            value={activeTab} 
+            onChange={(e) => setActiveTab(e.target.value)}
+            style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', background: '#1e293b', color: '#ffffff', border: '1px solid #475569', fontSize: '0.95rem', fontWeight: 'bold' }}
+          >
+            <option value="overview">📊 Overview Dashboard</option>
+            <option value="settings">⚙️ Website Settings & Backup</option>
+            <option value="about">📖 About Page</option>
+            <option value="programs">🥋 Programs ({programs.length})</option>
+            <option value="coaches">👨‍🏫 Coaches ({coaches.length})</option>
+            <option value="achievements">🏆 Achievements ({achievements.length})</option>
+            <option value="gallery">🖼️ Gallery ({gallery.length})</option>
+            <option value="videos">🎬 Videos ({videos.length})</option>
+            <option value="events">📅 Events ({events.length})</option>
+            <option value="event-registrations">📋 Event Registrations ({newEventRegistrationsCount})</option>
+            <option value="fees">💰 Fees Structure</option>
+            <option value="payment">💳 Payment QR & Bank</option>
+            <option value="students">👥 Student Directory ({students.length})</option>
+            <option value="fee-approvals">✅ Fee Approvals ({pendingPaymentsCount})</option>
+            <option value="enquiries">📩 Admission Enquiries ({newEnquiriesCount})</option>
+          </select>
+        </div>
+
         <div className="admin-body">
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
