@@ -667,11 +667,20 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   </div>
                 </div>
 
-                <h4 className="font-bold border-b pb-2 mb-4 mt-6">Contact & Social Media Links</h4>
+                <h4 className="font-bold border-b pb-2 mb-4 mt-6" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  📞 Contact & Social Media Links
+                </h4>
+                <div style={{ background: '#f8fafc', padding: '14px 16px', borderRadius: '10px', border: '1px solid #cbd5e1', marginBottom: '16px', fontSize: '0.85rem', color: '#475569' }}>
+                  💡 <strong>Tip:</strong> Changing the <strong>Phone Number</strong> or <strong>WhatsApp Number</strong> here and clicking <strong>"SAVE SETTINGS"</strong> will instantly update the top website header bar, footer, and contact section live across the entire site!
+                </div>
                 <div className="grid grid-cols-2 gap-4 mb-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="form-group">
-                    <label>Phone Number</label>
-                    <input type="text" value={settings?.phone || ''} onChange={(e) => setSettings({ ...(settings || {}), phone: e.target.value })} className="form-control" />
+                    <label style={{ fontWeight: 'bold', color: '#dc2626' }}>📱 Official Academy Phone Number (Navbar & Footer)</label>
+                    <input type="text" placeholder="+91 98765 43210" value={settings?.phone || ''} onChange={(e) => setSettings({ ...(settings || {}), phone: e.target.value })} className="form-control" style={{ fontWeight: '600', borderColor: '#e52328' }} />
+                  </div>
+                  <div className="form-group">
+                    <label style={{ fontWeight: 'bold', color: '#16a34a' }}>💬 WhatsApp Number / Link</label>
+                    <input type="text" placeholder="919876543210 or https://wa.me/..." value={settings?.whatsapp || ''} onChange={(e) => setSettings({ ...(settings || {}), whatsapp: e.target.value })} className="form-control" style={{ fontWeight: '600' }} />
                   </div>
                   <div className="form-group">
                     <label>Email Address</label>
@@ -680,10 +689,6 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   <div className="form-group">
                     <label>Instagram URL</label>
                     <input type="text" placeholder="https://instagram.com/your_profile" value={settings?.instagram || ''} onChange={(e) => setSettings({ ...(settings || {}), instagram: e.target.value })} className="form-control" />
-                  </div>
-                  <div className="form-group">
-                    <label>WhatsApp Number / Link</label>
-                    <input type="text" placeholder="919876543210 or https://wa.me/..." value={settings?.whatsapp || ''} onChange={(e) => setSettings({ ...(settings || {}), whatsapp: e.target.value })} className="form-control" />
                   </div>
                 </div>
 
