@@ -41,7 +41,7 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
           <div className="top-info">
             <span><Phone size={14} /> {settings?.phone || "+91 98765 43210"}</span>
             <span className="divider">|</span>
-            <span>📍 {settings?.address ? settings.address.split(',')[2] || "Bengaluru" : "Bengaluru"}</span>
+            <span>📍 {settings?.topBarLocation || settings?.location || (settings?.address ? settings.address.split(',')[0] : "Bengaluru")}</span>
           </div>
           <div className="admin-link" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button 

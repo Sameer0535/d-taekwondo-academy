@@ -97,10 +97,12 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    if (regData.phone.length !== 10) {
-      setError("Please enter a valid 10-digit mobile number.");
+    const cleanPhone = (regData.phone || '').replace(/\D/g, '');
+    if (cleanPhone.length !== 10) {
+      setError("Mobile Number MUST be exactly 10 digits (e.g. 9812345678).");
       return;
     }
+
     if (regData.password !== regData.confirmPassword) {
       setError("Passwords do not match. Please enter matching passwords.");
       return;
@@ -111,6 +113,7 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
 
     const payload = {
       ...regData,
+      phone: cleanPhone,
       photoUrl: regData.photoUrl || '/logo.png'
     };
 
@@ -138,8 +141,9 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
     e.preventDefault();
     if (!createdStudent) return;
 
-    if (!utrNumber || utrNumber.trim().length < 6) {
-      setError("Please enter a valid 12-digit UTR transaction number.");
+    const cleanUtr = utrNumber.replace(/\D/g, '');
+    if (cleanUtr.length !== 12) {
+      setError("UTR Transaction Number is MANDATORY and must be exactly 12 numeric digits (e.g. 328190283401).");
       return;
     }
 
@@ -360,7 +364,7 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                 </div>
 
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>Mobile Number *</label>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>Mobile Number (10 Digits) *</label>
                   <input 
                     type="tel" 
                     inputMode="numeric"
@@ -368,14 +372,7 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                     maxLength={10}
                     required 
                     value={regData.phone} 
-                    onChange={(e) => setRegData(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} 
-                    onInput={(e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10); }}
-                    onPaste={(e) => {
-                      e.preventDefault();
-                      const pasted = (e.clipboardData || window.clipboardData).getData('text');
-                      const clean = pasted.replace(/\D/g, '').slice(0, 10);
-                      setRegData(prev => ({ ...prev, phone: clean }));
-                    }}
+                    onChange={(e) => setRegData({ ...regData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} 
                     placeholder="10-digit mobile" 
                     className="form-control" 
                     style={{ height: '42px', borderRadius: '8px' }}
@@ -609,12 +606,12 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                     <input 
                       type="text" 
                       inputMode="numeric"
-                      pattern="[0-9]*"
-                      maxLength={16}
+                      pattern="[0-9]{12}"
+                      maxLength={12}
                       required 
                       value={utrNumber} 
-                      onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 16))} 
-                      placeholder="e.g. 328190283401" 
+                      onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 12))} 
+                      placeholder="e.g. 328190283401 (12 digits)" 
                       className="form-control" 
                       style={{ height: '46px', borderRadius: '10px', fontSize: '16px', fontFamily: 'monospace', letterSpacing: '1px' }}
                     />

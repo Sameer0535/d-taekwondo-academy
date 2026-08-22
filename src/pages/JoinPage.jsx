@@ -21,10 +21,6 @@ export default function JoinPage({ programs = [], setActivePage }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.phone.length !== 10) {
-      setError("Please enter a valid 10-digit mobile number.");
-      return;
-    }
     setSubmitting(true);
     setError('');
 
@@ -128,22 +124,12 @@ export default function JoinPage({ programs = [], setActivePage }) {
                       <label>Phone Number *</label>
                       <input 
                         type="tel" 
-                        inputMode="numeric"
-                        pattern="[0-9]{10}"
-                        maxLength={10}
                         name="phone" 
                         value={formData.phone} 
-                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} 
-                        onInput={(e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10); }}
-                        onPaste={(e) => {
-                          e.preventDefault();
-                          const pasted = (e.clipboardData || window.clipboardData).getData('text');
-                          const clean = pasted.replace(/\D/g, '').slice(0, 10);
-                          setFormData(prev => ({ ...prev, phone: clean }));
-                        }}
+                        onChange={handleChange} 
                         required 
                         className="form-control" 
-                        placeholder="10-digit mobile" 
+                        placeholder="+91 98765 43210" 
                       />
                     </div>
                     <div className="form-group">

@@ -37,8 +37,9 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
 
   const handlePayFeeSubmit = async (e) => {
     e.preventDefault();
-    if (!utrNumber || utrNumber.trim().length < 6) {
-      setPayError("Please enter a valid UTR / Transaction reference number.");
+    const cleanUtr = utrNumber.replace(/\D/g, '');
+    if (cleanUtr.length !== 12) {
+      setPayError("UTR Transaction Number is MANDATORY and must be exactly 12 numeric digits (e.g. 328190283401).");
       return;
     }
 
@@ -317,12 +318,12 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
                 <input 
                   type="text" 
                   inputMode="numeric"
-                  pattern="[0-9]*"
-                  maxLength={16}
+                  pattern="[0-9]{12}"
+                  maxLength={12}
                   required 
                   value={utrNumber} 
-                  onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 16))} 
-                  placeholder="e.g. 328190283401" 
+                  onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 12))} 
+                  placeholder="e.g. 328190283401 (12 digits)" 
                   className="form-control" 
                   style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontFamily: 'monospace', letterSpacing: '1px' }}
                 />

@@ -667,34 +667,70 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   </div>
                 </div>
 
-                <h4 className="font-bold border-b pb-2 mb-4 mt-6" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  📞 Contact & Social Media Links
+                <h4 className="font-bold border-b pb-2 mb-4 mt-6" style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: 'bold', borderBottom: '2px solid #e2e8f0', paddingBottom: '8px' }}>
+                  📞 Top Info Bar & Contact Settings (Header & Footer)
                 </h4>
-                <div style={{ background: '#f8fafc', padding: '14px 16px', borderRadius: '10px', border: '1px solid #cbd5e1', marginBottom: '16px', fontSize: '0.85rem', color: '#475569' }}>
-                  💡 <strong>Tip:</strong> Changing the <strong>Phone Number</strong> or <strong>WhatsApp Number</strong> here and clicking <strong>"SAVE SETTINGS"</strong> will instantly update the top website header bar, footer, and contact section live across the entire site!
-                </div>
                 <div className="grid grid-cols-2 gap-4 mb-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="form-group">
-                    <label style={{ fontWeight: 'bold', color: '#dc2626' }}>📱 Official Academy Phone Number (Navbar & Footer)</label>
-                    <input type="text" placeholder="+91 98765 43210" value={settings?.phone || ''} onChange={(e) => setSettings({ ...(settings || {}), phone: e.target.value })} className="form-control" style={{ fontWeight: '600', borderColor: '#e52328' }} />
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Header Top-Bar Phone Number *</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. +91 98765 43210" 
+                      value={settings?.phone || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), phone: e.target.value })} 
+                      className="form-control" 
+                    />
                   </div>
                   <div className="form-group">
-                    <label style={{ fontWeight: 'bold', color: '#16a34a' }}>💬 WhatsApp Number / Link</label>
-                    <input type="text" placeholder="919876543210 or https://wa.me/..." value={settings?.whatsapp || ''} onChange={(e) => setSettings({ ...(settings || {}), whatsapp: e.target.value })} className="form-control" style={{ fontWeight: '600' }} />
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Header Top-Bar Location / City *</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. Bengaluru" 
+                      value={settings?.topBarLocation || settings?.location || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), topBarLocation: e.target.value, location: e.target.value })} 
+                      className="form-control" 
+                    />
                   </div>
                   <div className="form-group">
-                    <label>Email Address</label>
-                    <input type="email" value={settings?.email || ''} onChange={(e) => setSettings({ ...(settings || {}), email: e.target.value })} className="form-control" />
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Email Address</label>
+                    <input 
+                      type="email" 
+                      placeholder="e.g. info@dtaekwondo.com" 
+                      value={settings?.email || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), email: e.target.value })} 
+                      className="form-control" 
+                    />
                   </div>
                   <div className="form-group">
-                    <label>Instagram URL</label>
-                    <input type="text" placeholder="https://instagram.com/your_profile" value={settings?.instagram || ''} onChange={(e) => setSettings({ ...(settings || {}), instagram: e.target.value })} className="form-control" />
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Instagram URL</label>
+                    <input 
+                      type="text" 
+                      placeholder="https://instagram.com/your_profile" 
+                      value={settings?.instagram || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), instagram: e.target.value })} 
+                      className="form-control" 
+                    />
                   </div>
-                </div>
-
-                <div className="form-group">
-                  <label>Academy Address</label>
-                  <input type="text" value={settings?.address || ''} onChange={(e) => setSettings({ ...(settings || {}), address: e.target.value })} className="form-control" />
+                  <div className="form-group">
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>WhatsApp Mobile / Link</label>
+                    <input 
+                      type="text" 
+                      placeholder="919876543210 or https://wa.me/..." 
+                      value={settings?.whatsapp || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), whatsapp: e.target.value })} 
+                      className="form-control" 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Full Academy Address</label>
+                    <input 
+                      type="text" 
+                      placeholder="Full training hall address" 
+                      value={settings?.address || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), address: e.target.value })} 
+                      className="form-control" 
+                    />
+                  </div>
                 </div>
 
                 <h4 className="font-bold border-b pb-2 mb-4 mt-6">Homepage Statistics Counters</h4>
@@ -2470,6 +2506,18 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
 
             <form onSubmit={async (e) => {
               e.preventDefault();
+              const cleanPhone = (addParticipantForm.phone || '').replace(/\D/g, '');
+              if (cleanPhone.length !== 10) {
+                alert("Mobile Number MUST be exactly 10 digits (e.g. 9812345678).");
+                return;
+              }
+
+              const cleanUtr = (addParticipantForm.utrNumber || '').replace(/\D/g, '');
+              if (cleanUtr.length !== 12) {
+                alert("UTR Transaction Number is MANDATORY and must be exactly 12 numeric digits (e.g. 328190283401).");
+                return;
+              }
+
               setSubmittingAddParticipant(true);
               try {
                 const res = await fetch('/api/enquiries', {
@@ -2479,11 +2527,11 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                     studentName: addParticipantForm.studentName,
                     age: addParticipantForm.age,
                     parentName: addParticipantForm.parentName,
-                    phone: addParticipantForm.phone,
+                    phone: cleanPhone,
                     email: addParticipantForm.email,
                     address: addParticipantForm.address,
                     program: addEventParticipantModal.eventName,
-                    utrNumber: addParticipantForm.utrNumber,
+                    utrNumber: cleanUtr,
                     status: addParticipantForm.status || 'Approved',
                     message: '[Admin Manual Registration]'
                   })
@@ -2526,7 +2574,7 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
 
               <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '14px' }}>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>Mobile Number *</label>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>Mobile Number (10 Digits) *</label>
                   <input
                     type="tel"
                     inputMode="numeric"
@@ -2565,15 +2613,16 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
 
               <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '14px' }}>
                 <div className="form-group">
-                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>UTR / Payment Reference</label>
+                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>12-Digit UTR Number *</label>
                   <input
                     type="text"
                     inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={16}
+                    pattern="[0-9]{12}"
+                    maxLength={12}
+                    required
                     value={addParticipantForm.utrNumber}
-                    onChange={(e) => setAddParticipantForm({ ...addParticipantForm, utrNumber: e.target.value.replace(/\D/g, '').slice(0, 16) })}
-                    placeholder="e.g. 1234567890"
+                    onChange={(e) => setAddParticipantForm({ ...addParticipantForm, utrNumber: e.target.value.replace(/\D/g, '').slice(0, 12) })}
+                    placeholder="e.g. 328190283401"
                     className="form-control"
                   />
                 </div>

@@ -24,6 +24,18 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
 
   const handleUtrSubmit = async (e) => {
     e.preventDefault();
+    const cleanPhone = (utrForm.phone || '').replace(/\D/g, '');
+    if (cleanPhone.length !== 10) {
+      setUtrError("Mobile Number MUST be exactly 10 digits (e.g. 9812345678).");
+      return;
+    }
+
+    const cleanUtr = (utrForm.utrNumber || '').replace(/\D/g, '');
+    if (cleanUtr.length !== 12) {
+      setUtrError("UTR Transaction Number is MANDATORY and must be exactly 12 numeric digits (e.g. 328190283401).");
+      return;
+    }
+
     setSubmittingUtr(true);
     setUtrError('');
 
@@ -33,8 +45,10 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...utrForm,
+          phone: cleanPhone,
+          utrNumber: cleanUtr,
           age: 'N/A',
-          message: `[PAYMENT UTR SUBMISSION] UTR: ${utrForm.utrNumber} | ${utrForm.message}`
+          message: `[PAYMENT UTR SUBMISSION] UTR: ${cleanUtr} | ${utrForm.message}`
         })
       });
 
@@ -235,7 +249,7 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Phone Number *</label>
+                        <label>Phone Number (10 Digits) *</label>
                         <input 
                           type="tel" 
                           inputMode="numeric"
@@ -245,7 +259,7 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
                           onChange={(e) => setUtrForm({ ...utrForm, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
                           required 
                           className="form-control"
-                          placeholder="10-digit mobile" 
+                          placeholder="10-digit mobile number" 
                         />
                       </div>
                     </div>
@@ -267,13 +281,13 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
                         <input 
                           type="text" 
                           inputMode="numeric"
-                          pattern="[0-9]*"
-                          maxLength={16}
+                          pattern="[0-9]{12}"
+                          maxLength={12}
                           value={utrForm.utrNumber}
-                          onChange={(e) => setUtrForm({ ...utrForm, utrNumber: e.target.value.replace(/\D/g, '').slice(0, 16) })}
+                          onChange={(e) => setUtrForm({ ...utrForm, utrNumber: e.target.value.replace(/\D/g, '').slice(0, 12) })}
                           required 
                           className="form-control"
-                          placeholder="e.g. 423456789012" 
+                          placeholder="e.g. 328190283401 (12 digits)" 
                           style={{ fontFamily: 'monospace', fontWeight: '700' }}
                         />
                       </div>
