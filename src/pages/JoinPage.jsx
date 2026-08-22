@@ -133,7 +133,14 @@ export default function JoinPage({ programs = [], setActivePage }) {
                         maxLength={10}
                         name="phone" 
                         value={formData.phone} 
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} 
+                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} 
+                        onInput={(e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10); }}
+                        onPaste={(e) => {
+                          e.preventDefault();
+                          const pasted = (e.clipboardData || window.clipboardData).getData('text');
+                          const clean = pasted.replace(/\D/g, '').slice(0, 10);
+                          setFormData(prev => ({ ...prev, phone: clean }));
+                        }}
                         required 
                         className="form-control" 
                         placeholder="10-digit mobile" 

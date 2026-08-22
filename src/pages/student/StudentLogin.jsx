@@ -368,7 +368,14 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                     maxLength={10}
                     required 
                     value={regData.phone} 
-                    onChange={(e) => setRegData({ ...regData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} 
+                    onChange={(e) => setRegData(prev => ({ ...prev, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))} 
+                    onInput={(e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10); }}
+                    onPaste={(e) => {
+                      e.preventDefault();
+                      const pasted = (e.clipboardData || window.clipboardData).getData('text');
+                      const clean = pasted.replace(/\D/g, '').slice(0, 10);
+                      setRegData(prev => ({ ...prev, phone: clean }));
+                    }}
                     placeholder="10-digit mobile" 
                     className="form-control" 
                     style={{ height: '42px', borderRadius: '8px' }}
