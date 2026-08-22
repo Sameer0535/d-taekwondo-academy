@@ -161,12 +161,15 @@ export default function ContactPage({ settings }) {
                         <label>Phone Number *</label>
                         <input 
                           type="tel" 
+                          inputMode="numeric"
+                          pattern="[0-9]{10}"
+                          maxLength={10}
                           name="phone" 
                           value={formData.phone} 
-                          onChange={handleChange} 
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} 
                           required 
                           className="form-control" 
-                          placeholder="+91 98765 43210" 
+                          placeholder="10-digit mobile" 
                         />
                       </div>
                       <div className="form-group">

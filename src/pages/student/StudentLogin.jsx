@@ -97,6 +97,10 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
+    if (regData.phone.length !== 10) {
+      setError("Please enter a valid 10-digit mobile number.");
+      return;
+    }
     if (regData.password !== regData.confirmPassword) {
       setError("Passwords do not match. Please enter matching passwords.");
       return;
@@ -359,9 +363,12 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                   <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>Mobile Number *</label>
                   <input 
                     type="tel" 
+                    inputMode="numeric"
+                    pattern="[0-9]{10}"
+                    maxLength={10}
                     required 
                     value={regData.phone} 
-                    onChange={(e) => setRegData({ ...regData, phone: e.target.value })} 
+                    onChange={(e) => setRegData({ ...regData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })} 
                     placeholder="10-digit mobile" 
                     className="form-control" 
                     style={{ height: '42px', borderRadius: '8px' }}
@@ -596,9 +603,10 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
                       type="text" 
                       inputMode="numeric"
                       pattern="[0-9]*"
+                      maxLength={16}
                       required 
                       value={utrNumber} 
-                      onChange={(e) => setUtrNumber(e.target.value)} 
+                      onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 16))} 
                       placeholder="e.g. 328190283401" 
                       className="form-control" 
                       style={{ height: '46px', borderRadius: '10px', fontSize: '16px', fontFamily: 'monospace', letterSpacing: '1px' }}

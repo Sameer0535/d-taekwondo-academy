@@ -316,12 +316,15 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
                 <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '6px', fontSize: '0.9rem' }}>Enter 12-Digit UPI Transaction UTR Number *</label>
                 <input 
                   type="text" 
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={16}
                   required 
                   value={utrNumber} 
-                  onChange={(e) => setUtrNumber(e.target.value)} 
+                  onChange={(e) => setUtrNumber(e.target.value.replace(/\D/g, '').slice(0, 16))} 
                   placeholder="e.g. 328190283401" 
                   className="form-control" 
-                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1' }}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontFamily: 'monospace', letterSpacing: '1px' }}
                 />
                 <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', marginTop: '4px' }}>Found on your UPI app payment confirmation screen.</span>
               </div>

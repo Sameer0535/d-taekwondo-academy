@@ -2524,9 +2524,12 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>Mobile Number *</label>
                   <input
                     type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]{10}"
+                    maxLength={10}
                     required
                     value={addParticipantForm.phone}
-                    onChange={(e) => setAddParticipantForm({ ...addParticipantForm, phone: e.target.value })}
+                    onChange={(e) => setAddParticipantForm({ ...addParticipantForm, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
                     placeholder="10-digit mobile"
                     className="form-control"
                   />
@@ -2560,8 +2563,11 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '4px', fontSize: '0.85rem' }}>UTR / Payment Reference</label>
                   <input
                     type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={16}
                     value={addParticipantForm.utrNumber}
-                    onChange={(e) => setAddParticipantForm({ ...addParticipantForm, utrNumber: e.target.value })}
+                    onChange={(e) => setAddParticipantForm({ ...addParticipantForm, utrNumber: e.target.value.replace(/\D/g, '').slice(0, 16) })}
                     placeholder="e.g. 1234567890"
                     className="form-control"
                   />

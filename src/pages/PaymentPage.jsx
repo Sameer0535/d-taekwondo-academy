@@ -238,11 +238,14 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
                         <label>Phone Number *</label>
                         <input 
                           type="tel" 
+                          inputMode="numeric"
+                          pattern="[0-9]{10}"
+                          maxLength={10}
                           value={utrForm.phone}
-                          onChange={(e) => setUtrForm({ ...utrForm, phone: e.target.value })}
+                          onChange={(e) => setUtrForm({ ...utrForm, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
                           required 
                           className="form-control"
-                          placeholder="+91 98765 43210" 
+                          placeholder="10-digit mobile" 
                         />
                       </div>
                     </div>
@@ -263,8 +266,11 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
                         <label>12-Digit UTR Number / Transaction ID *</label>
                         <input 
                           type="text" 
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          maxLength={16}
                           value={utrForm.utrNumber}
-                          onChange={(e) => setUtrForm({ ...utrForm, utrNumber: e.target.value })}
+                          onChange={(e) => setUtrForm({ ...utrForm, utrNumber: e.target.value.replace(/\D/g, '').slice(0, 16) })}
                           required 
                           className="form-control"
                           placeholder="e.g. 423456789012" 
