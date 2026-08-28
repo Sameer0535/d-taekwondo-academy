@@ -99,7 +99,7 @@ export default function Footer({ setActivePage, onOpenJoinModal, settings }) {
       {/* Footer Bottom */}
       <div className="footer-bottom">
         <div className="container footer-bottom-container">
-          <p>© {new Date().getFullYear()} {settings?.academyName || "D Taekwondo Academy"}. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} {settings?.academyName || "D Taekwondo Academy"}. Designed & Developed by <strong style={{ color: '#ffffff' }}>Sameer</strong>. All Rights Reserved.</p>
           <div className="footer-bottom-links" style={{ display: 'flex', gap: '16px' }}>
             <button onClick={() => handleNavClick('payment')}>Pay Online / UTR</button>
             <button onClick={() => handleNavClick('student')}>Student Portal</button>
