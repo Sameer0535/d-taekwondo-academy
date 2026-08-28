@@ -163,7 +163,7 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
                 alt="Student ID QR" 
                 style={{ width: '70px', height: '70px', borderRadius: '6px', margin: '0 auto 6px' }}
               />
-              <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>D TAEKWONDO</div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{settings?.academyName || "D TAEKWONDO"}</div>
             </div>
 
           </div>

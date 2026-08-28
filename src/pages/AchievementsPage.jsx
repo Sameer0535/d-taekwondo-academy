@@ -21,7 +21,7 @@ export default function AchievementsPage({ achievements = [], onOpenLightbox }) 
         <div className="container text-center">
           <span className="badge badge-gold mb-2">VICTORY & MEDALS</span>
           <h1>OUR ACHIEVEMENTS & CHAMPIONS</h1>
-          <p>Honoring the dedication, endurance, and podium finishes of D Taekwondo Academy athletes.</p>
+          <p>Honoring the dedication, endurance, and podium finishes of {settings?.academyName || "D Taekwondo Academy"} athletes.</p>
         </div>
       </section>
 

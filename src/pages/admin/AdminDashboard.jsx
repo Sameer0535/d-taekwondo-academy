@@ -352,9 +352,9 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
       {/* Sidebar */}
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <img src={settings?.logoUrl || "/logo.png"} alt="D Taekwondo Academy Logo" className="admin-brand-logo" />
+          <img src={settings?.logoUrl || "/logo.png"} alt={settings?.academyName || "Academy Logo"} className="admin-brand-logo" />
           <div>
-            <h3>D TAEKWONDO</h3>
+            <h3>{settings?.academyName || "D TAEKWONDO"}</h3>
             <span className="admin-badge">ADMIN CMS</span>
           </div>
         </div>

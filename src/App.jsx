@@ -102,7 +102,13 @@ export default function App() {
         fetch('/api/payment')
       ]);
 
-      if (sRes.ok) setSettings(await sRes.json());
+      if (sRes.ok) {
+        const sData = await sRes.json();
+        setSettings(sData);
+        if (sData?.academyName) {
+          document.title = `${sData.academyName} | Official Portal`;
+        }
+      }
       if (stRes.ok) setStats(await stRes.json());
       if (aRes.ok) setAbout(await aRes.json());
       if (pRes.ok) setPrograms(await pRes.json());
@@ -197,7 +203,7 @@ export default function App() {
             )}
 
             {activePage === 'achievements' && (
-              <AchievementsPage achievements={achievements} onOpenLightbox={handleOpenLightbox} />
+              <AchievementsPage achievements={achievements} settings={settings} onOpenLightbox={handleOpenLightbox} />
             )}
 
             {activePage === 'gallery' && (
