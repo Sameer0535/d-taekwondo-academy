@@ -243,7 +243,7 @@ export default function JoinModal({ isOpen, onClose, programs = [], initialProgr
           <div>
             <div className="modal-header text-center mb-6">
               <span className="badge badge-red mb-2">
-                {initialProgram ? `REGISTER FOR ${initialProgram.toUpperCase()}` : 'JOIN D TAEKWONDO ACADEMY'}
+                {initialProgram ? `REGISTER FOR ${initialProgram.toUpperCase()}` : `JOIN ${(settings?.academyName || 'TAEKWONDO ACADEMY').toUpperCase()}`}
               </span>
               <h2 className="text-2xl font-bold">
                 {isEvent ? initialProgram : (initialProgram ? `Event / Program Registration` : 'Start Your Martial Arts Journey')}

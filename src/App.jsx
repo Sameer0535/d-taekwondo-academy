@@ -234,12 +234,14 @@ export default function App() {
                   student={studentData} 
                   onLogout={handleStudentLogout} 
                   paymentSettings={payment} 
+                  settings={settings}
                 />
               ) : (
                 <StudentLogin 
                   onLoginSuccess={handleStudentLoginSuccess} 
                   programs={programs} 
                   fees={fees}
+                  settings={settings}
                   initialMode={studentPortalMode}
                 />
               )
@@ -256,6 +258,7 @@ export default function App() {
             isOpen={joinModalConfig.isOpen} 
             onClose={() => setJoinModalConfig({ ...joinModalConfig, isOpen: false })} 
             programs={programs} 
+            settings={settings}
             initialProgram={joinModalConfig.initialProgram}
             isEvent={joinModalConfig.isEvent}
             eventFee={joinModalConfig.eventFee}

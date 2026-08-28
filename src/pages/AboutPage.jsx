@@ -8,7 +8,7 @@ export default function AboutPage({ about, settings, onOpenJoinModal }) {
       <section className="page-header">
         <div className="container text-center">
           <span className="badge badge-gold mb-2">OUR HERITAGE & MISSION</span>
-          <h1>ABOUT D TAEKWONDO ACADEMY</h1>
+          <h1>ABOUT {settings?.academyName || "D TAEKWONDO ACADEMY"}</h1>
           <p>Building character, confidence, and martial arts champions since 2016.</p>
         </div>
       </section>

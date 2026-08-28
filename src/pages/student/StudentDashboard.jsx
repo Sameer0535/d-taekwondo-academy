@@ -99,7 +99,7 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
         {/* Top Header & Logout */}
         <div className="flex justify-between items-center mb-8" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
           <div>
-            <span className="badge badge-gold mb-1">D TAEKWONDO ACADEMY</span>
+            <span className="badge badge-gold mb-1">{settings?.academyName || "D TAEKWONDO ACADEMY"}</span>
             <h1 style={{ fontSize: '2rem', margin: 0 }}>STUDENT & PARENT PORTAL</h1>
           </div>
           <button onClick={onLogout} className="btn btn-outline-dark" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

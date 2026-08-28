@@ -109,7 +109,7 @@ export default function HomePage({
 
             <div className="about-content-wrap">
               <span className="badge badge-red mb-2">ABOUT OUR ACADEMY</span>
-              <h2>ABOUT D TAEKWONDO ACADEMY</h2>
+              <h2>ABOUT {settings?.academyName || "D TAEKWONDO ACADEMY"}</h2>
               <p className="about-lead">
                 {about?.story || "Founded with a commitment to martial excellence, D Taekwondo Academy provides elite combat, fitness, and character building."}
               </p>
@@ -178,7 +178,7 @@ export default function HomePage({
           <div className="section-title">
             <span className="badge badge-gold">HALL OF FAME</span>
             <h2>OUR ACHIEVEMENTS</h2>
-            <p>Celebrating the glory, gold medals, and victory of D Taekwondo Academy champions across state & national arenas.</p>
+            <p>Celebrating the glory, gold medals, and victory of {settings?.academyName || "D Taekwondo Academy"} champions across state & national arenas.</p>
           </div>
 
           <div className="achievements-grid">

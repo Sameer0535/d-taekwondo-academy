@@ -49,7 +49,7 @@ export default function AdminLogin({ onLoginSuccess, settings, onBackToHome }) {
             alt="D Taekwondo Academy Logo" 
             className="login-logo" 
           />
-          <h2>D TAEKWONDO ACADEMY</h2>
+          <h2>{settings?.academyName || "D TAEKWONDO ACADEMY"}</h2>
           <p className="badge badge-red mt-2" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             <ShieldCheck size={14} /> ADMIN CONTROL PANEL
           </p>

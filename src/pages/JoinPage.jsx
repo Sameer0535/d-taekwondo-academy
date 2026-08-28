@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Send, ShieldCheck } from 'lucide-react';
 
-export default function JoinPage({ programs = [], setActivePage }) {
+export default function JoinPage({ programs = [], setActivePage, settings }) {
   const [formData, setFormData] = useState({
     studentName: '',
     age: '',
@@ -46,7 +46,7 @@ export default function JoinPage({ programs = [], setActivePage }) {
       <section className="page-header">
         <div className="container text-center">
           <span className="badge badge-gold mb-2">ONLINE ADMISSION ENQUIRY</span>
-          <h1>JOIN D TAEKWONDO ACADEMY</h1>
+          <h1>JOIN {settings?.academyName || "D TAEKWONDO ACADEMY"}</h1>
           <p>Fill out the registration details below to reserve your slot or book a free trial class.</p>
         </div>
       </section>

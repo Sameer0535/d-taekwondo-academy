@@ -638,31 +638,82 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
               </div>
 
               <form onSubmit={handleSaveSettings} className="card p-6" style={{ padding: '24px' }}>
-                <h4 className="font-bold border-b pb-2 mb-4">Branding & Hero Details</h4>
+                <h4 className="font-bold border-b pb-2 mb-4" style={{ fontSize: '1.1rem', color: '#e52328', fontWeight: 'bold', borderBottom: '2px solid #e2e8f0', paddingBottom: '8px' }}>
+                  🏷️ Academy Name & Brand Logo Configuration
+                </h4>
 
-                <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div className="grid grid-cols-2 gap-4 mb-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
                   <div className="form-group">
-                    <label>Academy Name</label>
-                    <input type="text" value={settings?.academyName || ''} onChange={(e) => setSettings({ ...(settings || {}), academyName: e.target.value })} className="form-control" />
+                    <label style={{ fontWeight: 'bold', fontSize: '0.88rem' }}>Academy Name *</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. D TAEKWONDO ACADEMY or Dragon Martial Arts" 
+                      value={settings?.academyName || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), academyName: e.target.value })} 
+                      className="form-control" 
+                      style={{ fontWeight: 'bold' }}
+                    />
+                    <span style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                      Appears in top navbar, footer, student portal, ID cards & certificates.
+                    </span>
                   </div>
+
                   <div className="form-group">
-                    <label>Hero Headline</label>
-                    <input type="text" value={settings?.heroTitle || ''} onChange={(e) => setSettings({ ...(settings || {}), heroTitle: e.target.value })} className="form-control" />
+                    <label style={{ fontWeight: 'bold', fontSize: '0.88rem' }}>Academy Logo (URL or Upload File)</label>
+                    <input 
+                      type="text" 
+                      placeholder="/logo.png or image URL" 
+                      value={settings?.logoUrl || ''} 
+                      onChange={(e) => setSettings({ ...(settings || {}), logoUrl: e.target.value })} 
+                      className="form-control mb-2" 
+                    />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px' }}>
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        id="logoUploadInput" 
+                        style={{ display: 'none' }}
+                        onChange={async (e) => { 
+                          if (e.target.files[0]) { 
+                            const url = await handleFileUpload(e.target.files[0]); 
+                            setSettings({ ...(settings || {}), logoUrl: url }); 
+                          } 
+                        }} 
+                      />
+                      <label htmlFor="logoUploadInput" className="btn btn-outline-dark btn-sm" style={{ cursor: 'pointer', padding: '6px 14px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                        📁 Upload Logo File
+                      </label>
+                      {settings?.logoUrl && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f8fafc', padding: '4px 10px', borderRadius: '8px', border: '1px solid #cbd5e1' }}>
+                          <img src={settings.logoUrl} alt="Logo Preview" style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
+                          <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 'bold' }}>Active Logo</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label>Hero Description</label>
+                <h4 className="font-bold border-b pb-2 mb-4 mt-4" style={{ fontSize: '1.05rem', color: '#0f172a', fontWeight: 'bold', borderBottom: '2px solid #e2e8f0', paddingBottom: '8px' }}>
+                  🖼️ Hero Banner Details
+                </h4>
+
+                <div className="form-group mb-3">
+                  <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Hero Headline</label>
+                  <input type="text" value={settings?.heroTitle || ''} onChange={(e) => setSettings({ ...(settings || {}), heroTitle: e.target.value })} className="form-control" />
+                </div>
+
+                <div className="form-group mb-3">
+                  <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Hero Description</label>
                   <textarea value={settings?.heroDescription || ''} onChange={(e) => setSettings({ ...(settings || {}), heroDescription: e.target.value })} className="form-control" rows="2"></textarea>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="form-group">
-                    <label>Hero Background Image URL</label>
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Hero Background Image URL</label>
                     <input type="text" value={settings?.heroBgImage || ''} onChange={(e) => setSettings({ ...(settings || {}), heroBgImage: e.target.value })} className="form-control" />
                   </div>
                   <div className="form-group">
-                    <label>Upload New Hero BG</label>
+                    <label style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>Upload New Hero BG</label>
                     <input type="file" onChange={async (e) => { if (e.target.files[0]) { const url = await handleFileUpload(e.target.files[0]); setSettings({ ...(settings || {}), heroBgImage: url }); } }} className="form-control" />
                   </div>
                 </div>

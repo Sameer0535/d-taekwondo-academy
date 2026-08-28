@@ -46,7 +46,7 @@ export default function ContactPage({ settings }) {
       <section className="page-header">
         <div className="container text-center">
           <span className="badge badge-gold mb-2">GET IN TOUCH</span>
-          <h1>CONTACT D TAEKWONDO ACADEMY</h1>
+          <h1>CONTACT {settings?.academyName || "D TAEKWONDO ACADEMY"}</h1>
           <p>We are here to answer your questions and welcome you to our martial arts family.</p>
         </div>
       </section>

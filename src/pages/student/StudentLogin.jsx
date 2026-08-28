@@ -5,7 +5,7 @@ import {
   QrCode, IndianRupee, Send, Calendar, Award
 } from 'lucide-react';
 
-export default function StudentLogin({ onLoginSuccess, programs = [], fees = [], initialMode = 'login' }) {
+export default function StudentLogin({ onLoginSuccess, programs = [], fees = [], initialMode = 'login', settings }) {
   const [isRegisterMode, setIsRegisterMode] = useState(initialMode === 'register');
 
   React.useEffect(() => {
@@ -190,7 +190,7 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
           <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #e52328 0%, #b91c1c 100%)', color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', boxShadow: '0 8px 20px rgba(229, 35, 40, 0.3)' }}>
             <GraduationCap size={30} />
           </div>
-          <span className="badge badge-gold" style={{ letterSpacing: '1px', fontSize: '0.75rem', padding: '4px 12px' }}>D TAEKWONDO ACADEMY</span>
+          <span className="badge badge-gold" style={{ letterSpacing: '1px', fontSize: '0.75rem', padding: '4px 12px' }}>{settings?.academyName || "D TAEKWONDO ACADEMY"}</span>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold', margin: '8px 0 4px', color: '#0f172a' }}>
             {isRegisterMode ? "New Kids Admission & Registration" : "Student & Parent Portal"}
           </h2>
