@@ -96,7 +96,7 @@ export default function StudentDashboard({ student, onLogout, paymentSettings, s
   const rawMonth = dashData?.currentMonth || (latestPayment ? latestPayment.month : 'Registration Fee');
   const monthName = typeof rawMonth === 'string' ? rawMonth : 'Current Month';
 
-  const qrVerificationUrl = typeof window !== 'undefined' ? `${window.location.origin}/?verifyStudent=${s.id}` : `https://d-taekwondo-academy-1oyk.onrender.com/?verifyStudent=${s.id}`;
+  const qrVerificationUrl = `https://d-taekwondo-academy-1oyk.onrender.com/?verifyStudent=${s?.id || ''}`;
 
   // Belt badge color mapping
   const beltClass = (s?.belt || '').toLowerCase().includes('black') ? 'badge-dark'
