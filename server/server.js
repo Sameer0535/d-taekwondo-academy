@@ -571,6 +571,10 @@ app.get('/api/student/dashboard/:id', (req, res) => {
   const history = (currentData.studentPayments || []).filter(p => p && p.studentId === id);
   const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
   const thisMonthPayment = history.find(p => p && p.month && p.month.toLowerCase() === currentMonth.toLowerCase());
+  const latestPayment = history.length > 0 ? history[history.length - 1] : null;
+
+  const activePayment = thisMonthPayment || latestPayment;
+  const feeStatus = activePayment ? activePayment.status : 'Due';
 
   const selectedFeeDash = (currentData.fees || []).find(f => 
     f && f.programName && student.program && (
@@ -586,8 +590,8 @@ app.get('/api/student/dashboard/:id', (req, res) => {
     student: updatedStudentDash,
     currentMonth,
     currentMonthName: currentMonth,
-    feeStatus: thisMonthPayment ? thisMonthPayment.status : 'Due',
-    currentPayment: thisMonthPayment || null,
+    feeStatus,
+    currentPayment: activePayment || null,
     paymentHistory: history
   });
 });

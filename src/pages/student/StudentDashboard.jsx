@@ -90,9 +90,11 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
   }
 
   const s = dashData?.student || student || {};
-  const status = dashData?.feeStatus || 'Due';
-  const rawMonth = dashData?.currentMonth || 'August 2026';
-  const monthName = typeof rawMonth === 'string' ? rawMonth : 'August 2026';
+  const history = Array.isArray(dashData?.paymentHistory) ? dashData.paymentHistory : [];
+  const latestPayment = history.length > 0 ? history[history.length - 1] : null;
+  const status = dashData?.feeStatus || (latestPayment ? latestPayment.status : 'Pending');
+  const rawMonth = dashData?.currentMonth || (latestPayment ? latestPayment.month : 'Registration Fee');
+  const monthName = typeof rawMonth === 'string' ? rawMonth : 'Current Month';
 
   // Belt badge color mapping
   const beltClass = (s?.belt || '').toLowerCase().includes('black') ? 'badge-dark'
@@ -268,20 +270,29 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
                 </tr>
               </thead>
               <tbody>
-                {(dashData?.paymentHistory || []).length > 0 ? (
-                  dashData.paymentHistory.map((p) => (
-                    <tr key={p.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                      <td style={{ padding: '14px 16px', fontWeight: 'bold' }}>{p.month}</td>
-                      <td style={{ padding: '14px 16px', color: 'var(--primary-red)', fontWeight: 'bold' }}>{p.amount}</td>
-                      <td style={{ padding: '14px 16px', fontFamily: 'monospace', fontWeight: '600' }}>{p.utrNumber}</td>
-                      <td style={{ padding: '14px 16px', color: '#64748b' }}>{p.paymentDate}</td>
-                      <td style={{ padding: '14px 16px' }}>
-                        <span className={`badge ${p.status === 'Paid' ? 'badge-green' : p.status === 'Pending' ? 'badge-gold' : 'badge-red'}`} style={{ background: p.status === 'Paid' ? '#dcfce7' : '#fef3c7', color: p.status === 'Paid' ? '#15803d' : '#b45309', padding: '4px 10px', borderRadius: '12px' }}>
-                          {p.status === 'Paid' ? '✓ Verified / Paid' : '⏳ Pending Approval'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))
+                {history.length > 0 ? (
+                  history.map((p, idx) => {
+                    if (!p) return null;
+                    const itemKey = p.id || `pay_${idx}`;
+                    const itemMonth = p.month || 'Registration Fee';
+                    const itemAmount = p.amount || '₹500';
+                    const itemUtr = p.utrNumber || 'N/A';
+                    const itemDate = p.paymentDate || 'Today';
+                    const itemStatus = p.status || 'Pending';
+                    return (
+                      <tr key={itemKey} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={{ padding: '14px 16px', fontWeight: 'bold' }}>{itemMonth}</td>
+                        <td style={{ padding: '14px 16px', color: 'var(--primary-red)', fontWeight: 'bold' }}>{itemAmount}</td>
+                        <td style={{ padding: '14px 16px', fontFamily: 'monospace', fontWeight: '600' }}>{itemUtr}</td>
+                        <td style={{ padding: '14px 16px', color: '#64748b' }}>{itemDate}</td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span className={`badge ${itemStatus === 'Paid' ? 'badge-green' : itemStatus === 'Pending' ? 'badge-gold' : 'badge-red'}`} style={{ background: itemStatus === 'Paid' ? '#dcfce7' : '#fef3c7', color: itemStatus === 'Paid' ? '#15803d' : '#b45309', padding: '4px 10px', borderRadius: '12px' }}>
+                            {itemStatus === 'Paid' ? '✓ Verified / Paid' : '⏳ Pending Approval'}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })
                 ) : (
                   <tr>
                     <td colSpan="5" style={{ padding: '24px', textAlign: 'center', color: '#94a3b8' }}>
