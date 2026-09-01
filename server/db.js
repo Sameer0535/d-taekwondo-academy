@@ -637,8 +637,7 @@ function initInMemoryDb() {
     path.join('/tmp', 'd_tkd_academy_db_persistent.json')
   ].filter(Boolean);
 
-  let bestParsed = null;
-  let maxScore = -1;
+  const allParsedData = [];
 
   for (const filePath of candidates) {
     if (fs.existsSync(filePath)) {
@@ -646,13 +645,7 @@ function initInMemoryDb() {
         const raw = fs.readFileSync(filePath, 'utf8');
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') {
-          const sCount = (parsed.students || []).length;
-          const pCount = (parsed.studentPayments || []).length;
-          const score = (sCount * 100) + (pCount * 50);
-          if (score > maxScore || !bestParsed) {
-            maxScore = score;
-            bestParsed = parsed;
-          }
+          allParsedData.push(parsed);
         }
       } catch (e) {
         console.error("Error reading candidate DB:", filePath, e);
@@ -660,18 +653,108 @@ function initInMemoryDb() {
     }
   }
 
-  if (!bestParsed) {
-    bestParsed = defaultData;
+  allParsedData.push(defaultData);
+
+  // Cumulative Merging across all files & persistent storage
+  const mergedSettings = {};
+  const mergedStats = {};
+  const mergedAbout = {};
+  const mergedPayment = {};
+
+  const studentMap = new Map();
+  const paymentMap = new Map();
+  const enquiryMap = new Map();
+  const programMap = new Map();
+  const coachMap = new Map();
+  const achievementMap = new Map();
+  const galleryMap = new Map();
+  const videoMap = new Map();
+  const eventMap = new Map();
+  const feeMap = new Map();
+
+  // Merge in order (defaultData first, candidate files after so recent entries override defaults)
+  for (const data of allParsedData) {
+    if (data.settings) Object.assign(mergedSettings, data.settings);
+    if (data.stats) Object.assign(mergedStats, data.stats);
+    if (data.about) Object.assign(mergedAbout, data.about);
+    if (data.payment) Object.assign(mergedPayment, data.payment);
+
+    (data.students || []).forEach(s => {
+      if (!s) return;
+      const key = s.id || s.phone || JSON.stringify(s);
+      studentMap.set(key, { ...(studentMap.get(key) || {}), ...s });
+    });
+
+    (data.studentPayments || []).forEach(p => {
+      if (!p) return;
+      const key = p.id || p.utrNumber || JSON.stringify(p);
+      paymentMap.set(key, { ...(paymentMap.get(key) || {}), ...p });
+    });
+
+    (data.enquiries || []).forEach(e => {
+      if (!e) return;
+      const key = e.id || `${e.phone}_${e.date}` || JSON.stringify(e);
+      enquiryMap.set(key, { ...(enquiryMap.get(key) || {}), ...e });
+    });
+
+    (data.programs || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || item.name || JSON.stringify(item);
+      programMap.set(key, { ...(programMap.get(key) || {}), ...item });
+    });
+
+    (data.coaches || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || item.name || JSON.stringify(item);
+      coachMap.set(key, { ...(coachMap.get(key) || {}), ...item });
+    });
+
+    (data.achievements || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || item.athleteName || JSON.stringify(item);
+      achievementMap.set(key, { ...(achievementMap.get(key) || {}), ...item });
+    });
+
+    (data.gallery || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || item.imageUrl || JSON.stringify(item);
+      galleryMap.set(key, { ...(galleryMap.get(key) || {}), ...item });
+    });
+
+    (data.videos || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || item.youtubeUrl || JSON.stringify(item);
+      videoMap.set(key, { ...(videoMap.get(key) || {}), ...item });
+    });
+
+    (data.events || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || item.name || JSON.stringify(item);
+      eventMap.set(key, { ...(eventMap.get(key) || {}), ...item });
+    });
+
+    (data.fees || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || item.programName || JSON.stringify(item);
+      feeMap.set(key, { ...(feeMap.get(key) || {}), ...item });
+    });
   }
 
   inMemoryData = {
-    ...defaultData,
-    ...bestParsed,
-    settings: { ...defaultData.settings, ...(bestParsed.settings || {}) },
-    stats: { ...defaultData.stats, ...(bestParsed.stats || {}) },
-    about: { ...defaultData.about, ...(bestParsed.about || {}) },
-    students: bestParsed.students && bestParsed.students.length > 0 ? bestParsed.students : (defaultData.students || []),
-    studentPayments: bestParsed.studentPayments && bestParsed.studentPayments.length > 0 ? bestParsed.studentPayments : (defaultData.studentPayments || [])
+    settings: mergedSettings,
+    stats: mergedStats,
+    about: mergedAbout,
+    payment: mergedPayment,
+    students: Array.from(studentMap.values()),
+    studentPayments: Array.from(paymentMap.values()),
+    enquiries: Array.from(enquiryMap.values()),
+    programs: Array.from(programMap.values()),
+    coaches: Array.from(coachMap.values()),
+    achievements: Array.from(achievementMap.values()),
+    gallery: Array.from(galleryMap.values()),
+    videos: Array.from(videoMap.values()),
+    events: Array.from(eventMap.values()),
+    fees: Array.from(feeMap.values())
   };
 
   saveInMemoryDb(inMemoryData);
