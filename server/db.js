@@ -626,19 +626,18 @@ const defaultData = {
   }
 };
 
-const PERSISTENT_BACKUP_FILE = process.env.PERSISTENT_DATA_PATH || path.join('/tmp', 'd_tkd_academy_db_persistent.json');
+let inMemoryData = null;
 
-function getDBFileCandidates() {
-  const candidates = [DB_FILE];
-  if (PERSISTENT_BACKUP_FILE && PERSISTENT_BACKUP_FILE !== DB_FILE) {
-    candidates.push(PERSISTENT_BACKUP_FILE);
-  }
-  return candidates;
-}
+function initInMemoryDb() {
+  if (inMemoryData) return inMemoryData;
 
-function readDb() {
-  const candidates = getDBFileCandidates();
-  let bestData = null;
+  const candidates = [
+    DB_FILE,
+    process.env.PERSISTENT_DATA_PATH,
+    path.join('/tmp', 'd_tkd_academy_db_persistent.json')
+  ].filter(Boolean);
+
+  let bestParsed = null;
   let maxScore = -1;
 
   for (const filePath of candidates) {
@@ -647,64 +646,65 @@ function readDb() {
         const raw = fs.readFileSync(filePath, 'utf8');
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') {
-          const studentCount = (parsed.students || []).length;
-          const paymentCount = (parsed.studentPayments || []).length;
-          const regCount = (parsed.registrations || []).length;
-          const score = (studentCount * 100) + (paymentCount * 50) + regCount + (parsed.settings ? 10 : 0);
-          
-          if (score > maxScore || !bestData) {
+          const sCount = (parsed.students || []).length;
+          const pCount = (parsed.studentPayments || []).length;
+          const score = (sCount * 100) + (pCount * 50);
+          if (score > maxScore || !bestParsed) {
             maxScore = score;
-            bestData = parsed;
+            bestParsed = parsed;
           }
         }
-      } catch (err) {
-        console.error(`Error reading database from ${filePath}:`, err);
+      } catch (e) {
+        console.error("Error reading candidate DB:", filePath, e);
       }
     }
   }
 
-  if (!bestData) {
-    bestData = defaultData;
-    writeDb(bestData);
-    return bestData;
+  if (!bestParsed) {
+    bestParsed = defaultData;
   }
 
-  const merged = {
+  inMemoryData = {
     ...defaultData,
-    ...bestData,
-    settings: { ...defaultData.settings, ...(bestData.settings || {}) },
-    stats: { ...defaultData.stats, ...(bestData.stats || {}) },
-    about: { ...defaultData.about, ...(bestData.about || {}) },
-    students: Array.from(new Set([...(bestData.students || []), ...(defaultData.students || [])].map(s => JSON.stringify(s)))).map(s => JSON.parse(s)),
-    studentPayments: Array.from(new Set([...(bestData.studentPayments || []), ...(defaultData.studentPayments || [])].map(p => JSON.stringify(p)))).map(p => JSON.parse(p))
+    ...bestParsed,
+    settings: { ...defaultData.settings, ...(bestParsed.settings || {}) },
+    stats: { ...defaultData.stats, ...(bestParsed.stats || {}) },
+    about: { ...defaultData.about, ...(bestParsed.about || {}) },
+    students: bestParsed.students && bestParsed.students.length > 0 ? bestParsed.students : (defaultData.students || []),
+    studentPayments: bestParsed.studentPayments && bestParsed.studentPayments.length > 0 ? bestParsed.studentPayments : (defaultData.studentPayments || [])
   };
 
-  return merged;
+  saveInMemoryDb(inMemoryData);
+  return inMemoryData;
 }
 
-function writeDb(data) {
-  const candidates = getDBFileCandidates();
+function saveInMemoryDb(data) {
+  inMemoryData = data;
   data.updatedAt = new Date().toISOString();
+
+  const candidates = [
+    DB_FILE,
+    process.env.PERSISTENT_DATA_PATH,
+    path.join('/tmp', 'd_tkd_academy_db_persistent.json')
+  ].filter(Boolean);
 
   for (const filePath of candidates) {
     try {
       const dir = path.dirname(filePath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-    } catch (err) {
-      console.error(`Failed to write database to ${filePath}:`, err);
+    } catch (e) {
+      console.error("Error saving DB to candidate:", filePath, e);
     }
   }
 }
 
 export const db = {
-  get: () => readDb(),
+  get: () => initInMemoryDb(),
   update: (updaterFn) => {
-    const current = readDb();
+    const current = initInMemoryDb();
     const updated = updaterFn(current);
-    writeDb(updated);
+    saveInMemoryDb(updated);
     return updated;
   }
 };
