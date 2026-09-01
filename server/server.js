@@ -23,7 +23,7 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 
 // Serve static uploaded media
 app.use('/uploads', express.static(UPLOADS_DIR));
-app.use('/logo.png', express.static(path.join(__dirname, '../public/logo.png')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Multer Storage Setup
 const storage = multer.diskStorage({
@@ -593,6 +593,9 @@ app.get('/api/student/dashboard/:id', (req, res) => {
     feeStatus,
     currentPayment: activePayment || null,
     paymentHistory: history
+  });
+});
+
 app.get('/api/student/verify/:id', (req, res) => {
   const { id } = req.params;
   const currentData = db.get();
