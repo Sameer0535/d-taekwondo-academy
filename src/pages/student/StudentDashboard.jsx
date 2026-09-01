@@ -172,13 +172,17 @@ export default function StudentDashboard({ student, onLogout, paymentSettings, s
 
             {/* Academy Stamp Seal / QR Code */}
             <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.05)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <img 
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrVerificationUrl)}`} 
-                alt="Student ID Verification QR" 
-                style={{ width: '75px', height: '75px', borderRadius: '6px', margin: '0 auto 6px', background: '#ffffff', padding: '2px' }}
-                title="Scan QR Code to view Official Student Verification Certificate"
-              />
+              <a href={qrVerificationUrl} target="_blank" rel="noreferrer" title="Click or Scan to view Official Verification Certificate">
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrVerificationUrl)}`} 
+                  alt="Student ID Verification QR" 
+                  style={{ width: '80px', height: '80px', borderRadius: '6px', margin: '0 auto 6px', background: '#ffffff', padding: '3px', cursor: 'pointer' }}
+                />
+              </a>
               <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{settings?.academyName || "D TAEKWONDO"}</div>
+              <a href={qrVerificationUrl} target="_blank" rel="noreferrer" style={{ fontSize: '0.68rem', color: '#60a5fa', textDecoration: 'underline', marginTop: '2px', display: 'inline-block', fontWeight: 'bold' }}>
+                🔍 Click / Scan to Verify
+              </a>
             </div>
 
           </div>
