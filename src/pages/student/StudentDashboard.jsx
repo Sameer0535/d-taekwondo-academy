@@ -4,7 +4,7 @@ import {
   AlertCircle, Clock, QrCode, LogOut, IndianRupee, RefreshCw, Send, Check
 } from 'lucide-react';
 
-export default function StudentDashboard({ student, onLogout, paymentSettings }) {
+export default function StudentDashboard({ student, onLogout, paymentSettings, settings }) {
   const [dashData, setDashData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPayModal, setShowPayModal] = useState(false);
