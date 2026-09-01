@@ -563,19 +563,21 @@ app.post('/api/student/login', (req, res) => {
 app.get('/api/student/dashboard/:id', (req, res) => {
   const { id } = req.params;
   const currentData = db.get();
-  const student = (currentData.students || []).find(s => s.id === id);
+  const student = (currentData.students || []).find(s => s && s.id === id);
   if (!student) {
     return res.status(404).json({ error: "Student not found" });
   }
 
-  const history = (currentData.studentPayments || []).filter(p => p.studentId === id);
+  const history = (currentData.studentPayments || []).filter(p => p && p.studentId === id);
   const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
-  const thisMonthPayment = history.find(p => p.month.toLowerCase() === currentMonth.toLowerCase());
+  const thisMonthPayment = history.find(p => p && p.month && p.month.toLowerCase() === currentMonth.toLowerCase());
 
   const selectedFeeDash = (currentData.fees || []).find(f => 
-    f.programName === student.program || 
-    f.programName.includes(student.program) || 
-    student.program.includes(f.programName)
+    f && f.programName && student.program && (
+      f.programName === student.program || 
+      (typeof f.programName === 'string' && f.programName.includes(student.program)) || 
+      (typeof student.program === 'string' && student.program.includes(f.programName))
+    )
   ) || {};
   const currentMonthlyFeeDash = selectedFeeDash.monthly || student.monthlyFee || '₹1,000';
   const updatedStudentDash = { ...student, monthlyFee: currentMonthlyFeeDash };
@@ -592,17 +594,21 @@ app.get('/api/student/dashboard/:id', (req, res) => {
 
 app.post('/api/student/pay-fee', (req, res) => {
   const { studentId, studentName, month, amount, utrNumber } = req.body;
-  if (!studentId || !month || !utrNumber) {
-    return res.status(400).json({ error: "Student ID, month, and UTR number are required" });
+  if (!studentId || !utrNumber) {
+    return res.status(400).json({ error: "Student ID and UTR number are required" });
   }
+
+  const currentData = db.get();
+  const student = (currentData.students || []).find(s => s && s.id === studentId);
+  const resolvedStudentName = studentName || (student ? student.studentName : 'Student');
 
   const newPayment = {
     id: `pay_${Date.now()}`,
     studentId,
-    studentName: studentName || 'Student',
-    month,
-    amount: amount || '₹1,000',
-    utrNumber,
+    studentName: resolvedStudentName,
+    month: month || new Date().toLocaleString('default', { month: 'long', year: 'numeric' }),
+    amount: amount || (student ? student.monthlyFee : '₹1,000') || '₹1,000',
+    utrNumber: String(utrNumber).trim(),
     paymentDate: new Date().toISOString().split('T')[0],
     status: 'Pending'
   };

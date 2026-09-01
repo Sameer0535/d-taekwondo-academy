@@ -77,20 +77,30 @@ export default function StudentDashboard({ student, onLogout, paymentSettings })
   };
 
   if (loading) {
-    return <div className="p-12 text-center text-xl font-bold">Loading Student Portal...</div>;
+    return <div className="p-12 text-center text-xl font-bold" style={{ padding: '60px 20px', textAlign: 'center', fontSize: '1.2rem', fontWeight: 'bold' }}>Loading Student Portal...</div>;
   }
 
-  const s = dashData?.student || student;
+  if (!student && !dashData) {
+    return (
+      <div className="p-12 text-center" style={{ padding: '60px 20px', textAlign: 'center' }}>
+        <h2>Session Expired or Student Not Found</h2>
+        <button onClick={onLogout} className="btn btn-primary-red mt-4" style={{ marginTop: '16px' }}>Return to Student Login</button>
+      </div>
+    );
+  }
+
+  const s = dashData?.student || student || {};
   const status = dashData?.feeStatus || 'Due';
-  const monthName = dashData?.currentMonth || 'August 2026';
+  const rawMonth = dashData?.currentMonth || 'August 2026';
+  const monthName = typeof rawMonth === 'string' ? rawMonth : 'August 2026';
 
   // Belt badge color mapping
-  const beltClass = (s.belt || '').toLowerCase().includes('black') ? 'badge-dark'
-    : (s.belt || '').toLowerCase().includes('red') ? 'badge-red'
-    : (s.belt || '').toLowerCase().includes('blue') ? 'badge-blue'
-    : (s.belt || '').toLowerCase().includes('green') ? 'badge-green'
-    : (s.belt || '').toLowerCase().includes('yellow') ? 'badge-gold'
-    : 'badge-light';
+  const beltClass = (s?.belt || '').toLowerCase().includes('black') ? 'badge-dark'
+    : (s?.belt || '').toLowerCase().includes('red') ? 'badge-red'
+    : (s?.belt || '').toLowerCase().includes('blue') ? 'badge-blue'
+    : (s?.belt || '').toLowerCase().includes('green') ? 'badge-green'
+    : (s?.belt || '').toLowerCase().includes('yellow') ? 'badge-gold'
+    : 'badge-gold';
 
   return (
     <div className="student-dashboard-page">

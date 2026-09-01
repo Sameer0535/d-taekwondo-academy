@@ -560,7 +560,8 @@ export default function StudentLogin({ onLoginSuccess, programs = [], fees = [],
 
       {/* FEE PAYMENT POPUP MODAL AFTER REGISTRATION */}
       {showRegPayModal && createdStudent && (() => {
-        const selectedProgramFee = fees.find(f => f.programName === createdStudent.program) || fees[0] || {};
+        const safeFees = Array.isArray(fees) ? fees : [];
+        const selectedProgramFee = safeFees.find(f => f && f.programName === createdStudent.program) || safeFees[0] || {};
         const displayRegFee = selectedProgramFee.regFee || '₹500 (One-time)';
 
         return (
