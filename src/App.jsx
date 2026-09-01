@@ -414,10 +414,6 @@ export default function App() {
                       <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: 'bold' }}>ENROLLED PROGRAM</span>
                       <strong style={{ color: '#2563eb' }}>{verifiedStudentModal.program || 'Kids Taekwondo'}</strong>
                     </div>
-                    <div style={{ background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', gridColumn: 'span 2' }}>
-                      <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: 'bold' }}>DATE JOINED</span>
-                      <strong style={{ color: '#0f172a' }}>📅 {verifiedStudentModal.joiningDate || 'Recent'}</strong>
-                    </div>
                   </div>
 
                   <button 
