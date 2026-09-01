@@ -8,6 +8,7 @@
     "server": "node server/server.js",
     "start": "node server/server.js",
     "build": "vite build",
+    "postinstall": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
