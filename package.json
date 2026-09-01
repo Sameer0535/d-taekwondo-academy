@@ -8,23 +8,22 @@
     "server": "node server/server.js",
     "start": "node server/server.js",
     "build": "vite build",
-    "postinstall": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "lucide-react": "^1.30.0",
     "multer": "^2.2.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "vite": "^8.2.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.4",
-    "oxlint": "^1.75.0",
-    "vite": "^8.2.0"
+    "oxlint": "^1.75.0"
   }
 }
