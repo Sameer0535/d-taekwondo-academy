@@ -96,6 +96,17 @@ export default function StudentDashboard({ student, onLogout, paymentSettings, s
   const rawMonth = dashData?.currentMonth || (latestPayment ? latestPayment.month : 'Registration Fee');
   const monthName = typeof rawMonth === 'string' ? rawMonth : 'Current Month';
 
+  const qrDataText = `Official Student Identity Certificate
+Academy: ${settings?.academyName || "D TAEKWONDO ACADEMY"}
+Student ID: ${s.id || 'N/A'}
+Student Name: ${s.studentName || 'N/A'}
+Parent / Guardian: ${s.parentName || 'N/A'}
+Mobile Contact: ${s.phone || 'N/A'}
+Program: ${s.program || 'Kids Taekwondo'}
+Belt Grade: ${s.belt || 'White Belt'}
+Date Joined: ${s.joiningDate || 'Recent'}
+Admission Status: Verified Active Student`;
+
   // Belt badge color mapping
   const beltClass = (s?.belt || '').toLowerCase().includes('black') ? 'badge-dark'
     : (s?.belt || '').toLowerCase().includes('red') ? 'badge-red'
@@ -171,9 +182,10 @@ export default function StudentDashboard({ student, onLogout, paymentSettings, s
             {/* Academy Stamp Seal / QR Code */}
             <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.05)', padding: '14px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)' }}>
               <img 
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(`STUDENT:${s.id}|NAME:${s.studentName}`)}`} 
-                alt="Student ID QR" 
-                style={{ width: '70px', height: '70px', borderRadius: '6px', margin: '0 auto 6px' }}
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrDataText)}`} 
+                alt="Student ID Verification QR" 
+                style={{ width: '75px', height: '75px', borderRadius: '6px', margin: '0 auto 6px', background: '#ffffff', padding: '2px' }}
+                title="Scan QR Code to verify full student identity & details"
               />
               <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{settings?.academyName || "D TAEKWONDO"}</div>
             </div>

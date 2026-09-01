@@ -1103,7 +1103,10 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                         }} className="btn btn-sm btn-outline-dark">
                           {img.isPublished ? <Eye size={14} /> : <EyeOff size={14} />} {img.isPublished ? 'Published' : 'Hidden'}
                         </button>
-                        <button onClick={() => handleDeleteItem('gallery', img.id)} className="action-icon delete"><Trash2 size={16} /></button>
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <button onClick={() => { setModalType('gallery'); setEditingItem(img); }} className="action-icon edit" title="Edit Photo Details"><Edit3 size={16} /></button>
+                          <button onClick={() => handleDeleteItem('gallery', img.id)} className="action-icon delete" title="Delete Photo"><Trash2 size={16} /></button>
+                        </div>
                       </div>
                     </div>
                   </div>
