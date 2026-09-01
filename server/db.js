@@ -626,23 +626,77 @@ const defaultData = {
   }
 };
 
+const PERSISTENT_BACKUP_FILE = process.env.PERSISTENT_DATA_PATH || path.join('/tmp', 'd_tkd_academy_db_persistent.json');
+
+function getDBFileCandidates() {
+  const candidates = [DB_FILE];
+  if (PERSISTENT_BACKUP_FILE && PERSISTENT_BACKUP_FILE !== DB_FILE) {
+    candidates.push(PERSISTENT_BACKUP_FILE);
+  }
+  return candidates;
+}
+
 function readDb() {
-  if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2));
-    return defaultData;
+  const candidates = getDBFileCandidates();
+  let bestData = null;
+  let maxScore = -1;
+
+  for (const filePath of candidates) {
+    if (fs.existsSync(filePath)) {
+      try {
+        const raw = fs.readFileSync(filePath, 'utf8');
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          const studentCount = (parsed.students || []).length;
+          const paymentCount = (parsed.studentPayments || []).length;
+          const regCount = (parsed.registrations || []).length;
+          const score = (studentCount * 100) + (paymentCount * 50) + regCount + (parsed.settings ? 10 : 0);
+          
+          if (score > maxScore || !bestData) {
+            maxScore = score;
+            bestData = parsed;
+          }
+        }
+      } catch (err) {
+        console.error(`Error reading database from ${filePath}:`, err);
+      }
+    }
   }
-  try {
-    const raw = fs.readFileSync(DB_FILE, 'utf8');
-    const parsed = JSON.parse(raw);
-    return { ...defaultData, ...parsed };
-  } catch (err) {
-    console.error("Error reading database file, resetting to default:", err);
-    return defaultData;
+
+  if (!bestData) {
+    bestData = defaultData;
+    writeDb(bestData);
+    return bestData;
   }
+
+  const merged = {
+    ...defaultData,
+    ...bestData,
+    settings: { ...defaultData.settings, ...(bestData.settings || {}) },
+    stats: { ...defaultData.stats, ...(bestData.stats || {}) },
+    about: { ...defaultData.about, ...(bestData.about || {}) },
+    students: Array.from(new Set([...(bestData.students || []), ...(defaultData.students || [])].map(s => JSON.stringify(s)))).map(s => JSON.parse(s)),
+    studentPayments: Array.from(new Set([...(bestData.studentPayments || []), ...(defaultData.studentPayments || [])].map(p => JSON.stringify(p)))).map(p => JSON.parse(p))
+  };
+
+  return merged;
 }
 
 function writeDb(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  const candidates = getDBFileCandidates();
+  data.updatedAt = new Date().toISOString();
+
+  for (const filePath of candidates) {
+    try {
+      const dir = path.dirname(filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    } catch (err) {
+      console.error(`Failed to write database to ${filePath}:`, err);
+    }
+  }
 }
 
 export const db = {
