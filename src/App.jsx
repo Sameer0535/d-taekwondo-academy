@@ -22,6 +22,43 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import StudentLogin from './pages/student/StudentLogin';
 import StudentDashboard from './pages/student/StudentDashboard';
 
+class StudentPortalErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("Student Portal Error:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '60px 20px', textAlign: 'center', background: '#ffffff', borderRadius: '16px', margin: '40px auto', maxWidth: '540px', border: '1px solid #fecaca', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '12px' }}>⚠️</div>
+          <h2 style={{ fontSize: '1.4rem', color: '#dc2626', marginBottom: '8px' }}>Student Session Reset</h2>
+          <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '20px' }}>
+            Your student portal session needs to be refreshed. Please click below to log in.
+          </p>
+          <button 
+            onClick={() => {
+              if (this.props.onLogout) this.props.onLogout();
+              window.location.reload();
+            }} 
+            className="btn btn-primary-red"
+            style={{ padding: '12px 24px', fontWeight: 'bold' }}
+          >
+            🔄 Return to Student Login
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   const [activePage, setActivePage] = useState('home');
   const [studentPortalMode, setStudentPortalMode] = useState('login');
@@ -53,14 +90,21 @@ export default function App() {
   // Student Auth state
   const [studentToken, setStudentToken] = useState(localStorage.getItem('d_tkd_student_token') || '');
   const [studentData, setStudentData] = useState(() => {
-    const saved = localStorage.getItem('d_tkd_student_data');
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem('d_tkd_student_data');
+      if (!saved) return null;
+      const parsed = JSON.parse(saved);
+      return (parsed && typeof parsed === 'object' && parsed.id) ? parsed : null;
+    } catch {
+      return null;
+    }
   });
 
   const handleStudentLoginSuccess = (student, token) => {
-    localStorage.setItem('d_tkd_student_token', token);
+    if (!student || !student.id) return;
+    localStorage.setItem('d_tkd_student_token', token || '');
     localStorage.setItem('d_tkd_student_data', JSON.stringify(student));
-    setStudentToken(token);
+    setStudentToken(token || '');
     setStudentData(student);
     setActivePage('student');
   };
@@ -235,22 +279,24 @@ export default function App() {
             )}
 
             {activePage === 'student' && (
-              studentData ? (
-                <StudentDashboard 
-                  student={studentData} 
-                  onLogout={handleStudentLogout} 
-                  paymentSettings={payment} 
-                  settings={settings}
-                />
-              ) : (
-                <StudentLogin 
-                  onLoginSuccess={handleStudentLoginSuccess} 
-                  programs={programs} 
-                  fees={fees}
-                  settings={settings}
-                  initialMode={studentPortalMode}
-                />
-              )
+              <StudentPortalErrorBoundary onLogout={handleStudentLogout}>
+                {studentData ? (
+                  <StudentDashboard 
+                    student={studentData} 
+                    onLogout={handleStudentLogout} 
+                    paymentSettings={payment} 
+                    settings={settings}
+                  />
+                ) : (
+                  <StudentLogin 
+                    onLoginSuccess={handleStudentLoginSuccess} 
+                    programs={programs} 
+                    fees={fees}
+                    settings={settings}
+                    initialMode={studentPortalMode}
+                  />
+                )}
+              </StudentPortalErrorBoundary>
             )}
           </main>
 
