@@ -593,7 +593,14 @@ app.get('/api/student/dashboard/:id', (req, res) => {
     feeStatus,
     currentPayment: activePayment || null,
     paymentHistory: history
-  });
+app.get('/api/student/verify/:id', (req, res) => {
+  const { id } = req.params;
+  const currentData = db.get();
+  const student = (currentData.students || []).find(s => s && s.id === id);
+  if (!student) {
+    return res.status(404).json({ error: "Student not found" });
+  }
+  res.json({ student });
 });
 
 app.post('/api/student/pay-fee', (req, res) => {

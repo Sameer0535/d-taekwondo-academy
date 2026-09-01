@@ -87,6 +87,23 @@ export default function App() {
   // Admin Auth state
   const [adminToken, setAdminToken] = useState(localStorage.getItem('d_tkd_admin_token') || '');
 
+  const [verifiedStudentModal, setVerifiedStudentModal] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const studentId = params.get('verifyStudent');
+    if (studentId) {
+      fetch(`/api/student/verify/${studentId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.student) {
+            setVerifiedStudentModal(data.student);
+          }
+        })
+        .catch(err => console.error("Verification fetch error:", err));
+    }
+  }, []);
+
   // Student Auth state
   const [studentToken, setStudentToken] = useState(localStorage.getItem('d_tkd_student_token') || '');
   const [studentData, setStudentData] = useState(() => {
@@ -328,6 +345,68 @@ export default function App() {
               hasNext={lightboxData.list.length > 1}
               hasPrev={lightboxData.list.length > 1}
             />
+          )}
+
+          {/* QR Scan Student Identity Verification Certificate Modal */}
+          {verifiedStudentModal && (
+            <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '20px' }}>
+              <div style={{ background: '#ffffff', borderRadius: '24px', maxWidth: '520px', width: '100%', border: '2px solid #e52328', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.4)', overflow: 'hidden' }}>
+                <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', color: '#ffffff', padding: '24px 20px', textAlign: 'center', position: 'relative' }}>
+                  <button onClick={() => setVerifiedStudentModal(null)} style={{ position: 'absolute', top: '16px', right: '16px', background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+                  <span className="badge badge-gold mb-2" style={{ fontSize: '0.75rem', letterSpacing: '1px' }}>OFFICIAL VERIFIED ATHLETE</span>
+                  <h3 style={{ fontSize: '1.4rem', margin: '4px 0', color: '#ffffff', fontWeight: 'bold' }}>{settings?.academyName || "D TAEKWONDO ACADEMY"}</h3>
+                  <p style={{ fontSize: '0.85rem', color: '#cbd5e1', margin: 0 }}>Digital Identity Certificate & Verification Record</p>
+                </div>
+
+                <div style={{ padding: '24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', background: '#f8fafc', padding: '16px', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
+                    {verifiedStudentModal.photoUrl ? (
+                      <img src={verifiedStudentModal.photoUrl} alt={verifiedStudentModal.studentName} style={{ width: '70px', height: '70px', borderRadius: '50%', objectFit: 'cover', border: '3px solid #e52328' }} />
+                    ) : (
+                      <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', fontWeight: 'bold', color: '#475569' }}>
+                        {verifiedStudentModal.studentName ? verifiedStudentModal.studentName.charAt(0).toUpperCase() : 'S'}
+                      </div>
+                    )}
+                    <div>
+                      <span className="badge badge-green mb-1" style={{ fontSize: '0.75rem' }}>✓ VERIFIED ADMISSION</span>
+                      <h4 style={{ fontSize: '1.35rem', fontWeight: 'bold', margin: '2px 0 4px', color: '#0f172a' }}>{verifiedStudentModal.studentName}</h4>
+                      <div style={{ fontSize: '0.9rem', color: '#2563eb', fontWeight: 'bold' }}>🥋 {verifiedStudentModal.belt || 'White Belt'}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.88rem' }}>
+                    <div style={{ background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: 'bold' }}>STUDENT ID NUMBER</span>
+                      <strong style={{ color: '#0f172a', fontFamily: 'monospace', fontSize: '0.98rem' }}>{verifiedStudentModal.id}</strong>
+                    </div>
+                    <div style={{ background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: 'bold' }}>MOBILE CONTACT</span>
+                      <strong style={{ color: '#0f172a' }}>📱 {verifiedStudentModal.phone}</strong>
+                    </div>
+                    <div style={{ background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: 'bold' }}>PARENT / GUARDIAN</span>
+                      <strong style={{ color: '#0f172a' }}>{verifiedStudentModal.parentName || 'N/A'}</strong>
+                    </div>
+                    <div style={{ background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: 'bold' }}>ENROLLED PROGRAM</span>
+                      <strong style={{ color: '#2563eb' }}>{verifiedStudentModal.program || 'Kids Taekwondo'}</strong>
+                    </div>
+                    <div style={{ background: '#f1f5f9', padding: '10px 12px', borderRadius: '10px', gridColumn: 'span 2' }}>
+                      <span style={{ fontSize: '0.75rem', color: '#64748b', display: 'block', fontWeight: 'bold' }}>DATE JOINED</span>
+                      <strong style={{ color: '#0f172a' }}>📅 {verifiedStudentModal.joiningDate || 'Recent'}</strong>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => setVerifiedStudentModal(null)} 
+                    className="btn btn-primary-red" 
+                    style={{ width: '100%', marginTop: '20px', padding: '12px', fontWeight: 'bold', borderRadius: '12px' }}
+                  >
+                    CLOSE VERIFICATION
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </>
       )}
