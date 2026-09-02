@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Trophy, Filter } from 'lucide-react';
 
-export default function AchievementsPage({ achievements = [], onOpenLightbox }) {
+export default function AchievementsPage({ achievements = [], onOpenLightbox, settings }) {
   const [selectedMedal, setSelectedMedal] = useState('All');
   const [selectedYear, setSelectedYear] = useState('All');
 
