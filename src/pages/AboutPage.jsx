@@ -9,7 +9,7 @@ export default function AboutPage({ about, settings, onOpenJoinModal }) {
         <div className="container text-center">
           <span className="badge badge-gold mb-2">OUR HERITAGE & MISSION</span>
           <h1>ABOUT {settings?.academyName || "D TAEKWONDO ACADEMY"}</h1>
-          <p>Building character, confidence, and martial arts champions since 2016.</p>
+          <p>Building character, confidence, and martial arts champions since 2023.</p>
         </div>
       </section>
 
@@ -21,7 +21,7 @@ export default function AboutPage({ about, settings, onOpenJoinModal }) {
               <span className="badge badge-red mb-2">ACADEMY STORY</span>
               <h2>A LEGACY OF DISCIPLINE & VICTORY</h2>
               <p className="lead-text">
-                {about?.story || "Founded in 2016, D Taekwondo Academy has established itself as a premier martial arts training center..."}
+                {about?.story || "Founded in 2023, D Taekwondo Academy has grown into a premier Taekwondo training institution committed to excellence, discipline, and holistic athletic development. Over the years, our academy has trained and nurtured hundreds of aspiring athletes, helping them compete and succeed at state, national, and international levels. Beyond competition and medals, we believe Taekwondo is a journey of discipline, confidence, respect, physical fitness, and character development. Our training environment is designed to help every student discover their potential, build resilience, and develop skills that extend far beyond the training hall. At D Taekwondo Academy, we are dedicated to creating confident athletes, disciplined individuals, and stronger communities through the values and spirit of Taekwondo."}
               </p>
               
               <div className="philosophy-card mt-6">
@@ -35,12 +35,20 @@ export default function AboutPage({ about, settings, onOpenJoinModal }) {
               </div>
             </div>
 
-            <div className="about-img-col">
-              <img 
-                src={about?.mainImage || about?.facilities?.[0]?.image || "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80"} 
-                alt="Academy Mat Training" 
-                className="about-hero-img" 
-              />
+            <div className="about-img-col" style={{ position: 'relative' }}>
+              <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', textAlign: 'center', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.05)' }}>
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Kukkiwon_logo.png/800px-Kukkiwon_logo.png" 
+                  alt="Kukkiwon World Taekwondo Emblem" 
+                  style={{ width: '100%', maxHeight: '320px', objectFit: 'contain', margin: '0 auto' }}
+                  onError={(e) => {
+                    e.target.src = "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80";
+                  }}
+                />
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#0f172a', color: '#ffffff', padding: '8px 16px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 'bold', marginTop: '16px' }}>
+                  <Shield size={14} style={{ color: '#22c55e' }} /> Kukkiwon World TKD Certified
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -53,7 +61,7 @@ export default function AboutPage({ about, settings, onOpenJoinModal }) {
             <div className="card mv-card">
               <div className="mv-icon red"><Target size={36} /></div>
               <h3>OUR MISSION</h3>
-              <p>{about?.mission || "To provide world-class World Taekwondo (WT) training in a disciplined, safe, and motivating environment."}</p>
+              <p>{about?.mission || "To provide world-class World Taekwondo (WT) training in a disciplined, safe, and motivating environment, transforming passionate learners into confident leaders and champions."}</p>
             </div>
 
             <div className="card mv-card">
@@ -75,7 +83,14 @@ export default function AboutPage({ about, settings, onOpenJoinModal }) {
           </div>
 
           <div className="why-grid">
-            {about?.whyChooseUs?.map((reason, idx) => (
+            {(about?.whyChooseUs || [
+              "Certified Kukkiwon & WTF Master Coaches",
+              "State-of-the-Art Training Facility & High-Density Mats",
+              "Specialized Competition & Sparring Track",
+              "Comprehensive Fitness & Flexibility Conditioning",
+              "Structured Belt Progression System",
+              "Personalized Attention & Youth Character Building"
+            ]).map((reason, idx) => (
               <div key={idx} className="card why-card">
                 <div className="why-check">
                   <CheckCircle size={24} style={{ color: 'var(--primary-red)' }} />
@@ -100,7 +115,12 @@ export default function AboutPage({ about, settings, onOpenJoinModal }) {
           </div>
 
           <div className="facilities-grid">
-            {about?.facilities?.map((fac, idx) => (
+            {(about?.facilities || [
+              { name: "Shruthika Springs Apartment", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" },
+              { name: "Concorde Spring Meadows Apartment", image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80" },
+              { name: "Wisdom Tree Apartment", image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80" },
+              { name: "SMR Vinay Apartment", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" }
+            ]).map((fac, idx) => (
               <div key={idx} className="card facility-card">
                 <div className="facility-img-wrap">
                   <img src={fac.image} alt={fac.name} />
