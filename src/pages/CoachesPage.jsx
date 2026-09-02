@@ -1,8 +1,41 @@
 import React from 'react';
 import { Award, Shield, CheckCircle2 } from 'lucide-react';
 
+const defaultCoachesList = [
+  {
+    id: "c1",
+    name: "DARSHAN A",
+    position: "Head Coach & Founder",
+    beltDan: "1ST DAN BLACK BELT (KUKKIWON)",
+    experience: "15+ Years Experience",
+    certifications: [
+      "National Certified Referee",
+      "International WT Coach",
+      "State Gold Medalist"
+    ],
+    bio: "About Me I'm Darshan, the Founder and Head Coach of D Taekwondo Academy. Taekwondo has been a big part of my life, and I'm passionate about sharing what I've learned with the next generation of students. Over the years, I've had the opportunity to train students of different age groups, prepare them for championships and belt examinations, and help them grow both in Taekwondo and in their personal lives. I'm proud to have guided my students to win medals at national-level championships and International level championship. For me, Taekwondo is not just about winning medals. It's about building discipline, confidence, fitness, respect and a strong mindset. Through D Taekwondo Academy, my goal is to create a positive training environment where every student can learn, improve and become the best version of themselves.",
+    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+    displayOrder: 1
+  },
+  {
+    id: "c2",
+    name: "Sameer R",
+    position: "Coach / Manager",
+    beltDan: "1ST DAN BLACK BELT (KUKKIWON)",
+    experience: "12+ Years Experience",
+    certifications: [
+      "Poomsae Specialist Certified",
+      "Youth Athletic Trainer"
+    ],
+    bio: "Taekwondo has given me the opportunity to compete at both National and International levels, where I have proudly won medals and gained valuable competitive experience. As a Coach, I enjoy sharing what I've learned with younger students and helping them improve their skills, confidence and discipline. I believe every student has the potential to achieve great things with the right training, dedication and mindset. I'm continuously working to improve myself as an athlete and coach while inspiring the next generation of Taekwondo athletes. Expert in technical accuracy, flexibility, and Poomsae form mastery",
+    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
+    displayOrder: 2
+  }
+];
+
 export default function CoachesPage({ coaches = [], onOpenJoinModal }) {
-  const sortedCoaches = [...coaches].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+  const activeCoaches = coaches && coaches.length > 0 ? coaches : defaultCoachesList;
+  const sortedCoaches = [...activeCoaches].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
 
   return (
     <div className="coaches-page">
