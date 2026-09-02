@@ -15,10 +15,10 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
     heroTitle: "DISCIPLINE, DEDICATION, EXCELLENCE",
     heroDescription: "Empowering minds and bodies through world-class Taekwondo martial arts training.",
     heroBgImage: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1920&q=80",
-    phone: "+91 98765 43210",
-    whatsapp: "+91 98765 43210",
-    email: "info@dtaekwondo.com",
-    address: "123 Martial Arts Way, Sports Complex, Bengaluru, Karnataka - 560001"
+    phone: "+91 94827 97451",
+    whatsapp: "+91 94827 97451",
+    email: "info@dtaekwondoacademy.com",
+    address: "Bengaluru Urban, Karnataka, India"
   });
   const [stats, setStats] = useState({
     yearsExperience: "15+",

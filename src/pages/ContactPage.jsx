@@ -12,7 +12,7 @@ export default function ContactPage({ settings }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const whatsappNumber = settings?.whatsapp ? settings.whatsapp.replace(/[^0-9]/g, '') : '919876543210';
+  const whatsappNumber = settings?.whatsapp ? settings.whatsapp.replace(/[^0-9]/g, '') : '919482797451';
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -65,7 +65,7 @@ export default function ContactPage({ settings }) {
                     <div className="icon-box red"><MapPin size={22} /></div>
                     <div>
                       <strong>Academy Address:</strong>
-                      <p>{settings?.address || "123 Martial Arts Boulevard, Sports Complex Road, Bengaluru, Karnataka 560001"}</p>
+                      <p>{settings?.address || "Bengaluru Urban, Karnataka, India"}</p>
                     </div>
                   </div>
 
@@ -73,7 +73,7 @@ export default function ContactPage({ settings }) {
                     <div className="icon-box red"><Phone size={22} /></div>
                     <div>
                       <strong>Phone Number:</strong>
-                      <p><a href={`tel:${settings?.phone}`}>{settings?.phone || "+91 98765 43210"}</a></p>
+                      <p><a href={`tel:${settings?.phone || "+919482797451"}`}>{settings?.phone || "+91 94827 97451"}</a></p>
                     </div>
                   </div>
 
@@ -88,8 +88,8 @@ export default function ContactPage({ settings }) {
                   <div className="contact-detail-item">
                     <div className="icon-box blue"><Clock size={22} /></div>
                     <div>
-                      <strong>Training Timings:</strong>
-                      <p>Morning Batch: 06:00 AM - 08:00 AM<br />Evening Batch: 04:30 PM - 08:45 PM<br />Weekends: 08:00 AM - 11:30 AM</p>
+                      <strong>Training Hours:</strong>
+                      <p>{settings?.trainingHours || "Mon - Sat: 5:00 AM - 8:30 PM | Sun: 6:00 AM - 12:00 PM"}</p>
                     </div>
                   </div>
                 </div>
@@ -105,8 +105,8 @@ export default function ContactPage({ settings }) {
                   </a>
                 </div>
 
-                <div className="social-links-block">
-                  <span>Follow Our Champions:</span>
+                <div className="contact-social-wrap">
+                  <h4>CONNECT WITH US</h4>
                   <div className="social-icons-row">
                     <a 
                       href={settings?.instagram ? (settings.instagram.startsWith('http') ? settings.instagram : `https://${settings.instagram}`) : "https://instagram.com"} 
@@ -117,7 +117,7 @@ export default function ContactPage({ settings }) {
                       <InstagramIcon size={20} />
                     </a>
                     <a 
-                      href={settings?.whatsapp ? (settings.whatsapp.startsWith('http') ? settings.whatsapp : `https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`) : 'https://wa.me/919876543210'} 
+                      href={settings?.whatsapp ? (settings.whatsapp.startsWith('http') ? settings.whatsapp : `https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`) : 'https://wa.me/919482797451'} 
                       target="_blank" 
                       rel="noreferrer" 
                       aria-label="WhatsApp"
@@ -166,7 +166,7 @@ export default function ContactPage({ settings }) {
                           onChange={handleChange} 
                           required 
                           className="form-control" 
-                          placeholder="+91 98765 43210" 
+                          placeholder="+91 94827 97451" 
                         />
                       </div>
                       <div className="form-group">

@@ -129,7 +129,7 @@ export default function JoinPage({ programs = [], setActivePage, settings }) {
                         onChange={handleChange} 
                         required 
                         className="form-control" 
-                        placeholder="+91 98765 43210" 
+                        placeholder="+91 94827 97451" 
                       />
                     </div>
                     <div className="form-group">

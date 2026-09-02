@@ -35,7 +35,7 @@ export default function Footer({ setActivePage, onOpenJoinModal, settings }) {
               <InstagramIcon size={20} />
             </a>
             <a 
-              href={settings?.whatsapp ? (settings.whatsapp.startsWith('http') ? settings.whatsapp : `https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`) : 'https://wa.me/919876543210'} 
+              href={settings?.whatsapp ? (settings.whatsapp.startsWith('http') ? settings.whatsapp : `https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`) : 'https://wa.me/919482797451'} 
               target="_blank" 
               rel="noreferrer" 
               aria-label="WhatsApp" 
@@ -79,11 +79,11 @@ export default function Footer({ setActivePage, onOpenJoinModal, settings }) {
           <div className="footer-contact-list">
             <div className="contact-item">
               <MapPin size={18} className="icon-red" />
-              <span>{settings?.address || "123 Martial Arts Boulevard, Sports Complex Road, Bengaluru, Karnataka 560001"}</span>
+              <span>{settings?.address || "Bengaluru Urban, Karnataka, India"}</span>
             </div>
             <div className="contact-item">
               <Phone size={18} className="icon-red" />
-              <a href={`tel:${settings?.phone}`}>{settings?.phone || "+91 98765 43210"}</a>
+              <a href={`tel:${settings?.phone || "+919482797451"}`}>{settings?.phone || "+91 94827 97451"}</a>
             </div>
             <div className="contact-item">
               <Mail size={18} className="icon-red" />
