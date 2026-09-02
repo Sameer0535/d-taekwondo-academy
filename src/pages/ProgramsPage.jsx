@@ -4,10 +4,10 @@ import { Calendar, Clock, UserCheck, ShieldCheck, ArrowRight } from 'lucide-reac
 const defaultProgramsList = [
   {
     id: "p1",
-    name: "Kids Taekwondo",
+    name: "Kids Taekwondo Training Program",
     description: "Designed for young children to build discipline, physical coordination, confidence, focus, and fundamental martial arts movement in a fun, safe environment.",
     image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
-    ageGroup: "Ages 5 - 11",
+    ageGroup: "AGES 5 - 12",
     days: "Mon, Wed, Fri",
     time: "4:30 PM - 5:30 PM",
     duration: "60 mins per session",
@@ -15,58 +15,47 @@ const defaultProgramsList = [
   },
   {
     id: "p2",
-    name: "Beginners Course",
-    description: "Ideal foundation course for newcomers covering basic kicks, blocks, stances, Poomsae (patterns), and core martial discipline.",
-    image: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
-    ageGroup: "Ages 12+",
-    days: "Tue, Thu, Sat",
-    time: "5:30 PM - 6:30 PM",
-    duration: "60 mins per session",
-    fee: "₹1,800 / month"
-  },
-  {
-    id: "p3",
-    name: "Advanced Training",
+    name: "Advanced Training Program",
     description: "Intense regimen for color belt students aiming for Black Belt proficiency, mastering complex kicking combinations, advanced forms, and tactical sparring.",
     image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
-    ageGroup: "Yellow Belt & Above",
+    ageGroup: "GREEN BELT & ABOVE",
     days: "Mon to Fri",
     time: "6:30 PM - 7:45 PM",
     duration: "75 mins per session",
-    fee: "₹1,800 / month"
+    fee: "₹2,000 / month"
   },
   {
-    id: "p4",
+    id: "p3",
     name: "Competition Training",
-    description: "High-performance sparring (Kyorugi) and technical Poomsae camp for tournament athletes with electronic scoring system practice.",
+    description: "Intensive training focused on advanced Kyorugi (Sparring) and Poomsae (Forms) techniques, competition strategies, speed, agility, precision, and fitness. Designed to prepare athletes for state, national, and international-level competitions.",
     image: "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
-    ageGroup: "Selected Athletes",
+    ageGroup: "SELECTED ATHLETES",
     days: "Daily & Weekends",
     time: "6:00 AM - 8:00 AM",
     duration: "120 mins per session",
     fee: "₹2,000 / month"
   },
   {
-    id: "p5",
-    name: "Adults Training",
-    description: "Taekwondo fitness, stress relief, strength conditioning, and martial skill mastery for working professionals and adults.",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
-    ageGroup: "Ages 18+",
-    days: "Mon, Wed, Fri",
-    time: "7:45 PM - 8:45 PM",
-    duration: "60 mins per session",
-    fee: "₹1,500 / month"
-  },
-  {
-    id: "p6",
-    name: "Self Defense",
+    id: "p4",
+    name: "Self Defense Training Program for Women",
     description: "Practical real-world self-defense techniques, situational awareness, escape tactics, and joint locks for safety and confidence.",
     image: "https://images.unsplash.com/photo-1564415300397-6a4a15998a69?auto=format&fit=crop&w=800&q=80",
-    ageGroup: "All Ages",
+    ageGroup: "ALL AGES",
     days: "Sat & Sun",
     time: "8:00 AM - 9:30 AM",
     duration: "90 mins per session",
-    fee: "₹1,200 / month"
+    fee: "₹800 / month"
+  },
+  {
+    id: "p5",
+    name: "VR Taekwondo Experience",
+    description: "Experience Taekwondo in an immersive virtual environment, combining modern VR technology with interactive training to make learning engaging, realistic, and exciting.",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+    ageGroup: "18+ YEARS",
+    days: "Mon, Wed, Fri",
+    time: "4:30 PM - 5:30 PM",
+    duration: "60 mins",
+    fee: "₹2,000 / month"
   }
 ];
 
