@@ -740,6 +740,61 @@ function initInMemoryDb() {
   return inMemoryData;
 }
 
+import { MongoClient } from 'mongodb';
+
+let mongoClient = null;
+let mongoCollection = null;
+let isMongoInitialized = false;
+
+async function initMongo() {
+  if (isMongoInitialized) return;
+  isMongoInitialized = true;
+  const uri = process.env.MONGODB_URI;
+  if (!uri) return;
+
+  try {
+    mongoClient = new MongoClient(uri);
+    await mongoClient.connect();
+    const mongoDb = mongoClient.db('d_taekwondo_academy');
+    mongoCollection = mongoDb.collection('academy_data');
+    console.log('✅ Connected to MongoDB Atlas cloud database!');
+
+    const cloudDoc = await mongoCollection.findOne({ _id: 'main_academy_data' });
+    if (cloudDoc && cloudDoc.data) {
+      console.log('📦 Loaded existing cloud database from MongoDB Atlas');
+      if (inMemoryData) {
+        Object.assign(inMemoryData, cloudDoc.data);
+      }
+    } else {
+      if (inMemoryData) {
+        await mongoCollection.updateOne(
+          { _id: 'main_academy_data' },
+          { $set: { _id: 'main_academy_data', data: inMemoryData, updatedAt: new Date().toISOString() } },
+          { upsert: true }
+        );
+        console.log('🌱 Seeded baseline academy data to MongoDB Atlas');
+      }
+    }
+  } catch (err) {
+    console.error('⚠️ MongoDB Atlas connection error (running on local fallback):', err.message);
+  }
+}
+
+initMongo().catch(console.error);
+
+async function syncToMongo(data) {
+  if (!mongoCollection) return;
+  try {
+    await mongoCollection.updateOne(
+      { _id: 'main_academy_data' },
+      { $set: { _id: 'main_academy_data', data, updatedAt: new Date().toISOString() } },
+      { upsert: true }
+    );
+  } catch (err) {
+    console.error('Error syncing to MongoDB:', err.message);
+  }
+}
+
 function saveInMemoryDb(data) {
   inMemoryData = data;
   data.updatedAt = new Date().toISOString();
@@ -759,6 +814,8 @@ function saveInMemoryDb(data) {
       console.error("Error saving DB to candidate:", filePath, e);
     }
   }
+
+  syncToMongo(data).catch(() => {});
 }
 
 export const db = {
