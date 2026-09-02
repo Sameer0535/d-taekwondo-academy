@@ -637,7 +637,8 @@ function initInMemoryDb() {
     path.join('/tmp', 'd_tkd_academy_db_persistent.json')
   ].filter(Boolean);
 
-  const allParsedData = [];
+  // Put defaultData first, so real candidate files override default properties
+  const allParsedData = [defaultData];
 
   for (const filePath of candidates) {
     if (fs.existsSync(filePath)) {
@@ -652,8 +653,6 @@ function initInMemoryDb() {
       }
     }
   }
-
-  allParsedData.push(defaultData);
 
   // Cumulative Merging across all files & persistent storage
   const mergedSettings = {};
