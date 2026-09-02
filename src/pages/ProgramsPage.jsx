@@ -1,7 +1,78 @@
 import React from 'react';
 import { Calendar, Clock, UserCheck, ShieldCheck, ArrowRight } from 'lucide-react';
 
+const defaultProgramsList = [
+  {
+    id: "p1",
+    name: "Kids Taekwondo",
+    description: "Designed for young children to build discipline, physical coordination, confidence, focus, and fundamental martial arts movement in a fun, safe environment.",
+    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+    ageGroup: "Ages 5 - 11",
+    days: "Mon, Wed, Fri",
+    time: "4:30 PM - 5:30 PM",
+    duration: "60 mins per session",
+    fee: "₹1,800 / month"
+  },
+  {
+    id: "p2",
+    name: "Beginners Course",
+    description: "Ideal foundation course for newcomers covering basic kicks, blocks, stances, Poomsae (patterns), and core martial discipline.",
+    image: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
+    ageGroup: "Ages 12+",
+    days: "Tue, Thu, Sat",
+    time: "5:30 PM - 6:30 PM",
+    duration: "60 mins per session",
+    fee: "₹1,800 / month"
+  },
+  {
+    id: "p3",
+    name: "Advanced Training",
+    description: "Intense regimen for color belt students aiming for Black Belt proficiency, mastering complex kicking combinations, advanced forms, and tactical sparring.",
+    image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
+    ageGroup: "Yellow Belt & Above",
+    days: "Mon to Fri",
+    time: "6:30 PM - 7:45 PM",
+    duration: "75 mins per session",
+    fee: "₹1,800 / month"
+  },
+  {
+    id: "p4",
+    name: "Competition Training",
+    description: "High-performance sparring (Kyorugi) and technical Poomsae camp for tournament athletes with electronic scoring system practice.",
+    image: "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
+    ageGroup: "Selected Athletes",
+    days: "Daily & Weekends",
+    time: "6:00 AM - 8:00 AM",
+    duration: "120 mins per session",
+    fee: "₹2,000 / month"
+  },
+  {
+    id: "p5",
+    name: "Adults Training",
+    description: "Taekwondo fitness, stress relief, strength conditioning, and martial skill mastery for working professionals and adults.",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+    ageGroup: "Ages 18+",
+    days: "Mon, Wed, Fri",
+    time: "7:45 PM - 8:45 PM",
+    duration: "60 mins per session",
+    fee: "₹1,500 / month"
+  },
+  {
+    id: "p6",
+    name: "Self Defense",
+    description: "Practical real-world self-defense techniques, situational awareness, escape tactics, and joint locks for safety and confidence.",
+    image: "https://images.unsplash.com/photo-1564415300397-6a4a15998a69?auto=format&fit=crop&w=800&q=80",
+    ageGroup: "All Ages",
+    days: "Sat & Sun",
+    time: "8:00 AM - 9:30 AM",
+    duration: "90 mins per session",
+    fee: "₹1,200 / month"
+  }
+];
+
 export default function ProgramsPage({ programs = [], onOpenJoinModal }) {
+  const displayPrograms = programs && programs.length > 0 ? programs : defaultProgramsList;
+
   return (
     <div className="programs-page">
       <section className="page-header">
@@ -15,7 +86,7 @@ export default function ProgramsPage({ programs = [], onOpenJoinModal }) {
       <section className="section-padding bg-white">
         <div className="container">
           <div className="programs-detail-list">
-            {programs.map((prog, idx) => (
+            {displayPrograms.map((prog, idx) => (
               <div key={prog.id} className={`card program-detail-card ${idx % 2 === 1 ? 'reverse' : ''}`}>
                 <div className="prog-detail-img">
                   <img src={prog.image} alt={prog.name} />
