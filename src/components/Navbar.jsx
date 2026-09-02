@@ -23,6 +23,7 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
     { id: 'videos', label: 'Videos', icon: '🎬' },
     { id: 'events', label: 'Events', icon: '📅' },
     { id: 'fees', label: 'Fees', icon: '💰' },
+    { id: 'reviews', label: 'Reviews', icon: '⭐' },
     { id: 'payment', label: 'Pay Now', icon: '💳' },
     { id: 'contact', label: 'Contact', icon: '📞' },
   ];

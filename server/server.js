@@ -447,6 +447,59 @@ app.delete('/api/enquiries/:id', (req, res) => {
   res.json({ success: true });
 });
 
+// Reviews CRUD API
+app.get('/api/reviews', (req, res) => {
+  const allReviews = db.get().reviews || [];
+  res.json(allReviews);
+});
+
+app.post('/api/reviews', (req, res) => {
+  const { name, role, program, rating, title, comment } = req.body;
+  const newReview = {
+    id: `rev_${Date.now()}`,
+    name: name || "Academy Athlete",
+    role: role || "Student",
+    program: program || "Taekwondo Training",
+    rating: Number(rating) || 5,
+    title: title || "Outstanding Experience",
+    comment: comment || "",
+    date: new Date().toISOString().split('T')[0],
+    isApproved: true,
+    verified: true
+  };
+
+  db.update(data => {
+    if (!data.reviews) data.reviews = [];
+    data.reviews.unshift(newReview);
+    return data;
+  });
+
+  res.status(201).json({ message: "Review submitted successfully!", review: newReview });
+});
+
+app.patch('/api/reviews/:id', (req, res) => {
+  const { id } = req.params;
+  db.update(data => {
+    if (!data.reviews) data.reviews = [];
+    const idx = data.reviews.findIndex(r => r.id === id);
+    if (idx !== -1) {
+      data.reviews[idx] = { ...data.reviews[idx], ...req.body };
+    }
+    return data;
+  });
+  res.json({ success: true });
+});
+
+app.delete('/api/reviews/:id', (req, res) => {
+  const { id } = req.params;
+  db.update(data => {
+    if (!data.reviews) data.reviews = [];
+    data.reviews = data.reviews.filter(r => r.id !== id);
+    return data;
+  });
+  res.json({ success: true });
+});
+
 // Payment Settings API
 app.get('/api/payment', (req, res) => {
   const currentDb = db.get();

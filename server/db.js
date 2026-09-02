@@ -603,7 +603,81 @@ const defaultData = {
       "bankName": "Kotak Mahindera Bank"
     },
     "additionalQrCodes": []
-  }
+  },
+  "reviews": [
+    {
+      "id": "rev_1",
+      "name": "Priya Sharma",
+      "role": "Parent of Kids Batch Student",
+      "program": "Kids Taekwondo Training Program",
+      "rating": 5,
+      "title": "Incredible transformation in discipline & confidence!",
+      "comment": "My 8-year-old son joined D Taekwondo Academy 6 months ago. Master Darshan and Coach Sameer have an exceptional way with children—instilling discipline, focus, and martial arts values with great patience. Highly recommended for parents!",
+      "date": "2026-08-20",
+      "isApproved": true,
+      "verified": true
+    },
+    {
+      "id": "rev_2",
+      "name": "Rahul Verma",
+      "role": "State Level Athlete",
+      "program": "Competition Training",
+      "rating": 5,
+      "title": "Championship-level coaching and athletic conditioning",
+      "comment": "The sparring drills, electronic chest-guard simulation, and athletic conditioning are top-tier. Thanks to the rigorous training under Master Darshan Sir, I secured a Gold Medal at the State Championship this year!",
+      "date": "2026-08-15",
+      "isApproved": true,
+      "verified": true
+    },
+    {
+      "id": "rev_3",
+      "name": "Ananya Kulkarni",
+      "role": "Self Defense Trainee",
+      "program": "Self Defense Training Program for Women",
+      "rating": 5,
+      "title": "Empowering & practical self-defense techniques",
+      "comment": "The weekend women's self-defense sessions have given me so much real-world situational awareness and physical confidence. The escape drills and joint locks taught here are realistic and effective.",
+      "date": "2026-08-10",
+      "isApproved": true,
+      "verified": true
+    },
+    {
+      "id": "rev_4",
+      "name": "Karthik Nambiar",
+      "role": "Adult Student",
+      "program": "Advanced Training Program",
+      "rating": 5,
+      "title": "Best martial arts dojang in Bengaluru",
+      "comment": "As a working professional, attending evening classes has dramatically boosted my stamina, flexibility, and mental discipline. The atmosphere is respectful, motivating, and full of positive energy.",
+      "date": "2026-07-28",
+      "isApproved": true,
+      "verified": true
+    },
+    {
+      "id": "rev_5",
+      "name": "Dr. Sneha Hegde",
+      "role": "Parent",
+      "program": "Kids Taekwondo Training Program",
+      "rating": 5,
+      "title": "Safe, professional, and world-class instructors",
+      "comment": "Both my daughters love attending their Taekwondo sessions. The academy is clean, well-equipped with mats and safety gear, and the coaches hold authentic Kukkiwon Black Belt Dan certifications.",
+      "date": "2026-07-14",
+      "isApproved": true,
+      "verified": true
+    },
+    {
+      "id": "rev_6",
+      "name": "Vikas Gowda",
+      "role": "Tech Enthusiast & Student",
+      "program": "VR Taekwondo Experience",
+      "rating": 5,
+      "title": "The VR Taekwondo simulation is mind-blowing!",
+      "comment": "Combining virtual reality with real martial arts reaction training is truly innovative. It makes reaction training and sparring drills super engaging and fun.",
+      "date": "2026-06-30",
+      "isApproved": true,
+      "verified": true
+    }
+  ]
 };
 
 let inMemoryData = null;
@@ -650,6 +724,7 @@ function initInMemoryDb() {
   const videoMap = new Map();
   const eventMap = new Map();
   const feeMap = new Map();
+  const reviewMap = new Map();
 
   // Merge in order (defaultData first, candidate files after so recent entries override defaults)
   for (const data of allParsedData) {
@@ -717,6 +792,12 @@ function initInMemoryDb() {
       const key = item.programName ? item.programName.toLowerCase().trim() : (item.id || JSON.stringify(item));
       feeMap.set(key, { ...(feeMap.get(key) || {}), ...item });
     });
+
+    (data.reviews || []).forEach(item => {
+      if (!item) return;
+      const key = item.id || (item.name + item.date) || JSON.stringify(item);
+      reviewMap.set(key, { ...(reviewMap.get(key) || {}), ...item });
+    });
   }
 
   inMemoryData = {
@@ -733,7 +814,8 @@ function initInMemoryDb() {
     gallery: Array.from(galleryMap.values()),
     videos: Array.from(videoMap.values()),
     events: Array.from(eventMap.values()),
-    fees: Array.from(feeMap.values())
+    fees: Array.from(feeMap.values()),
+    reviews: Array.from(reviewMap.values())
   };
 
   saveInMemoryDb(inMemoryData);

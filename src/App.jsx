@@ -16,6 +16,8 @@ import FeesPage from './pages/FeesPage';
 import ContactPage from './pages/ContactPage';
 import JoinPage from './pages/JoinPage';
 import PaymentPage from './pages/PaymentPage';
+import ReviewsPage from './pages/ReviewsPage';
+import ReviewModal from './components/ReviewModal';
 
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -168,11 +170,13 @@ export default function App() {
   const [videos, setVideos] = useState([]);
   const [events, setEvents] = useState([]);
   const [fees, setFees] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [payment, setPayment] = useState(null);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const fetchPublicData = async () => {
     try {
-      const [sRes, stRes, aRes, pRes, cRes, achRes, gRes, vRes, eRes, fRes, payRes] = await Promise.all([
+      const [sRes, stRes, aRes, pRes, cRes, achRes, gRes, vRes, eRes, fRes, rRes, payRes] = await Promise.all([
         fetch('/api/settings'),
         fetch('/api/stats'),
         fetch('/api/about'),
@@ -183,6 +187,7 @@ export default function App() {
         fetch('/api/videos'),
         fetch('/api/events'),
         fetch('/api/fees'),
+        fetch('/api/reviews'),
         fetch('/api/payment')
       ]);
 
@@ -202,6 +207,7 @@ export default function App() {
       if (vRes.ok) setVideos(await vRes.json());
       if (eRes.ok) setEvents(await eRes.json());
       if (fRes.ok) setFees(await fRes.json());
+      if (rRes.ok) setReviews(await rRes.json());
       if (payRes.ok) setPayment(await payRes.json());
     } catch (err) {
       console.error("Error fetching public data:", err);
@@ -267,8 +273,10 @@ export default function App() {
                 achievements={achievements}
                 events={events}
                 gallery={gallery}
+                reviews={reviews}
                 setActivePage={setActivePage}
                 onOpenJoinModal={(eventName, isEvent, fee) => handleOpenJoinModal(eventName, isEvent, fee)}
+                onOpenReviewModal={() => setIsReviewModalOpen(true)}
                 onJoinNow={() => handleOpenStudentRegister()}
                 onOpenLightbox={handleOpenLightbox}
               />
@@ -304,6 +312,14 @@ export default function App() {
 
             {activePage === 'fees' && (
               <FeesPage fees={fees} settings={settings} payment={payment} setActivePage={setActivePage} onOpenJoinModal={() => handleOpenJoinModal()} />
+            )}
+
+            {activePage === 'reviews' && (
+              <ReviewsPage 
+                reviews={reviews} 
+                onOpenReviewModal={() => setIsReviewModalOpen(true)} 
+                programs={programs} 
+              />
             )}
 
             {activePage === 'contact' && (
@@ -355,7 +371,17 @@ export default function App() {
             isEvent={joinModalConfig.isEvent}
             eventFee={joinModalConfig.eventFee}
             payment={payment}
-            settings={settings}
+          />
+
+          {/* Review Submission Modal */}
+          <ReviewModal 
+            isOpen={isReviewModalOpen}
+            onClose={() => setIsReviewModalOpen(false)}
+            programs={programs}
+            onReviewSubmitted={(newRev) => {
+              setReviews(prev => [newRev, ...prev]);
+              fetchPublicData();
+            }}
           />
 
           {/* Image Lightbox Modal */}

@@ -55,6 +55,7 @@ export default function Footer({ setActivePage, onOpenJoinModal, settings }) {
             <li><button onClick={() => handleNavClick('programs')}>Training Programs</button></li>
             <li><button onClick={() => handleNavClick('achievements')}>Achievements & Medals</button></li>
             <li><button onClick={() => handleNavClick('gallery')}>Photo Gallery</button></li>
+            <li><button onClick={() => handleNavClick('reviews')}>Athlete & Parent Reviews</button></li>
             <li><button onClick={() => handleNavClick('payment')}>Pay Online & Submit UTR</button></li>
             <li><button onClick={() => handleNavClick('contact')}>Contact Us</button></li>
           </ul>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, Settings, Info, BookOpen, Users, Trophy, Image, 
   Calendar, DollarSign, Inbox, LogOut, Plus, Trash2, Edit3, 
-  Upload, CheckCircle, X, Eye, EyeOff, Save, Video, QrCode, Clock, AlertCircle, Check, ShieldCheck, ClipboardList, Database, Download
+  Upload, CheckCircle, X, Eye, EyeOff, Save, Video, QrCode, Clock, AlertCircle, Check, ShieldCheck, ClipboardList, Database, Download, Star, MessageSquare
 } from 'lucide-react';
 import { YoutubeIcon } from '../../components/SocialIcons';
 
@@ -18,7 +18,12 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
     phone: "+91 94827 97451",
     whatsapp: "+91 94827 97451",
     email: "info@dtaekwondoacademy.com",
-    address: "Bengaluru Urban, Karnataka, India"
+    address: "Bengaluru Urban, Karnataka, India",
+    workingHours: "Mon-Sat: 6:00 AM - 8:00 PM | Sun: 6:00 AM - 12:00 PM",
+    statsCountMembers: "500+",
+    statsCountTrainers: "8+",
+    statsCountAwards: "45+",
+    statsCountExperience: "12+"
   });
   const [stats, setStats] = useState({
     yearsExperience: "15+",
@@ -40,6 +45,7 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
   const [events, setEvents] = useState([]);
   const [fees, setFees] = useState([]);
   const [enquiries, setEnquiries] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [payment, setPayment] = useState({
     upiId: 'dtaekwondo@upi',
     payeeName: 'D TAEKWONDO ACADEMY',
@@ -115,7 +121,7 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
   const fetchAllAdminData = async () => {
     setLoading(true);
     try {
-      const [sRes, stRes, aRes, pRes, cRes, achRes, gRes, vRes, eRes, fRes, enqRes, paySettingsRes, allPayRes, studRes] = await Promise.all([
+      const [sRes, stRes, aRes, pRes, cRes, achRes, gRes, vRes, eRes, fRes, enqRes, revRes, paySettingsRes, allPayRes, studRes] = await Promise.all([
         fetch('/api/settings'),
         fetch('/api/stats'),
         fetch('/api/about'),
@@ -127,6 +133,7 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
         fetch('/api/events'),
         fetch('/api/fees'),
         fetch('/api/enquiries'),
+        fetch('/api/reviews'),
         fetch('/api/payment'),
         fetch('/api/admin/payments'),
         fetch('/api/admin/students')
@@ -146,6 +153,7 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
       setEvents(await eRes.json());
       setFees(await fRes.json());
       setEnquiries(await enqRes.json());
+      if (revRes.ok) setReviews(await revRes.json());
       if (paySettingsRes.ok) setPayment(await paySettingsRes.json());
       if (allPayRes.ok) setAllPayments(await allPayRes.json());
       if (studRes.ok) setStudents(await studRes.json());
@@ -255,6 +263,24 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
       setModalType(null);
       setEditingItem(null);
       showNotification(`Student ${isEdit ? 'updated' : 'created'} successfully!`);
+      fetchAllAdminData();
+      return;
+    }
+
+    if (modalType === 'review') {
+      const isEdit = Boolean(editingItem.id);
+      const url = isEdit ? `/api/reviews/${editingItem.id}` : '/api/reviews';
+      const method = isEdit ? 'PATCH' : 'POST';
+
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingItem)
+      });
+
+      setModalType(null);
+      setEditingItem(null);
+      showNotification(`Review ${isEdit ? 'updated' : 'added'} successfully!`);
       fetchAllAdminData();
       return;
     }
@@ -402,6 +428,9 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
           <button onClick={() => setActiveTab('fee-approvals')} className={`admin-nav-btn ${activeTab === 'fee-approvals' ? 'active' : ''}`}>
             <CheckCircle size={18} /> Fee Approvals {pendingPaymentsCount > 0 && <span className="enq-count-badge">{pendingPaymentsCount}</span>}
           </button>
+          <button onClick={() => setActiveTab('reviews')} className={`admin-nav-btn ${activeTab === 'reviews' ? 'active' : ''}`}>
+            <Star size={18} /> Reviews ({reviews.length})
+          </button>
           <button onClick={() => setActiveTab('enquiries')} className={`admin-nav-btn ${activeTab === 'enquiries' ? 'active' : ''}`}>
             <Inbox size={18} /> Enquiries {newEnquiriesCount > 0 && <span className="enq-count-badge">{newEnquiriesCount}</span>}
           </button>
@@ -446,6 +475,7 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
             <option value="payment">💳 Payment QR & Bank</option>
             <option value="students">👥 Student Directory ({students.length})</option>
             <option value="fee-approvals">✅ Fee Approvals ({pendingPaymentsCount})</option>
+            <option value="reviews">⭐ Reviews ({reviews.length})</option>
             <option value="enquiries">📩 Admission Enquiries ({newEnquiriesCount})</option>
           </select>
         </div>
@@ -2068,6 +2098,136 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
               </div>
             </div>
           )}
+
+          {/* TAB: REVIEWS MANAGEMENT */}
+          {activeTab === 'reviews' && (
+            <div className="tab-pane">
+              <div className="pane-header flex justify-between items-center" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div>
+                  <h3 className="pane-title" style={{ margin: 0 }}>⭐ Athlete & Parent Reviews ({reviews.length})</h3>
+                  <p style={{ color: '#64748b', fontSize: '0.85rem', margin: '4px 0 0' }}>Moderate, approve, edit, and manage public reviews displayed on the website and home page.</p>
+                </div>
+                <button 
+                  onClick={() => {
+                    setModalType('review');
+                    setEditingItem({
+                      name: '',
+                      role: 'Parent of Student',
+                      program: 'Kids Taekwondo Training Program',
+                      rating: 5,
+                      title: '',
+                      comment: '',
+                      isApproved: true,
+                      verified: true
+                    });
+                  }}
+                  className="btn btn-primary-red"
+                >
+                  <Plus size={16} /> Add New Review
+                </button>
+              </div>
+
+              <div className="card">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Reviewer</th>
+                      <th>Program / Role</th>
+                      <th>Rating</th>
+                      <th>Review & Feedback</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reviews.length === 0 ? (
+                      <tr>
+                        <td colSpan="7" style={{ textAlign: 'center', padding: '32px', color: '#64748b' }}>No reviews submitted yet.</td>
+                      </tr>
+                    ) : (
+                      reviews.map((rev) => (
+                        <tr key={rev.id}>
+                          <td>
+                            <strong>{rev.name}</strong>
+                            {rev.verified !== false && (
+                              <span style={{ display: 'block', fontSize: '0.72rem', color: '#059669', fontWeight: 'bold' }}>✓ Verified</span>
+                            )}
+                          </td>
+                          <td>
+                            <div style={{ fontSize: '0.85rem', fontWeight: '600' }}>{rev.role || 'Student'}</div>
+                            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{rev.program}</span>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#f59e0b' }}>
+                              {[...Array(Number(rev.rating) || 5)].map((_, i) => (
+                                <Star key={i} size={14} style={{ fill: '#f59e0b' }} />
+                              ))}
+                              <span style={{ fontSize: '0.8rem', fontWeight: 'bold', marginLeft: '4px' }}>{rev.rating}.0</span>
+                            </div>
+                          </td>
+                          <td style={{ maxWidth: '320px' }}>
+                            {rev.title && <strong style={{ display: 'block', fontSize: '0.85rem', color: '#0f172a' }}>"{rev.title}"</strong>}
+                            <p style={{ fontSize: '0.82rem', color: '#475569', margin: '2px 0 0', lineHeight: 1.4 }}>{rev.comment}</p>
+                          </td>
+                          <td style={{ fontSize: '0.8rem', color: '#64748b' }}>{rev.date || 'Recent'}</td>
+                          <td>
+                            <span className={`badge ${rev.isApproved !== false ? 'badge-green' : 'badge-gold'}`}>
+                              {rev.isApproved !== false ? 'Published' : 'Hidden'}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="table-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                              <button
+                                onClick={async () => {
+                                  const newStatus = rev.isApproved === false ? true : false;
+                                  await fetch(`/api/reviews/${rev.id}`, {
+                                    method: 'PATCH',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ isApproved: newStatus })
+                                  });
+                                  showNotification(newStatus ? 'Review Published' : 'Review Hidden');
+                                  fetchAllAdminData();
+                                }}
+                                className="btn btn-sm"
+                                style={{
+                                  background: rev.isApproved !== false ? '#f1f5f9' : '#16a34a',
+                                  color: rev.isApproved !== false ? '#475569' : '#ffffff',
+                                  border: 'none',
+                                  padding: '4px 8px',
+                                  borderRadius: '6px',
+                                  cursor: 'pointer',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 'bold'
+                                }}
+                                title={rev.isApproved !== false ? "Hide Review" : "Publish Review"}
+                              >
+                                {rev.isApproved !== false ? <EyeOff size={14} /> : <Eye size={14} />}
+                              </button>
+
+                              <button
+                                onClick={async () => {
+                                  if (confirm(`Delete review from ${rev.name}?`)) {
+                                    await fetch(`/api/reviews/${rev.id}`, { method: 'DELETE' });
+                                    showNotification('Review deleted');
+                                    fetchAllAdminData();
+                                  }
+                                }}
+                                className="action-icon delete"
+                                title="Delete review"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
@@ -2426,6 +2586,66 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                       <select value={editingItem.status || 'Active'} onChange={(e) => setEditingItem({ ...editingItem, status: e.target.value })} className="form-control">
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Review Fields */}
+              {modalType === 'review' && (
+                <>
+                  <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
+                      <label>Reviewer Name *</label>
+                      <input type="text" value={editingItem.name || ''} onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })} required className="form-control" placeholder="e.g. Priya Sharma" />
+                    </div>
+                    <div className="form-group">
+                      <label>Role / Title *</label>
+                      <input type="text" value={editingItem.role || ''} onChange={(e) => setEditingItem({ ...editingItem, role: e.target.value })} required className="form-control" placeholder="e.g. Parent of Student / State Athlete" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
+                      <label>Program</label>
+                      <input type="text" value={editingItem.program || ''} onChange={(e) => setEditingItem({ ...editingItem, program: e.target.value })} className="form-control" placeholder="e.g. Kids Taekwondo Training Program" />
+                    </div>
+                    <div className="form-group">
+                      <label>Star Rating (1 to 5) *</label>
+                      <select value={editingItem.rating || 5} onChange={(e) => setEditingItem({ ...editingItem, rating: Number(e.target.value) })} className="form-control">
+                        <option value={5}>⭐⭐⭐⭐⭐ 5 Stars (Outstanding)</option>
+                        <option value={4}>⭐⭐⭐⭐ 4 Stars (Very Good)</option>
+                        <option value={3}>⭐⭐⭐ 3 Stars (Good)</option>
+                        <option value={2}>⭐⭐ 2 Stars (Fair)</option>
+                        <option value={1}>⭐ 1 Star (Poor)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Review Headline / Title</label>
+                    <input type="text" value={editingItem.title || ''} onChange={(e) => setEditingItem({ ...editingItem, title: e.target.value })} className="form-control" placeholder="e.g. Incredible coaching and dedication!" />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Review Feedback *</label>
+                    <textarea value={editingItem.comment || ''} onChange={(e) => setEditingItem({ ...editingItem, comment: e.target.value })} required className="form-control" rows="4" placeholder="Detailed testimonial..."></textarea>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select value={editingItem.isApproved !== false ? 'Approved' : 'Hidden'} onChange={(e) => setEditingItem({ ...editingItem, isApproved: e.target.value === 'Approved' })} className="form-control">
+                        <option value="Approved">Published on Website</option>
+                        <option value="Hidden">Hidden / Draft</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Verified Athlete / Parent Badge</label>
+                      <select value={editingItem.verified !== false ? 'Verified' : 'Unverified'} onChange={(e) => setEditingItem({ ...editingItem, verified: e.target.value === 'Verified' })} className="form-control">
+                        <option value="Verified">✓ Show Verified Member Badge</option>
+                        <option value="Unverified">Standard</option>
                       </select>
                     </div>
                   </div>
