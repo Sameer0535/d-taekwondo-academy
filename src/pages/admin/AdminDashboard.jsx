@@ -2994,11 +2994,12 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
           border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .admin-brand-logo {
-          height: 48px;
+          height: 58px;
           width: auto;
           background: #ffffff;
-          padding: 4px;
-          border-radius: 8px;
+          padding: 6px;
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .admin-brand h3 {
           color: #ffffff;

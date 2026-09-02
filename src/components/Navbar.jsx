@@ -208,36 +208,47 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
           color: var(--primary-red);
         }
         .main-nav-wrapper {
-          padding: 8px 0;
+          padding: 4px 0;
         }
         .main-nav-container {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          gap: 16px;
+        }
+        .nav-logo {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
         }
         .official-brand-logo {
-          height: 96px;
+          height: 118px;
+          min-height: 100px;
           width: auto;
           object-fit: contain;
           display: block;
+          filter: drop-shadow(0 3px 10px rgba(0,0,0,0.06));
           transition: transform 0.2s ease;
+          flex-shrink: 0;
         }
         .official-brand-logo:hover {
-          transform: scale(1.04);
+          transform: scale(1.05);
         }
         .desktop-menu {
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 2px;
+          flex-wrap: nowrap;
         }
         .nav-link {
           background: transparent;
           border: none;
           font-family: var(--font-heading);
           font-weight: 700;
-          font-size: 0.96rem;
+          font-size: 0.92rem;
           color: #374151;
-          padding: 8px 14px;
+          padding: 7px 10px;
           border-radius: 8px;
           cursor: pointer;
           white-space: nowrap;
@@ -256,6 +267,7 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
           display: flex;
           align-items: center;
           gap: 12px;
+          flex-shrink: 0;
         }
         .mobile-hamburger {
           display: none;

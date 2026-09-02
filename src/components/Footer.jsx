@@ -123,13 +123,14 @@ export default function Footer({ setActivePage, onOpenJoinModal, settings }) {
           padding-bottom: 60px;
         }
         .footer-brand-logo {
-          height: 88px;
+          height: 100px;
           width: auto;
           object-fit: contain;
-          margin-bottom: 12px;
+          margin-bottom: 14px;
           background: #ffffff;
-          padding: 8px;
-          border-radius: 12px;
+          padding: 10px;
+          border-radius: 14px;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .footer-brand-title {
           color: #ffffff;
