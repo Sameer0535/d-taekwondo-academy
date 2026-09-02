@@ -145,30 +145,87 @@ export default function HomePage({
             <p>From early youth discipline to elite championship sparring, we offer tailored martial arts programs for all age groups.</p>
           </div>
 
-          <div className="programs-grid">
-            {programs.slice(0, 6).map((prog) => (
-              <div key={prog.id} className="card program-card">
-                <div className="card-img-wrap">
-                  <img src={prog.image} alt={prog.name} />
-                  <span className="badge badge-gold card-badge">{prog.ageGroup}</span>
-                </div>
-                <div className="card-body">
-                  <h3>{prog.name}</h3>
-                  <p>{prog.description}</p>
-                  <div className="program-meta">
-                    <span>🗓 {prog.days}</span>
-                    <span>⏱ {prog.time}</span>
+          {(() => {
+            const displayPrograms = programs && programs.length > 0 ? programs : [
+              {
+                id: "p1",
+                name: "Kids Taekwondo Training Program",
+                description: "Designed for young children to build discipline, physical coordination, confidence, focus, and fundamental martial arts movement in a fun, safe environment.",
+                image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+                ageGroup: "AGES 5 - 12",
+                days: "Mon, Wed, Fri",
+                time: "4:30 PM - 5:30 PM",
+                fee: "₹1,800 / month"
+              },
+              {
+                id: "p2",
+                name: "Advanced Training Program",
+                description: "Intense regimen for color belt students aiming for Black Belt proficiency, mastering complex kicking combinations, advanced forms, and tactical sparring.",
+                image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
+                ageGroup: "GREEN BELT & ABOVE",
+                days: "Mon to Fri",
+                time: "6:30 PM - 7:45 PM",
+                fee: "₹2,000 / month"
+              },
+              {
+                id: "p3",
+                name: "Competition Training",
+                description: "Intensive training focused on advanced Kyorugi (Sparring) and Poomsae (Forms) techniques, competition strategies, speed, agility, precision, and fitness.",
+                image: "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
+                ageGroup: "SELECTED ATHLETES",
+                days: "Daily & Weekends",
+                time: "6:00 AM - 8:00 AM",
+                fee: "₹2,000 / month"
+              },
+              {
+                id: "p4",
+                name: "Self Defense Training Program for Women",
+                description: "Practical real-world self-defense techniques, situational awareness, escape tactics, and joint locks for safety and confidence.",
+                image: "https://images.unsplash.com/photo-1564415300397-6a4a15998a69?auto=format&fit=crop&w=800&q=80",
+                ageGroup: "ALL AGES",
+                days: "Sat & Sun",
+                time: "8:00 AM - 9:30 AM",
+                fee: "₹800 / month"
+              },
+              {
+                id: "p5",
+                name: "VR Taekwondo Experience",
+                description: "Experience Taekwondo in an immersive virtual environment, combining modern VR technology with interactive training to make learning engaging, realistic, and exciting.",
+                image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+                ageGroup: "18+ YEARS",
+                days: "Mon, Wed, Fri",
+                time: "4:30 PM - 5:30 PM",
+                fee: "₹2,000 / month"
+              }
+            ];
+
+            return (
+              <div className="programs-grid">
+                {displayPrograms.slice(0, 6).map((prog) => (
+                  <div key={prog.id} className="card program-card">
+                    <div className="card-img-wrap">
+                      <img src={prog.image} alt={prog.name} />
+                      <span className="badge badge-gold card-badge">{prog.ageGroup}</span>
+                    </div>
+                    <div className="card-body">
+                      <h3>{prog.name}</h3>
+                      <p>{prog.description}</p>
+                      <div className="program-meta">
+                        <span>🗓 {prog.days}</span>
+                        <span>⏱ {prog.time}</span>
+                      </div>
+                      <div className="card-footer-action">
+                        <span className="fee-tag">{prog.fee}</span>
+                        <button onClick={() => handleNavClick('programs')} className="btn btn-outline-dark btn-sm">
+                          LEARN MORE
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="card-footer-action">
-                    <span className="fee-tag">{prog.fee}</span>
-                    <button onClick={() => handleNavClick('programs')} className="btn btn-outline-dark btn-sm">
-                      LEARN MORE
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </div>
       </section>
 
