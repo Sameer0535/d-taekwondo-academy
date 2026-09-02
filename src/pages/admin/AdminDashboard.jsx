@@ -2086,26 +2086,63 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
               {modalType === 'program' && (
                 <>
                   <div className="form-group">
-                    <label>Program Name</label>
-                    <input type="text" value={editingItem.name} onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })} required className="form-control" />
+                    <label>Program Name *</label>
+                    <input type="text" value={editingItem.name || ''} onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })} required className="form-control" placeholder="e.g. Kids Taekwondo Training Program" />
                   </div>
                   <div className="form-group">
-                    <label>Description</label>
-                    <textarea value={editingItem.description} onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })} required className="form-control" rows="3"></textarea>
+                    <label>Description *</label>
+                    <textarea value={editingItem.description || ''} onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })} required className="form-control" rows="3" placeholder="Brief program overview and curriculum..."></textarea>
                   </div>
                   <div className="grid grid-cols-2 gap-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div className="form-group">
                       <label>Age Group</label>
-                      <input type="text" value={editingItem.ageGroup} onChange={(e) => setEditingItem({ ...editingItem, ageGroup: e.target.value })} className="form-control" />
+                      <input type="text" value={editingItem.ageGroup || ''} onChange={(e) => setEditingItem({ ...editingItem, ageGroup: e.target.value })} className="form-control" placeholder="e.g. AGES 5 – 12" />
                     </div>
                     <div className="form-group">
                       <label>Fee</label>
-                      <input type="text" value={editingItem.fee} onChange={(e) => setEditingItem({ ...editingItem, fee: e.target.value })} className="form-control" />
+                      <input type="text" value={editingItem.fee || ''} onChange={(e) => setEditingItem({ ...editingItem, fee: e.target.value })} className="form-control" placeholder="e.g. ₹1,800 / month" />
                     </div>
                   </div>
+
+                  {/* Schedule Details */}
+                  <div className="grid grid-cols-3 gap-4" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.2fr 0.8fr', gap: '14px', background: '#f8fafc', padding: '14px', borderRadius: '10px', border: '1px solid #e2e8f0', margin: '14px 0' }}>
+                    <div className="form-group" style={{ margin: 0 }}>
+                      <label style={{ fontSize: '0.82rem', fontWeight: 'bold', color: '#1e293b', marginBottom: '4px', display: 'block' }}>📅 Training Days *</label>
+                      <input 
+                        type="text" 
+                        value={editingItem.days || ''} 
+                        onChange={(e) => setEditingItem({ ...editingItem, days: e.target.value })} 
+                        className="form-control" 
+                        placeholder="e.g. Mon, Wed, Fri" 
+                        required 
+                      />
+                    </div>
+                    <div className="form-group" style={{ margin: 0 }}>
+                      <label style={{ fontSize: '0.82rem', fontWeight: 'bold', color: '#1e293b', marginBottom: '4px', display: 'block' }}>⏰ Training Time *</label>
+                      <input 
+                        type="text" 
+                        value={editingItem.time || ''} 
+                        onChange={(e) => setEditingItem({ ...editingItem, time: e.target.value })} 
+                        className="form-control" 
+                        placeholder="e.g. 4:30 PM - 5:30 PM" 
+                        required 
+                      />
+                    </div>
+                    <div className="form-group" style={{ margin: 0 }}>
+                      <label style={{ fontSize: '0.82rem', fontWeight: 'bold', color: '#1e293b', marginBottom: '4px', display: 'block' }}>⏳ Duration</label>
+                      <input 
+                        type="text" 
+                        value={editingItem.duration || ''} 
+                        onChange={(e) => setEditingItem({ ...editingItem, duration: e.target.value })} 
+                        className="form-control" 
+                        placeholder="e.g. 60 mins" 
+                      />
+                    </div>
+                  </div>
+
                   <div className="form-group">
                     <label>Image URL</label>
-                    <input type="text" value={editingItem.image} onChange={(e) => setEditingItem({ ...editingItem, image: e.target.value })} className="form-control" />
+                    <input type="text" value={editingItem.image || ''} onChange={(e) => setEditingItem({ ...editingItem, image: e.target.value })} className="form-control" placeholder="Image URL or upload below" />
                     <input type="file" onChange={async (e) => { if (e.target.files[0]) { const url = await handleFileUpload(e.target.files[0]); setEditingItem({ ...editingItem, image: url }); } }} className="form-control mt-2" />
                   </div>
                 </>
