@@ -55,7 +55,7 @@ const defaultProgramsList = [
     days: "Mon, Wed, Fri",
     time: "4:30 PM - 5:30 PM",
     duration: "60 mins",
-    fee: "₹2,000 / month"
+    fee: "₹3,000 / month"
   }
 ];
 

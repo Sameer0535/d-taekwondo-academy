@@ -122,7 +122,7 @@ const defaultData = {
       "days": "Mon, Wed, Fri",
       "time": "4:30 PM - 5:30 PM",
       "duration": "60 mins",
-      "fee": "₹2,000 / month"
+      "fee": "₹3,000 / month"
     }
   ],
   "coaches": [
@@ -338,28 +338,41 @@ const defaultData = {
     {
       "id": "f1",
       "programName": "Kids Taekwondo",
-      "monthly": "₹1,000",
-      "quarterly": "₹2,700",
+      "monthly": "₹1,800",
       "yearly": "₹10,000",
-      "regFee": "₹500 (One-time)",
+      "regFee": "₹3500 (One-time)",
       "notes": "Excluding uniform"
     },
     {
       "id": "f2",
-      "programName": "Beginners Course",
-      "monthly": "₹1,200",
-      "quarterly": "₹3,200",
-      "yearly": "₹12,000",
-      "regFee": "₹500 (One-time)",
+      "programName": "Advanced Training",
+      "monthly": "₹1,800",
+      "yearly": "₹15,000",
+      "regFee": "₹3500 (One-time)",
       "notes": "Excluding uniform"
     },
     {
       "id": "f3",
-      "programName": "Advanced Training",
-      "monthly": "₹1,500",
-      "quarterly": "₹4,000",
-      "yearly": "₹15,000",
-      "regFee": "₹500 (One-time)",
+      "programName": "Competition Training",
+      "monthly": "₹2,000",
+      "yearly": "₹12,000",
+      "regFee": "₹3,500 (One-time)",
+      "notes": "Excluding uniform"
+    },
+    {
+      "id": "f4",
+      "programName": "Self Defense",
+      "monthly": "₹800",
+      "yearly": "₹12,000",
+      "regFee": "₹3,500 (One-time)",
+      "notes": "Excluding uniform"
+    },
+    {
+      "id": "f5",
+      "programName": "VR Taekwondo Experience",
+      "monthly": "₹3,000",
+      "yearly": "₹12,000",
+      "regFee": "₹3,500 (One-time)",
       "notes": "Excluding uniform"
     }
   ],

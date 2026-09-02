@@ -232,7 +232,7 @@ export default function HomePage({
                 ageGroup: "18+ YEARS",
                 days: "Mon, Wed, Fri",
                 time: "4:30 PM - 5:30 PM",
-                fee: "₹2,000 / month"
+                fee: "₹3,000 / month"
               }
             ];
 

@@ -1,8 +1,54 @@
 import React from 'react';
 import { CheckCircle2, MessageCircle, HelpCircle } from 'lucide-react';
 
+const defaultFeesList = [
+  {
+    id: "f1",
+    programName: "Kids Taekwondo",
+    monthly: "₹1,800",
+    yearly: "₹10,000",
+    regFee: "₹3500 (One-time)",
+    notes: "Excluding uniform"
+  },
+  {
+    id: "f2",
+    programName: "Advanced Training",
+    monthly: "₹1,800",
+    yearly: "₹15,000",
+    regFee: "₹3500 (One-time)",
+    notes: "Excluding uniform"
+  },
+  {
+    id: "f3",
+    programName: "Competition Training",
+    monthly: "₹2,000",
+    yearly: "₹12,000",
+    regFee: "₹3,500 (One-time)",
+    notes: "Excluding uniform"
+  },
+  {
+    id: "f4",
+    programName: "Self Defense",
+    monthly: "₹800",
+    yearly: "₹12,000",
+    regFee: "₹3,500 (One-time)",
+    notes: "Excluding uniform"
+  },
+  {
+    id: "f5",
+    programName: "VR Taekwondo Experience",
+    monthly: "₹3,000",
+    yearly: "₹12,000",
+    regFee: "₹3,500 (One-time)",
+    notes: "Excluding uniform"
+  }
+];
+
 export default function FeesPage({ fees = [], settings, payment, setActivePage, onOpenJoinModal }) {
   const whatsappNumber = settings?.whatsapp ? settings.whatsapp.replace(/[^0-9]/g, '') : '919876543210';
+  const activeFees = fees && fees.length > 0 ? fees : defaultFeesList;
+
+  const cleanMonthly = (val) => (val || '').replace(/\s*\/\s*month/gi, '').trim();
 
   return (
     <div className="fees-page">
@@ -17,14 +63,14 @@ export default function FeesPage({ fees = [], settings, payment, setActivePage, 
       <section className="section-padding bg-white">
         <div className="container">
           <div className="fees-grid">
-            {fees.map((plan, idx) => (
+            {activeFees.map((plan, idx) => (
               <div key={plan.id || idx} className={`card fee-card ${idx === 1 ? 'featured' : ''}`}>
                 {idx === 1 && <div className="featured-banner">MOST POPULAR</div>}
                 
                 <div className="fee-header">
                   <span className="badge badge-blue mb-2">{plan.programName}</span>
                   <div className="fee-price-large">
-                    {plan.monthly} <span>/ month</span>
+                    {cleanMonthly(plan.monthly)} <span>/ month</span>
                   </div>
                   <p className="reg-fee-text">Registration Fee: <strong>{plan.regFee}</strong></p>
                 </div>
@@ -33,7 +79,7 @@ export default function FeesPage({ fees = [], settings, payment, setActivePage, 
                   <div className="fee-tier-list">
                     <div className="fee-tier">
                       <span>Monthly Plan</span>
-                      <strong>{plan.monthly}</strong>
+                      <strong>{cleanMonthly(plan.monthly)}</strong>
                     </div>
                     <div className="fee-tier gold">
                       <span>Yearly Plan</span>
