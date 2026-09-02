@@ -23,7 +23,7 @@
   },
   "about": {
     "mainImage": "/uploads/1786420348761-538858573.jpeg",
-    "story": "Founded in 2016, D Taekwondo Academy has established itself as a premier martial arts training center dedicated to excellence, discipline, and holistic athletic growth. Our academy has nurtured hundreds of state, national, and international competitors while fostering lifelong health and character in every student.",
+    "story": "Founded in 2023, D Taekwondo Academy has grown into a premier Taekwondo training institution committed to excellence, discipline, and holistic athletic development. Over the years, our academy has trained and nurtured hundreds of aspiring athletes, helping them compete and succeed at state, national, and international levels. Beyond competition and medals, we believe Taekwondo is a journey of discipline, confidence, respect, physical fitness, and character development. Our training environment is designed to help every student discover their potential, build resilience, and develop skills that extend far beyond the training hall. At D Taekwondo Academy, we are dedicated to creating confident athletes, disciplined individuals, and stronger communities through the values and spirit of Taekwondo.",
     "mission": "To provide world-class World Taekwondo (WT) training in a disciplined, safe, and motivating environment, transforming passionate learners into confident leaders and champions.",
     "vision": "To become the nation's leading Taekwondo institution, inspiring athletic excellence and producing Olympic-level competitors.",
     "philosophy": "We believe martial arts is more than physical combat—it is a path of self-discovery, respect, perseverance, and indomitable spirit.",
@@ -37,20 +37,20 @@
     ],
     "facilities": [
       {
-        "name": "Spacious International-Standard Mat Arena",
-        "image": "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80"
+        "name": "Shruthika Springs Apartment",
+        "image": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80"
       },
       {
-        "name": "Electronic Scoring & Sparring Gear",
-        "image": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80"
+        "name": "Concorde Spring Meadows Apartment",
+        "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"
       },
       {
-        "name": "Strength & Agility Conditioning Zone",
-        "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80"
+        "name": "Wisdom Tree Apartment",
+        "image": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80"
       },
       {
-        "name": "Parent Lounge & Viewing Area",
-        "image": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=800&q=80"
+        "name": "SMR Vinay Apartment",
+        "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
       }
     ]
   },
