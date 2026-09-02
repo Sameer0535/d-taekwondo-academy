@@ -597,10 +597,10 @@ const defaultData = {
     "qrCodeImage": "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=dtaekwondo@upi&pn=D%20TAEKWONDO%20ACADEMY",
     "paymentNote": "Please mention student name and program while making payment.",
     "bankDetails": {
-      "accountHolder": "D TAEKWONDO ACADEMY",
-      "accountNumber": "123456789012",
-      "ifscCode": "BANK0001234",
-      "bankName": "HDFC Bank"
+      "accountHolder": "DARSHAN A",
+      "accountNumber": "0047818057",
+      "ifscCode": "KKBK0008094",
+      "bankName": "Kotak Mahindera Bank"
     },
     "additionalQrCodes": []
   }
@@ -678,25 +678,25 @@ function initInMemoryDb() {
 
     (data.programs || []).forEach(item => {
       if (!item) return;
-      const key = item.id || item.name || JSON.stringify(item);
+      const key = item.name ? item.name.toLowerCase().trim() : (item.id || JSON.stringify(item));
       programMap.set(key, { ...(programMap.get(key) || {}), ...item });
     });
 
     (data.coaches || []).forEach(item => {
       if (!item) return;
-      const key = item.id || item.name || JSON.stringify(item);
+      const key = item.name ? item.name.toLowerCase().trim() : (item.id || JSON.stringify(item));
       coachMap.set(key, { ...(coachMap.get(key) || {}), ...item });
     });
 
     (data.achievements || []).forEach(item => {
       if (!item) return;
-      const key = item.id || item.athleteName || JSON.stringify(item);
+      const key = item.id || (item.athleteName + item.tournamentName) || JSON.stringify(item);
       achievementMap.set(key, { ...(achievementMap.get(key) || {}), ...item });
     });
 
     (data.gallery || []).forEach(item => {
       if (!item) return;
-      const key = item.id || item.imageUrl || JSON.stringify(item);
+      const key = item.id || item.title || item.imageUrl || JSON.stringify(item);
       galleryMap.set(key, { ...(galleryMap.get(key) || {}), ...item });
     });
 
@@ -708,13 +708,13 @@ function initInMemoryDb() {
 
     (data.events || []).forEach(item => {
       if (!item) return;
-      const key = item.id || item.name || JSON.stringify(item);
+      const key = item.name ? item.name.toLowerCase().trim() : (item.id || JSON.stringify(item));
       eventMap.set(key, { ...(eventMap.get(key) || {}), ...item });
     });
 
     (data.fees || []).forEach(item => {
       if (!item) return;
-      const key = item.id || item.programName || JSON.stringify(item);
+      const key = item.programName ? item.programName.toLowerCase().trim() : (item.id || JSON.stringify(item));
       feeMap.set(key, { ...(feeMap.get(key) || {}), ...item });
     });
   }

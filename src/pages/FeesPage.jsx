@@ -50,6 +50,16 @@ export default function FeesPage({ fees = [], settings, payment, setActivePage, 
 
   const cleanMonthly = (val) => (val || '').replace(/\s*\/\s*month/gi, '').trim();
 
+  const deduplicatedFees = [];
+  const seenPlans = new Set();
+  for (const plan of activeFees) {
+    const key = (plan.programName || '').toLowerCase().trim();
+    if (!seenPlans.has(key)) {
+      seenPlans.add(key);
+      deduplicatedFees.push(plan);
+    }
+  }
+
   return (
     <div className="fees-page">
       <section className="page-header">
@@ -63,7 +73,7 @@ export default function FeesPage({ fees = [], settings, payment, setActivePage, 
       <section className="section-padding bg-white">
         <div className="container">
           <div className="fees-grid">
-            {activeFees.map((plan, idx) => (
+            {deduplicatedFees.map((plan, idx) => (
               <div key={plan.id || idx} className={`card fee-card ${idx === 1 ? 'featured' : ''}`}>
                 {idx === 1 && <div className="featured-banner">MOST POPULAR</div>}
                 

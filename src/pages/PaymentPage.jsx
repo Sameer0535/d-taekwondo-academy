@@ -165,47 +165,58 @@ export default function PaymentPage({ payment, settings, fees = [] }) {
               )}
 
               {/* Bank Transfer Section */}
-              {hasBankDetails && (
-                <div className="card payment-bank-card">
-                  <div className="bank-header">
-                    <CreditCard size={22} className="text-gold" />
-                    <h3>Bank Transfer</h3>
+              {(() => {
+                const bank = (payment?.bankDetails && payment.bankDetails.accountNumber) 
+                  ? payment.bankDetails 
+                  : {
+                      accountHolder: "DARSHAN A",
+                      accountNumber: "0047818057",
+                      ifscCode: "KKBK0008094",
+                      bankName: "Kotak Mahindera Bank"
+                    };
+
+                return (
+                  <div className="card payment-bank-card">
+                    <div className="bank-header">
+                      <CreditCard size={22} className="text-gold" />
+                      <h3>Bank Transfer</h3>
+                    </div>
+                    <div className="bank-details-grid">
+                      <div className="bank-field">
+                        <span className="bank-label">Account Holder</span>
+                        <div className="bank-value-row">
+                          <span>{bank.accountHolder}</span>
+                          <button onClick={() => handleCopy(bank.accountHolder, 'holder')} className="copy-btn-sm">
+                            {copiedField === 'holder' ? <CheckCircle2 size={13} /> : <Copy size={13} />}
+                          </button>
+                        </div>
+                      </div>
+                      <div className="bank-field">
+                        <span className="bank-label">Account Number</span>
+                        <div className="bank-value-row">
+                          <span>{bank.accountNumber}</span>
+                          <button onClick={() => handleCopy(bank.accountNumber, 'account')} className="copy-btn-sm">
+                            {copiedField === 'account' ? <CheckCircle2 size={13} /> : <Copy size={13} />}
+                          </button>
+                        </div>
+                      </div>
+                      <div className="bank-field">
+                        <span className="bank-label">IFSC Code</span>
+                        <div className="bank-value-row">
+                          <span>{bank.ifscCode}</span>
+                          <button onClick={() => handleCopy(bank.ifscCode, 'ifsc')} className="copy-btn-sm">
+                            {copiedField === 'ifsc' ? <CheckCircle2 size={13} /> : <Copy size={13} />}
+                          </button>
+                        </div>
+                      </div>
+                      <div className="bank-field">
+                        <span className="bank-label">Bank Name</span>
+                        <span className="bank-value">{bank.bankName}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="bank-details-grid">
-                    <div className="bank-field">
-                      <span className="bank-label">Account Holder</span>
-                      <div className="bank-value-row">
-                        <span>{payment.bankDetails.accountHolder}</span>
-                        <button onClick={() => handleCopy(payment.bankDetails.accountHolder, 'holder')} className="copy-btn-sm">
-                          {copiedField === 'holder' ? <CheckCircle2 size={13} /> : <Copy size={13} />}
-                        </button>
-                      </div>
-                    </div>
-                    <div className="bank-field">
-                      <span className="bank-label">Account Number</span>
-                      <div className="bank-value-row">
-                        <span>{payment.bankDetails.accountNumber}</span>
-                        <button onClick={() => handleCopy(payment.bankDetails.accountNumber, 'account')} className="copy-btn-sm">
-                          {copiedField === 'account' ? <CheckCircle2 size={13} /> : <Copy size={13} />}
-                        </button>
-                      </div>
-                    </div>
-                    <div className="bank-field">
-                      <span className="bank-label">IFSC Code</span>
-                      <div className="bank-value-row">
-                        <span>{payment.bankDetails.ifscCode}</span>
-                        <button onClick={() => handleCopy(payment.bankDetails.ifscCode, 'ifsc')} className="copy-btn-sm">
-                          {copiedField === 'ifsc' ? <CheckCircle2 size={13} /> : <Copy size={13} />}
-                        </button>
-                      </div>
-                    </div>
-                    <div className="bank-field">
-                      <span className="bank-label">Bank Name</span>
-                      <span className="bank-value">{payment.bankDetails.bankName}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* UTR Submission Form Card */}
               <div className="card payment-utr-form-card" style={{ padding: '32px', borderTop: '4px solid var(--primary-red)' }}>

@@ -446,10 +446,10 @@
     "qrCodeImage": "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=dtaekwondo@upi&pn=D%20TAEKWONDO%20ACADEMY",
     "paymentNote": "Please mention student name and program while making payment.",
     "bankDetails": {
-      "accountHolder": "D TAEKWONDO ACADEMY",
-      "accountNumber": "123456789012",
-      "ifscCode": "BANK0001234",
-      "bankName": "HDFC Bank"
+      "accountHolder": "DARSHAN A",
+      "accountNumber": "0047818057",
+      "ifscCode": "KKBK0008094",
+      "bankName": "Kotak Mahindera Bank"
     },
     "additionalQrCodes": []
   }
