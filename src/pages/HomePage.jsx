@@ -19,9 +19,46 @@ export default function HomePage({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const defaultEventsList = [
+    {
+      id: "e1",
+      name: "D Taekwondo Academy Belt Examination 2026",
+      date: "2026-09-06",
+      time: "09:00 AM - 05:00 PM",
+      location: "Koramangala Indoor Stadium",
+      description: "The D Taekwondo Academy Belt Examination is conducted to assess students' progress, technique, discipline, fitness, and understanding of Taekwondo. Each examination marks an important step in the student's martial arts journey and encourages them to continue developing with confidence and dedication",
+      posterUrl: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=800&q=80",
+      isPublished: true,
+      fee: "2500"
+    },
+    {
+      id: "e2",
+      name: "Carpe Diem 3.0 – Interschool Taekwondo Tournament",
+      date: "2026-09-11",
+      time: "07:00 AM - 05:00 PM",
+      location: "BGS National Public School, Hulimavu, Bengaluru",
+      description: "Carpe Diem 3.0 is an Interschool Sports Tournament proudly presented by BGS National Public School, Hulimavu. The event brings together young athletes to compete in various sports, including Taekwondo. It aims to promote sportsmanship, discipline, teamwork, and competitive excellence among school students.",
+      posterUrl: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=800&q=80",
+      isPublished: true,
+      fee: "2500"
+    },
+    {
+      id: "e3",
+      name: "Bangkok Open KPNP International Taekwondo Championships 2026",
+      date: "2026-11-14",
+      time: "08:00 AM - 06:00 PM",
+      location: "Island Hall, 3rd Floor, Fashion Island Shopping Mall, Bangkok, Thailand",
+      description: "Bangkok Open KPNP International Taekwondo Championships 2026 is an international Taekwondo championship bringing together elite athletes from around the world. The competition features Kyorugi (Individual), Poomsae (Individual, Mix & Team), Poomsae Freestyle, and Speed Kick categories. Inspired by Thailand's rich heritage and the historic Phra Sumen Fort, the championship celebrates excellence, resilience, sportsmanship, and the spirit of Taekwondo.",
+      posterUrl: "https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80",
+      isPublished: true,
+      fee: "2500"
+    }
+  ];
+
   // Filter upcoming events
   const today = new Date().toISOString().split('T')[0];
-  const upcomingEvents = events.filter(e => e.date >= today).slice(0, 3);
+  const activeEvents = events && events.length > 0 ? events : defaultEventsList;
+  const upcomingEvents = activeEvents.filter(e => (e.date >= today || !e.date) && e.isPublished !== false).slice(0, 3);
 
   // Recent achievements preview
   const topAchievements = achievements.slice(0, 4);
