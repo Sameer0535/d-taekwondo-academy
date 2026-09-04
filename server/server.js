@@ -942,15 +942,32 @@ app.get('/api/admin/export-csv/students', (req, res) => {
   res.send(csv);
 });
 
-app.get('/api/admin/export-csv/enquiries', (req, res) => {
-  const enquiries = db.get().enquiries || [];
-  let csv = 'Date,Student Name,Age,Parent Name,Phone,Email,Address,Program/Event,UTR Number,Status,Message\n';
-  enquiries.forEach(e => {
-    csv += `"${e.date || ''}","${e.studentName || e.name || ''}","${e.age || ''}","${e.parentName || ''}","${e.phone || ''}","${e.email || ''}","${e.address || ''}","${e.program || ''}","${e.utrNumber || ''}","${e.status || ''}","${(e.message || '').replace(/"/g, '""')}"\n`;
+app.post('/api/admin/restore-database', (req, res) => {
+  const restoreData = req.body;
+  if (!restoreData || typeof restoreData !== 'object') {
+    return res.status(400).json({ error: "Invalid backup data provided." });
+  }
+
+  const updated = db.update(data => {
+    if (restoreData.settings) data.settings = { ...data.settings, ...restoreData.settings };
+    if (restoreData.stats) data.stats = { ...data.stats, ...restoreData.stats };
+    if (restoreData.about) data.about = { ...data.about, ...restoreData.about };
+    if (restoreData.payment) data.payment = { ...data.payment, ...restoreData.payment };
+    if (Array.isArray(restoreData.students)) data.students = restoreData.students;
+    if (Array.isArray(restoreData.studentPayments)) data.studentPayments = restoreData.studentPayments;
+    if (Array.isArray(restoreData.enquiries)) data.enquiries = restoreData.enquiries;
+    if (Array.isArray(restoreData.programs)) data.programs = restoreData.programs;
+    if (Array.isArray(restoreData.coaches)) data.coaches = restoreData.coaches;
+    if (Array.isArray(restoreData.achievements)) data.achievements = restoreData.achievements;
+    if (Array.isArray(restoreData.gallery)) data.gallery = restoreData.gallery;
+    if (Array.isArray(restoreData.videos)) data.videos = restoreData.videos;
+    if (Array.isArray(restoreData.events)) data.events = restoreData.events;
+    if (Array.isArray(restoreData.fees)) data.fees = restoreData.fees;
+    if (Array.isArray(restoreData.reviews)) data.reviews = restoreData.reviews;
+    return data;
   });
-  res.setHeader('Content-Type', 'text/csv');
-  res.setHeader('Content-Disposition', `attachment; filename=registrations_enquiries_${new Date().toISOString().split('T')[0]}.csv`);
-  res.send(csv);
+
+  res.json({ success: true, message: "Database successfully restored from backup file!" });
 });
 
 // Serve static built frontend files (Vite output in /dist) for production deployment

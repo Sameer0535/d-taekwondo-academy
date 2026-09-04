@@ -105,6 +105,40 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [restoreMessage, setRestoreMessage] = useState('');
+  const [restoreLoading, setRestoreLoading] = useState(false);
+
+  const handleRestoreJsonBackup = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    const confirmRestore = window.confirm(`Restore academy database from "${file.name}"? This will import all students, payments, and settings from this backup file.`);
+    if (!confirmRestore) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        setRestoreLoading(true);
+        setRestoreMessage('');
+        const parsed = JSON.parse(event.target.result);
+        const res = await fetch('/api/admin/restore-database', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(parsed)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to restore backup.");
+        setRestoreMessage("✅ Database successfully restored! All students, payments, programs, and settings are up to date and synced to MongoDB.");
+        fetchAllAdminData();
+        if (onRefreshPublicData) onRefreshPublicData();
+      } catch (err) {
+        setRestoreMessage(`❌ Restore Error: ${err.message}`);
+      } finally {
+        setRestoreLoading(false);
+      }
+    };
+    reader.readAsText(file);
+  };
 
   // Form States for Modals
   const [editingItem, setEditingItem] = useState(null);
@@ -560,7 +594,7 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   Download a complete backup of all student records, event registrations, fee approvals, and academy settings to save on your PC, send via email, or upload to Google Drive.
                 </p>
 
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
                   <a 
                     href="/api/admin/export-database" 
                     download 
@@ -585,6 +619,45 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                   >
                     <Download size={16} /> EXPORT EVENT REGISTRATIONS (EXCEL / CSV)
                   </a>
+                </div>
+
+                {/* Restore Backup Section */}
+                <div style={{ background: '#ffffff', padding: '16px', borderRadius: '12px', border: '1px solid #e0f2fe', marginTop: '12px' }}>
+                  <h5 style={{ margin: '0 0 8px 0', fontSize: '0.95rem', fontWeight: 'bold', color: '#0369a1', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Upload size={16} /> Restore / Import Backup File
+                  </h5>
+                  <p style={{ margin: '0 0 12px 0', fontSize: '0.82rem', color: '#64748b' }}>
+                    Upload a previously downloaded <code>.json</code> backup file to instantly restore all students, payments, and settings to the live site and MongoDB Atlas.
+                  </p>
+                  <label 
+                    className="btn" 
+                    style={{ 
+                      background: '#475569', 
+                      color: '#ffffff', 
+                      padding: '8px 16px', 
+                      borderRadius: '8px', 
+                      fontWeight: 'bold', 
+                      fontSize: '0.84rem', 
+                      cursor: restoreLoading ? 'not-allowed' : 'pointer', 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      gap: '6px' 
+                    }}
+                  >
+                    <Upload size={14} /> {restoreLoading ? 'Restoring Database...' : 'Select JSON Backup File to Restore'}
+                    <input 
+                      type="file" 
+                      accept=".json,application/json" 
+                      onChange={handleRestoreJsonBackup} 
+                      disabled={restoreLoading}
+                      style={{ display: 'none' }} 
+                    />
+                  </label>
+                  {restoreMessage && (
+                    <div style={{ marginTop: '10px', fontSize: '0.86rem', fontWeight: 'bold', color: restoreMessage.startsWith('✅') ? '#16a34a' : '#dc2626' }}>
+                      {restoreMessage}
+                    </div>
+                  )}
                 </div>
               </div>
               
