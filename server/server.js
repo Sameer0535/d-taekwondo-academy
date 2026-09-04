@@ -62,8 +62,32 @@ app.post('/api/upload-multiple', upload.array('files', 20), (req, res) => {
   res.json({ urls });
 });
 
+// Anti-Brute-Force Login Rate Limiting (In-Memory IP Tracker)
+const loginAttemptMap = new Map(); // ip -> { attempts: number, lockedUntil: number | null, firstAttemptTime: number }
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_PERIOD_MS = 15 * 60 * 1000; // 15 minutes lockout
+const ATTEMPT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes window
+
 // Auth Routes
 app.post('/api/auth/login', (req, res) => {
+  const rawIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+  const clientIp = typeof rawIp === 'string' ? rawIp.split(',')[0].trim() : '127.0.0.1';
+  const now = Date.now();
+
+  let attemptData = loginAttemptMap.get(clientIp);
+  if (!attemptData || (now - attemptData.firstAttemptTime > ATTEMPT_WINDOW_MS && (!attemptData.lockedUntil || now > attemptData.lockedUntil))) {
+    attemptData = { attempts: 0, lockedUntil: null, firstAttemptTime: now };
+    loginAttemptMap.set(clientIp, attemptData);
+  }
+
+  // Check if currently locked out
+  if (attemptData.lockedUntil && now < attemptData.lockedUntil) {
+    const remainingMins = Math.ceil((attemptData.lockedUntil - now) / (60 * 1000));
+    return res.status(429).json({ 
+      error: `Security Lockout: Too many failed login attempts. Access temporarily blocked for ${remainingMins} more minute(s).` 
+    });
+  }
+
   const { username, password } = req.body;
   const currentDb = db.get();
   const dbUser = (currentDb.adminAuth?.username || 'admin').trim();
@@ -73,9 +97,25 @@ app.post('/api/auth/login', (req, res) => {
   const inputPass = (password || '').trim();
 
   if (inputUser.toLowerCase() === dbUser.toLowerCase() && inputPass === dbPass) {
+    // Reset failed attempts on valid login
+    loginAttemptMap.delete(clientIp);
     return res.json({ token: "admin-session-token-secret-12345", username: dbUser });
   }
-  res.status(401).json({ error: "Invalid username or password" });
+
+  // Increment failed attempts on wrong credentials
+  attemptData.attempts += 1;
+  const remaining = MAX_LOGIN_ATTEMPTS - attemptData.attempts;
+
+  if (remaining <= 0) {
+    attemptData.lockedUntil = now + LOCKOUT_PERIOD_MS;
+    return res.status(429).json({ 
+      error: `Security Alert: 5 failed attempts exceeded. This IP address is locked out for 15 minutes.` 
+    });
+  }
+
+  res.status(401).json({ 
+    error: `Invalid credentials. ${remaining} attempt(s) remaining before security lockout.` 
+  });
 });
 
 app.get('/api/auth/me', (req, res) => {

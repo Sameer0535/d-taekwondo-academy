@@ -92,7 +92,23 @@ export default function App() {
   const [verifiedStudentModal, setVerifiedStudentModal] = useState(null);
 
   useEffect(() => {
+    // 1. Secret URL / Hash Access Detection
     const params = new URLSearchParams(window.location.search);
+    const accessParam = params.get('access') || params.get('portal') || params.get('admin');
+    if (accessParam === 'admin' || accessParam === '1' || window.location.hash === '#admin') {
+      setActivePage('admin');
+    }
+
+    // 2. Secret Keyboard Shortcut (Ctrl + Shift + A or Cmd + Shift + A)
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        setActivePage(prev => (prev === 'admin' ? 'home' : 'admin'));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    // 3. Student Verification Certificate Check
     const studentId = params.get('verifyStudent');
     if (studentId) {
       fetch(`/api/student/verify/${studentId}`)
@@ -127,6 +143,8 @@ export default function App() {
           });
         });
     }
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Student Auth state

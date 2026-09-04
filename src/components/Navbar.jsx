@@ -4,6 +4,8 @@ import { Menu, X, Phone, Shield, GraduationCap } from 'lucide-react';
 export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJoinNow, settings }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoClicks, setLogoClicks] = useState(0);
+  const logoTimerRef = React.useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +36,28 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Stealth Easter-Egg Trigger: 5 rapid taps on logo unlocks Admin Login
+  const handleLogoTap = () => {
+    const newCount = logoClicks + 1;
+    setLogoClicks(newCount);
+
+    if (logoTimerRef.current) clearTimeout(logoTimerRef.current);
+    logoTimerRef.current = setTimeout(() => {
+      setLogoClicks(0);
+    }, 2200);
+
+    if (newCount >= 5) {
+      setLogoClicks(0);
+      setActivePage('admin');
+      setMobileMenuOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Normal tap navigates home
+    handleNavClick('home');
+  };
+
   return (
     <header className={`sticky-nav ${isScrolled ? 'scrolled' : ''}`}>
       {/* Top Info Bar */}
@@ -44,7 +68,7 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
             <span className="divider">|</span>
             <span>📍 {settings?.topBarLocation || settings?.location || "Bengaluru Urban"}</span>
           </div>
-          <div className="admin-link" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div className="student-portal-link" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <button 
               onClick={() => handleNavClick('student')} 
               style={{
@@ -65,9 +89,6 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
             >
               <GraduationCap size={15} /> Student Portal
             </button>
-            <button onClick={() => handleNavClick('admin')} className="admin-access-btn">
-              <Shield size={13} /> Admin Portal
-            </button>
           </div>
         </div>
       </div>
@@ -75,8 +96,13 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
       {/* Main Navbar */}
       <div className="main-nav-wrapper">
         <div className="container main-nav-container">
-          {/* Logo Left */}
-          <div className="nav-logo" onClick={() => handleNavClick('home')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+          {/* Logo Left - With Secret 5-Tap Admin Access */}
+          <div 
+            className="nav-logo" 
+            onClick={handleLogoTap} 
+            title="D Taekwondo Academy"
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', userSelect: 'none' }}
+          >
             <img 
               src={settings?.logoUrl || "/logo.png"} 
               alt="D Taekwondo Academy Official Logo" 
@@ -147,9 +173,6 @@ export default function Navbar({ activePage, setActivePage, onOpenJoinModal, onJ
               </button>
               <button onClick={() => handleNavClick('student')} className="btn w-full mt-2" style={{ background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', padding: '10px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                 <GraduationCap size={16} /> Student Portal
-              </button>
-              <button onClick={() => handleNavClick('admin')} className="btn btn-outline-dark w-full mt-2" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-                <Shield size={16} /> Admin Portal
               </button>
             </div>
           </div>
