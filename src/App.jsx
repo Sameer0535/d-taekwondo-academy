@@ -99,10 +99,26 @@ export default function App() {
       setActivePage('admin');
     }
 
-    // 2. Secret Keyboard Shortcut (Ctrl + Shift + A or Cmd + Shift + A)
+    // 2. Secret Keyboard Shortcut (Ctrl + Alt + A, Alt + Shift + A, Ctrl + Shift + D, or Alt + A)
     const handleKeyDown = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      const isA = e.key === 'a' || e.key === 'A';
+      const isD = e.key === 'd' || e.key === 'D';
+
+      // Non-conflicting combos:
+      // - Ctrl + Alt + A
+      // - Alt + Shift + A
+      // - Alt + A
+      // - Ctrl + Shift + D (D for Darshan / DTKD / Dashboard)
+      // - Ctrl + Shift + A (with preventDefault)
+      if (
+        ((e.ctrlKey || e.metaKey) && e.altKey && isA) ||
+        (e.altKey && e.shiftKey && isA) ||
+        (e.altKey && isA) ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && isD) ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && isA)
+      ) {
         e.preventDefault();
+        e.stopPropagation();
         setActivePage(prev => (prev === 'admin' ? 'home' : 'admin'));
       }
     };
