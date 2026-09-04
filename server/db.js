@@ -682,33 +682,7 @@ const defaultData = {
 
 let inMemoryData = null;
 
-function initInMemoryDb() {
-  if (inMemoryData) return inMemoryData;
-
-  const candidates = [
-    DB_FILE,
-    process.env.PERSISTENT_DATA_PATH,
-    path.join('/tmp', 'd_tkd_academy_db_persistent.json')
-  ].filter(Boolean);
-
-  // Put defaultData first, so real candidate files override default properties
-  const allParsedData = [defaultData];
-
-  for (const filePath of candidates) {
-    if (fs.existsSync(filePath)) {
-      try {
-        const raw = fs.readFileSync(filePath, 'utf8');
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object') {
-          allParsedData.push(parsed);
-        }
-      } catch (e) {
-        console.error("Error reading candidate DB:", filePath, e);
-      }
-    }
-  }
-
-  // Cumulative Merging across all files & persistent storage
+function mergeDatasets(datasets) {
   const mergedSettings = {};
   const mergedStats = {};
   const mergedAbout = {};
@@ -726,8 +700,7 @@ function initInMemoryDb() {
   const feeMap = new Map();
   const reviewMap = new Map();
 
-  // Merge in order (defaultData first, candidate files after so recent entries override defaults)
-  for (const data of allParsedData) {
+  for (const data of (datasets || []).filter(Boolean)) {
     if (data.settings) Object.assign(mergedSettings, data.settings);
     if (data.stats) Object.assign(mergedStats, data.stats);
     if (data.about) Object.assign(mergedAbout, data.about);
@@ -800,7 +773,7 @@ function initInMemoryDb() {
     });
   }
 
-  inMemoryData = {
+  return {
     settings: mergedSettings,
     stats: mergedStats,
     about: mergedAbout,
@@ -817,7 +790,34 @@ function initInMemoryDb() {
     fees: Array.from(feeMap.values()),
     reviews: Array.from(reviewMap.values())
   };
+}
 
+function initInMemoryDb() {
+  if (inMemoryData) return inMemoryData;
+
+  const candidates = [
+    DB_FILE,
+    process.env.PERSISTENT_DATA_PATH,
+    path.join('/tmp', 'd_tkd_academy_db_persistent.json')
+  ].filter(Boolean);
+
+  const allParsedData = [defaultData];
+
+  for (const filePath of candidates) {
+    if (fs.existsSync(filePath)) {
+      try {
+        const raw = fs.readFileSync(filePath, 'utf8');
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') {
+          allParsedData.push(parsed);
+        }
+      } catch (e) {
+        console.error("Error reading candidate DB:", filePath, e);
+      }
+    }
+  }
+
+  inMemoryData = mergeDatasets(allParsedData);
   saveInMemoryDb(inMemoryData);
   return inMemoryData;
 }
@@ -843,20 +843,19 @@ async function initMongo() {
 
     const cloudDoc = await mongoCollection.findOne({ _id: 'main_academy_data' });
     if (cloudDoc && cloudDoc.data) {
-      console.log('📦 Loaded existing cloud database from MongoDB Atlas');
-      if (inMemoryData) {
-        Object.assign(inMemoryData, cloudDoc.data);
-      }
+      console.log('📦 Loaded existing cloud database from MongoDB Atlas and merging with baseline');
+      inMemoryData = mergeDatasets([defaultData, inMemoryData, cloudDoc.data]);
     } else {
-      if (inMemoryData) {
-        await mongoCollection.updateOne(
-          { _id: 'main_academy_data' },
-          { $set: { _id: 'main_academy_data', data: inMemoryData, updatedAt: new Date().toISOString() } },
-          { upsert: true }
-        );
-        console.log('🌱 Seeded baseline academy data to MongoDB Atlas');
-      }
+      inMemoryData = mergeDatasets([defaultData, inMemoryData]);
+      console.log('🌱 Seeded baseline academy data to MongoDB Atlas');
     }
+
+    // Save unified complete data back to MongoDB Atlas
+    await mongoCollection.updateOne(
+      { _id: 'main_academy_data' },
+      { $set: { _id: 'main_academy_data', data: inMemoryData, updatedAt: new Date().toISOString() } },
+      { upsert: true }
+    );
   } catch (err) {
     console.error('⚠️ MongoDB Atlas connection error (running on local fallback):', err.message);
   }
