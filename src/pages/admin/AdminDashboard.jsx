@@ -1701,13 +1701,19 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                           </button>
                           <button
                             onClick={async () => {
-                              if (confirm(`Delete student ${s.studentName}?`)) {
-                                await fetch(`/api/admin/students/${s.id}`, { method: 'DELETE' });
-                                showNotification(`Student ${s.studentName} deleted`);
-                                fetchAllAdminData();
+                              if (window.confirm(`Are you sure you want to permanently delete student ${s.studentName}?`)) {
+                                try {
+                                  await fetch(`/api/admin/students/${s.id}`, { method: 'DELETE' });
+                                  showNotification(`Student ${s.studentName} deleted successfully`);
+                                  fetchAllAdminData();
+                                } catch (err) {
+                                  console.error("Delete student error:", err);
+                                  showNotification("Error deleting student");
+                                }
                               }
                             }}
                             className="action-icon delete"
+                            title="Delete Student"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -2150,10 +2156,19 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
                               {/* DELETE BUTTON */}
                               <button
                                 onClick={async () => {
-                                  if (confirm(`Delete enquiry from ${e.studentName || 'Student'}?`)) {
-                                    await fetch(`/api/enquiries/${e.id}`, { method: 'DELETE' });
-                                    showNotification(`Enquiry deleted`);
-                                    fetchAllAdminData();
+                                  if (window.confirm(`Are you sure you want to delete enquiry from ${e.studentName || e.name || 'Student'}?`)) {
+                                    try {
+                                      if (e._type === 'student_reg') {
+                                        await fetch(`/api/admin/students/${e.id}`, { method: 'DELETE' });
+                                      } else {
+                                        await fetch(`/api/enquiries/${e.id}`, { method: 'DELETE' });
+                                      }
+                                      showNotification(`Enquiry deleted successfully`);
+                                      fetchAllAdminData();
+                                    } catch (err) {
+                                      console.error("Delete error:", err);
+                                      showNotification("Error deleting enquiry");
+                                    }
                                   }
                                 }}
                                 className="action-icon delete"
@@ -2847,10 +2862,19 @@ export default function AdminDashboard({ onLogout, onRefreshPublicData }) {
               <button
                 onClick={async () => {
                   if (window.confirm(`Delete registration for "${selectedRegistration.studentName || selectedRegistration.name}"?`)) {
-                    await fetch(`/api/enquiries/${selectedRegistration.id}`, { method: 'DELETE' });
-                    showNotification(`Deleted registration for ${selectedRegistration.studentName || selectedRegistration.name}`);
-                    setSelectedRegistration(null);
-                    fetchAllAdminData();
+                    try {
+                      if (selectedRegistration._type === 'student_reg') {
+                        await fetch(`/api/admin/students/${selectedRegistration.id}`, { method: 'DELETE' });
+                      } else {
+                        await fetch(`/api/enquiries/${selectedRegistration.id}`, { method: 'DELETE' });
+                      }
+                      showNotification(`Deleted registration for ${selectedRegistration.studentName || selectedRegistration.name}`);
+                      setSelectedRegistration(null);
+                      fetchAllAdminData();
+                    } catch (err) {
+                      console.error("Delete error:", err);
+                      showNotification("Error deleting registration");
+                    }
                   }
                 }}
                 className="btn btn-sm"

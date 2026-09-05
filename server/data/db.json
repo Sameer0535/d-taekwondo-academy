@@ -124,7 +124,7 @@
         "State Gold Medalist"
       ],
       "bio": "About Me I'm Darshan, the Founder and Head Coach of D Taekwondo Academy. Taekwondo has been a big part of my life, and I'm passionate about sharing what I've learned with the next generation of students. Over the years, I've had the opportunity to train students of different age groups, prepare them for championships and belt examinations, and help them grow both in Taekwondo and in their personal lives. I'm proud to have guided my students to win medals at national-level championships and International level championship. For me, Taekwondo is not just about winning medals. It's about building discipline, confidence, fitness, respect and a strong mindset. Through D Taekwondo Academy, my goal is to create a positive training environment where every student can learn, improve and become the best version of themselves.",
-      "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+      "photo": "/coach-darshan.jpg",
       "displayOrder": 1
     },
     {
@@ -138,7 +138,7 @@
         "Youth Athletic Trainer"
       ],
       "bio": "Taekwondo has given me the opportunity to compete at both National and International levels, where I have proudly won medals and gained valuable competitive experience. As a Coach, I enjoy sharing what I've learned with younger students and helping them improve their skills, confidence and discipline. I believe every student has the potential to achieve great things with the right training, dedication and mindset. I'm continuously working to improve myself as an athlete and coach while inspiring the next generation of Taekwondo athletes. Expert in technical accuracy, flexibility, and Poomsae form mastery",
-      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
+      "photo": "/coach-sameer.jpg",
       "displayOrder": 2
     }
   ],
@@ -407,38 +407,8 @@
     "username": "adminnn",
     "passwordHash": "aadminn"
   },
-  "students": [
-    {
-      "id": "DTA1001",
-      "studentName": "arav",
-      "parentName": "viki",
-      "phone": "7676545432",
-      "password": "samm",
-      "program": "Beginners",
-      "dob": "2011-11-11",
-      "age": "15",
-      "photoUrl": "/uploads/1786590513080-861189837.jpeg",
-      "birthCertUrl": "/uploads/1786590518034-677539698.jpeg",
-      "aadharUrl": "/uploads/1786590522876-226251636.jpeg",
-      "belt": "White Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-08-13",
-      "status": "Active"
-    }
-  ],
-  "studentPayments": [
-    {
-      "id": "pay_1786590544920",
-      "studentId": "DTA1001",
-      "studentName": "arav",
-      "month": "Registration Fee",
-      "amount": "₹3500 (One-time)",
-      "utrNumber": "098765432134",
-      "paymentDate": "2026-08-13",
-      "status": "Paid"
-    }
-  ],
+  "students": [],
+  "studentPayments": [],
   "payment": {
     "isEnabled": true,
     "accountName": "DARSHAN A",

@@ -138,7 +138,7 @@ const defaultData = {
         "State Gold Medalist"
       ],
       "bio": "About Me I'm Darshan, the Founder and Head Coach of D Taekwondo Academy. Taekwondo has been a big part of my life, and I'm passionate about sharing what I've learned with the next generation of students. Over the years, I've had the opportunity to train students of different age groups, prepare them for championships and belt examinations, and help them grow both in Taekwondo and in their personal lives. I'm proud to have guided my students to win medals at national-level championships and International level championship. For me, Taekwondo is not just about winning medals. It's about building discipline, confidence, fitness, respect and a strong mindset. Through D Taekwondo Academy, my goal is to create a positive training environment where every student can learn, improve and become the best version of themselves.",
-      "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
+      "photo": "/coach-darshan.jpg",
       "displayOrder": 1
     },
     {
@@ -152,7 +152,7 @@ const defaultData = {
         "Youth Athletic Trainer"
       ],
       "bio": "Taekwondo has given me the opportunity to compete at both National and International levels, where I have proudly won medals and gained valuable competitive experience. As a Coach, I enjoy sharing what I've learned with younger students and helping them improve their skills, confidence and discipline. I believe every student has the potential to achieve great things with the right training, dedication and mindset. I'm continuously working to improve myself as an athlete and coach while inspiring the next generation of Taekwondo athletes. Expert in technical accuracy, flexibility, and Poomsae form mastery",
-      "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
+      "photo": "/coach-sameer.jpg",
       "displayOrder": 2
     }
   ],
@@ -376,220 +376,13 @@ const defaultData = {
       "notes": "Excluding uniform"
     }
   ],
-  "enquiries": [
-    {
-      "id": "enq_1786556108114",
-      "status": "New",
-      "date": "2026-08-12",
-      "studentName": "rjvkjrv",
-      "age": "10",
-      "parentName": "",
-      "phone": "0987654321",
-      "email": "",
-      "program": "State Level Open Taekwondo Championship 2026",
-      "message": "",
-      "utrNumber": ""
-    },
-    {
-      "id": "enq_1786556062035",
-      "status": "New",
-      "date": "2026-08-12",
-      "studentName": "jbekud",
-      "age": "10",
-      "parentName": "jbee",
-      "phone": "0987654321",
-      "email": "",
-      "program": "State Level Open Taekwondo Championship 2026",
-      "message": "",
-      "utrNumber": ""
-    },
-    {
-      "id": "enq1",
-      "studentName": "Aarav Sharma",
-      "age": "10",
-      "parentName": "Vikram Sharma",
-      "phone": "+91 98123 45678",
-      "email": "vikram@example.com",
-      "program": "Kids Taekwondo",
-      "message": "Looking for beginner trial classes for my son.",
-      "status": "Approved",
-      "date": "2026-08-08"
-    }
-  ],
+  "enquiries": [],
   "adminAuth": {
     "username": "adminnn",
     "passwordHash": "aadminn"
   },
-  "students": [
-    {
-      "id": "STU1001",
-      "studentName": "Aarav Sharma",
-      "parentName": "Vikram Sharma",
-      "phone": "9812345678",
-      "password": "password123",
-      "program": "Kids Taekwondo",
-      "belt": "Yellow Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-01-10",
-      "status": "Active"
-    },
-    {
-      "id": "STU1002",
-      "studentName": "Test Student",
-      "parentName": "Test Parent",
-      "phone": "9970509127",
-      "password": "password123",
-      "program": "Kids Taekwondo",
-      "belt": "White Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-08-10",
-      "status": "Active"
-    },
-    {
-      "id": "STU1003",
-      "studentName": "rohn",
-      "parentName": "jdbc",
-      "phone": "0987654321",
-      "password": "samm",
-      "program": "Kids Taekwondo",
-      "belt": "White Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-08-11",
-      "status": "Active"
-    },
-    {
-      "id": "STU1004",
-      "studentName": "dfvr",
-      "parentName": "rvc",
-      "phone": "09876543265",
-      "password": "samm",
-      "program": "Kids Taekwondo",
-      "belt": "White Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-08-11",
-      "status": "Active"
-    },
-    {
-      "id": "STU1005",
-      "studentName": "hvut",
-      "parentName": "yf75s",
-      "phone": "0987654322",
-      "password": "samm",
-      "program": "Kids Taekwondo",
-      "belt": "White Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-08-11",
-      "status": "Active"
-    },
-    {
-      "id": "STU1006",
-      "studentName": "Aarav Mehta",
-      "parentName": "Sanjay Mehta",
-      "phone": "9876543210",
-      "password": "password123",
-      "program": "Kids Taekwondo",
-      "belt": "White Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-08-11",
-      "status": "Active"
-    },
-    {
-      "id": "STU1007",
-      "studentName": "jvyh",
-      "parentName": ",jbu",
-      "phone": "5648432576",
-      "password": "samm",
-      "program": "Kids Taekwondo",
-      "dob": "2022-03-13",
-      "age": "6",
-      "photoUrl": "/uploads/1786443621040-402247416.png",
-      "birthCertUrl": "",
-      "aadharUrl": "",
-      "belt": "White Belt",
-      "monthlyFee": "₹1,000",
-      "dueDay": 5,
-      "joiningDate": "2026-08-11",
-      "status": "Active"
-    }
-  ],
-  "studentPayments": [
-    {
-      "id": "pay_1786443630513",
-      "studentId": "STU1007",
-      "studentName": "jvyh",
-      "month": "August 2026",
-      "amount": "₹1,000",
-      "utrNumber": "098765432112",
-      "paymentDate": "2026-08-11",
-      "status": "Paid"
-    },
-    {
-      "id": "pay_1786422703438",
-      "studentId": "STU1003",
-      "studentName": "rohn",
-      "month": "August 2026",
-      "amount": "₹1,000",
-      "utrNumber": "DIRECT_CASH",
-      "paymentDate": "2026-08-11",
-      "status": "Paid"
-    },
-    {
-      "id": "pay_1786422528042",
-      "studentId": "STU1002",
-      "studentName": "Test Student",
-      "month": "August 2026",
-      "amount": "₹1,000",
-      "utrNumber": "DIRECT_CASH",
-      "paymentDate": "2026-08-11",
-      "status": "Paid"
-    },
-    {
-      "id": "pay_1786422071003",
-      "studentId": "STU1006",
-      "studentName": "Aarav Mehta",
-      "month": "August 2026",
-      "amount": "₹1,000",
-      "utrNumber": "123456789098",
-      "paymentDate": "2026-08-11",
-      "status": "Paid"
-    },
-    {
-      "id": "pay_1786421589710",
-      "studentId": "STU1005",
-      "studentName": "hvut",
-      "month": "August 2026",
-      "amount": "₹1,000",
-      "utrNumber": "123456789065",
-      "paymentDate": "2026-08-11",
-      "status": "Paid"
-    },
-    {
-      "id": "pay_1786421215870",
-      "studentId": "STU1004",
-      "studentName": "dfvr",
-      "month": "August 2026",
-      "amount": "₹1,000",
-      "utrNumber": "123456789087",
-      "paymentDate": "2026-08-11",
-      "status": "Paid"
-    },
-    {
-      "id": "pay_1001",
-      "studentId": "STU1001",
-      "studentName": "Aarav Sharma",
-      "month": "August 2026",
-      "amount": "₹1,000",
-      "utrNumber": "987654321012",
-      "paymentDate": "2026-08-05",
-      "status": "Paid"
-    }
-  ],
+  "students": [],
+  "studentPayments": [],
   "payment": {
     "isEnabled": true,
     "accountName": "DARSHAN A",
@@ -733,7 +526,15 @@ function mergeDatasets(datasets) {
     (data.coaches || []).forEach(item => {
       if (!item) return;
       const key = item.name ? item.name.toLowerCase().trim() : (item.id || JSON.stringify(item));
-      coachMap.set(key, { ...(coachMap.get(key) || {}), ...item });
+      const existing = coachMap.get(key) || {};
+      const merged = { ...existing, ...item };
+      if (key.includes('darshan') && (!merged.photo || merged.photo.includes('unsplash') || merged.photo.includes('default'))) {
+        merged.photo = '/coach-darshan.jpg';
+      }
+      if (key.includes('sameer') && (!merged.photo || merged.photo.includes('unsplash') || merged.photo.includes('default'))) {
+        merged.photo = '/coach-sameer.jpg';
+      }
+      coachMap.set(key, merged);
     });
 
     (data.achievements || []).forEach(item => {
