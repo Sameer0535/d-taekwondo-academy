@@ -987,6 +987,10 @@ if (fs.existsSync(DIST_DIR)) {
   });
 }
 
-app.listen(PORT, () => {
-  console.log(`D Taekwondo Academy Server running on http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`D Taekwondo Academy Server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
