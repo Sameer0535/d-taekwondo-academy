@@ -828,11 +828,11 @@ let mongoClient = null;
 let mongoCollection = null;
 let isMongoInitialized = false;
 
-async function initMongo() {
-  if (isMongoInitialized) return;
+export async function initMongo() {
+  if (isMongoInitialized && mongoCollection) return mongoCollection;
   isMongoInitialized = true;
   const uri = process.env.MONGODB_URI;
-  if (!uri) return;
+  if (!uri) return null;
 
   try {
     mongoClient = new MongoClient(uri);
@@ -856,8 +856,10 @@ async function initMongo() {
       { $set: { _id: 'main_academy_data', data: inMemoryData, updatedAt: new Date().toISOString() } },
       { upsert: true }
     );
+    return mongoCollection;
   } catch (err) {
     console.error('⚠️ MongoDB Atlas connection error (running on local fallback):', err.message);
+    return null;
   }
 }
 

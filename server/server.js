@@ -4,7 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { db } from './db.js';
+import { db, initMongo } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,6 +15,18 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json({ limit: '200mb' }));
 app.use(express.urlencoded({ limit: '200mb', extended: true }));
+
+// Ensure MongoDB Atlas is initialized before processing any requests in serverless environments (Vercel)
+app.use(async (req, res, next) => {
+  if (process.env.MONGODB_URI) {
+    try {
+      await initMongo();
+    } catch (e) {
+      console.error("MongoDB middleware init error:", e);
+    }
+  }
+  next();
+});
 
 // Ultra-fast Health / Ping Endpoint (For UptimeRobot / Keep-Alive)
 app.all(['/health', '/api/health', '/ping'], (req, res) => {
